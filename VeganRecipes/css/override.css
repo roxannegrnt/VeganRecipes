@@ -1,0 +1,115 @@
+
+.navbar{
+    margin-bottom: 0px;
+    background:#f7f9fc;
+}
+.well{
+    background:#f7f9fc;
+}
+#search-box {
+    border-radius: 33px;
+    padding: 10px;
+    border: #bababa 1px solid;
+}
+#filters{
+    width: 100%;
+    min-height: 50px;
+    border-bottom: 1px solid #e5e5e5;
+    background: rgba(255,255,255,0.6);
+}
+.alldropdown{
+    border-bottom: 1px solid #e5e5e5;
+    margin: 0px 0px 30px 0px;
+    padding: 0px;
+    text-align: center;
+
+}
+.btn-link:focus, .btn-link:hover{
+    text-decoration: none;
+}
+.modal-header h2 {
+    text-align: center;
+    font-weight:bold;
+    font-size:28px;
+    margin-top: 20px;
+    color: #505e6c;
+    margin-bottom: 10px;
+}
+.modal-body .form-control {
+
+    background:#f7f9fc;
+    border:none;
+    border-bottom:1px solid #dfe7f1;
+    border-radius:0;
+    box-shadow:none;
+    outline:none;
+    color:inherit;
+    text-indent:8px;
+    height:42px;
+}
+.modal-body .btn{
+    background: #f4476b;
+    border: none;
+    border-radius: 4px;
+    padding: 11px;
+    box-shadow: none;
+    margin-top: 26px;
+    text-shadow: none;
+    outline: none;
+}
+.signup {
+    display:block;
+    font-size:12px;
+    color:#6f7a85;
+    opacity:0.9;
+    text-decoration:none;
+}
+.signup:hover{
+    text-decoration:none;
+    outline: 0;
+}
+
+.btn-circle.btn-xl {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    font-size: 24px;
+    line-height: 1.33;
+    border-radius: 35px;
+    background: #f4476b;
+    color: white;
+    margin-bottom: 50px;
+}
+.modalRecipe{
+    overflow-y: auto;
+    max-height: none;
+    padding: 15px;
+}
+.ingredients{
+    margin-left: 20px;
+}
+#recipeTitle-list{
+    float:left;
+    list-style:none;
+    margin:0;
+    padding:0;
+    width:170px;
+}
+#recipeTitle-list li{
+    padding: 10px;
+    background:#FAFAFA;
+    border:#bababa 1px solid;
+    border-radius: 33px;
+}
+#recipeTitle-list li:hover{
+    background:#bababa;
+}
+.descrip{
+    background: -webkit-linear-gradient(#000, #fff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.descrip a{
+    background: none;
+    -webkit-text-fill-color: #0645AD;
+}
