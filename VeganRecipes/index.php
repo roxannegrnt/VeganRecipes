@@ -1,4 +1,18 @@
 <?php
+session_start();
+require './FonctionIndex.php';
+require './CRUD/DbConnect.php';
+$alert = "";
+$DB = new DbConnect();
+if (isset($_REQUEST["login"])) {
+    $exist = $DB->GetRegistration($_REQUEST["user"], sha1($_REQUEST["pwd"]));
+    if (!empty($exist)) {
+        $_SESSION["uid"] = $exist["IdUtilisateur"];
+        $_SESSION["IsAdmin"] = $exist["IsAdmin"];
+    } else {
+        $alert = "Oops... There must be an error with your username or your password";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -18,18 +32,26 @@
             <div class = "collapse navbar-collapse" id = "example-navbar-collapse">
                 <div class="navbar-form navbar-left frmSearch" role="search">
                     <input type="text" name="search" id="search-box" class="form-control" placeholder="Search">
-                    <button type="submit" class="btn btn-default" name="SubmitSearch" onclick="SubmitSearch()">Submit</button>
+                    <button type="submit" class="btn btn-default" data-backdrop="static" name="SubmitSearch" onclick="SubmitSearch()">Submit</button>
                     <div id="suggesstion-box"></div>
                 </div>
                 <ul class="nav navbar-nav navbar-right" id="action">
-                    <li><a class="active" href="index.php"><span class="glyphicon glyphicon-home"></span></a></li>
-                    <li><a data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-user"></span></a></li>
+                    <?php
+                    if (isset($_SESSION["IsAdmin"])) {
+                        SignedIn($_SESSION["IsAdmin"]);
+                    } else {
+                        echo<<<affichage
+        <li><a class="active" href="index.php"><span class="glyphicon glyphicon-home"></span></a></li>
+        <li><a data-toggle="modal" data-keyboard="false" data-target="#myModal"><span class="glyphicon glyphicon-user"></span></a></li>
+affichage;
+                    }
+                    ?>
                 </ul>
             </div>
         </nav>
     </header>
     <body>
-        <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal fade" id="myModal" data-backdrop="static" data-keyboard="false" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -37,13 +59,18 @@
                         <h2 class="modal-title">Login</h2>
                     </div>
                     <div class="modal-body">
-                        <section class="form-group">
-                            <input type="text" name="user" class="form-control" placeholder="Username">
-                        </section>
-                        <section class="form-group">
-                            <input type="password" name="pwd" class="form-control" placeholder="Password">
-                        </section>
-                        <button type="button" onclick="IndexConnected();" class="btn btn-primary btn-block" data-dismiss="modal">Login</button>
+                        <form action="index.php" method="POST">
+                            <section class="form-group">
+                                <input type="text" name="user" class="form-control" placeholder="Username">
+                            </section>
+                            <section class="form-group">
+                                <input type="password" name="pwd" class="form-control" placeholder="Password">
+                            </section>
+                            <button type="submit" class="btn btn-primary btn-block" name="login">Login</button>
+                        </form>
+                        <?php
+                        echo $alert;
+                        ?>
                     </div>
                     <div class="modal-footer">
                         <a class="signup">Sign up</a>
@@ -51,6 +78,34 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="AddModal" data-backdrop="static" data-keyboard="false" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h2 class="modal-title">Add Recipe</h2>
+                    </div>
+                    <div class="modal-body">
+                        <form action="index.php" method="POST">
+                            <input type="text" name="titre" placeholder="Title">
+                            <input type="file" name="img">
+                            <textarea rows="4" cols="14">List of Ingredients</textarea>
+                            <select>
+                                <option></option>
+                                 <option></option>
+                                  <option></option>
+                            </select>
+                            <textarea rows="3" cols="20">Description de la recette</textarea>
+                            <button type="submit" class="btn btn-primary btn-block" name="Add">Add Recipe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php
+        //Pour garder la modal ouverte si erreure
+        KeepModalOpen($alert);
+        ?>
         <div id="ContainsPage" class="container-fluid col-md-12">
             <div class="alldropdown col-md-12">
                 <div class="dropdown col-md-2 col-md-offset-4">
@@ -76,7 +131,7 @@
                 </div>
             </div>
             <section>
-                
+
             </section>
         </div>
     </body>
