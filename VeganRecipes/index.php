@@ -76,9 +76,11 @@ affichage;
                     </div>
                     <div class="modal-body">
                         <form action="index.php" method="POST" id="frmAjout" enctype="multipart/form-data">
-                            <img class="col-md-4" id="ImgProfil" src="upload/imgdefaut.png" value="" alt=""/>
+                            <div class="RoundButton">
+                            <button type="button" id="ImgProfil" class="btn btn-default btn-circle btn-xl"><i class="glyphicon glyphicon-camera"></i></button>
+                            </div>
                             <input class="frm form-control" type="text" name="title" placeholder="Title">
-                            <textarea class=" frm form-control" rows="10" name="ingredients" placeholder="List of Ingredients"></textarea>
+                            <textarea class=" frm form-control" rows="25" name="ingredients" placeholder="List of Ingredients"></textarea>
                             <select name="type" class="form-control frm">
                                 <?php
                                 foreach ($types as $key => $value) {
@@ -86,8 +88,8 @@ affichage;
                                 }
                                 ?>
                             </select>
-                            <textarea class="frm form-control" rows="10" name="recipe" placeholder="Description de la recette"></textarea>
-                            <button type="submit" class="btn btn-primary btn-block" name="Add">Add Recipe</button>
+                            <textarea class="frm form-control" rows="25" name="recipe" placeholder="Description de la recette"></textarea>
+                            <button type="submit" class="btn btn-primary btn-block frm" name="Add">Add Recipe</button>
                             <?php
                             echo $img_error;
                             echo $add_error;

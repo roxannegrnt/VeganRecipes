@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 require './CRUD/DbConnect.php';
 require './lib/formatFunctions.php';

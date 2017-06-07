@@ -68,17 +68,19 @@
     text-decoration:none;
     outline: 0;
 }
-
+.RoundButton{
+    text-align: center
+}
 .btn-circle.btn-xl {
     width: 70px;
     height: 70px;
-    padding: 10px 16px;
+    //padding: 10px 16px;
     font-size: 24px;
     line-height: 1.33;
-    border-radius: 35px;
+    border-radius: 60px;
     background: #f4476b;
     color: white;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 .modalRecipe{
     overflow-y: auto;
@@ -121,5 +123,5 @@
     margin-bottom: 20px;
 }
 textarea{
-   height:100%;
+   height:auto;
 }
