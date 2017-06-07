@@ -2,7 +2,6 @@
 session_start();
 require './CRUD/DbConnect.php';
 require './lib/formatFunctions.php';
-$recipes=array();
 //Assignation des valeurs d'erreur
 $signin_error = "";
 $img_error = "";
@@ -11,6 +10,8 @@ $add_error="";
 $DB = new DbConnect();
 //Recherche des types
 $types = $DB->GetTypes();
+
+$recipes=$DB->GetRecipes(1);
 //Si l'utilisateur veut se logger
 if (isset($_REQUEST["login"])) {
     $exist = $DB->GetRegistration($_REQUEST["user"], sha1($_REQUEST["pwd"]));
