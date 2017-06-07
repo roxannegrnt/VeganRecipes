@@ -1,30 +1,6 @@
 <?php
-session_start();
-require './FonctionIndex.php';
-require './CRUD/DbConnect.php';
-$alert = "";
-$DB = new DbConnect();
-$types = $DB->GetTypes();
-if (isset($_REQUEST["login"])) {
-    $exist = $DB->GetRegistration($_REQUEST["user"], sha1($_REQUEST["pwd"]));
-    if (!empty($exist)) {
-        $_SESSION["uid"] = $exist["IdUtilisateur"];
-        $_SESSION["IsAdmin"] = $exist["IsAdmin"];
-    } else {
-        $alert = "Oops... There must be an error with your username or your password";
-    }
-}
-if (isset($_REQUEST["Add"])) {
-    $ingredients=FormatIngredients($_REQUEST["ingredients"]);
-    $param=VerficationAdd($_REQUEST["title"], $ingredients, $_REQUEST["recipe"], $_REQUEST["type"]);
-    $img = VerifyImg($_FILES);
-    $unique = uniqid("FILE_");
-    if (move_uploaded_file($_FILES['upload']['tmp_name'], "upload/" . $unique)) {
-        array_push($param, $unique);
-        $DB->InsertRecipe($param,$_SESSION["uid"]);
-    }
-    
-}
+require './lib/FonctionAffichageIndex.php';
+require_once './controllerIndex.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -72,7 +48,7 @@ affichage;
                         <h2 class="modal-title">Login</h2>
                     </div>
                     <div class="modal-body">
-                        <form action="index.php" method="POST">
+                        <form action="controllerIndex.php" method="POST">
                             <section class="form-group">
                                 <input type="text" name="user" class="form-control" placeholder="Username">
                             </section>
@@ -82,7 +58,7 @@ affichage;
                             <button type="submit" class="btn btn-primary btn-block" name="login">Login</button>
                         </form>
                         <?php
-                        echo $alert;
+                        echo $signin_error;
                         ?>
                     </div>
                     <div class="modal-footer">
@@ -99,10 +75,10 @@ affichage;
                         <h2 class="modal-title">Add Recipe</h2>
                     </div>
                     <div class="modal-body">
-                        <form action="index.php" method="POST" id="frmAjout" enctype="multipart/form-data">
+                        <form action="controllerIndex.php" method="POST" id="frmAjout" enctype="multipart/form-data">
                             <input class="col-md-7 col-md-offset-3 frm" type="text" name="title" placeholder="Title">
                             <img class="col-md-4" id="ImgProfil" src="upload/imgdefaut.png" value="" alt=""/>
-                            <textarea class="col-md-9 frm" rows="6" cols="15" name="ingredients">- List of Ingredients</textarea>
+                            <textarea class="col-md-9 frm" rows="6" cols="15" name="ingredients" placeholder="List of Ingredients"></textarea>
                             <select name="type">
                                 <?php
                                 foreach ($types as $key => $value) {
@@ -110,8 +86,11 @@ affichage;
                                 }
                                 ?>
                             </select>
-                            <textarea class="col-md-12 frm" rows="6" cols="20" name="recipe">Description de la recette</textarea>
+                            <textarea class="col-md-12 frm" rows="6" cols="20" name="recipe" placeholder="Description de la recette"></textarea>
                             <button type="submit" class="btn btn-primary btn-block" name="Add">Add Recipe</button>
+                            <?php
+                        echo $img_error;
+                        ?>
                         </form>
                     </div>
                 </div>
@@ -119,7 +98,8 @@ affichage;
         </div>
         <?php
         //Pour garder la modal ouverte si erreure
-        KeepModalOpen($alert);
+        KeepModalOpen($signin_error);
+        KeepModalOpen($img_error);
         ?>
         <div id="ContainsPage" class="container-fluid col-md-12">
             <div class="alldropdown col-md-12">

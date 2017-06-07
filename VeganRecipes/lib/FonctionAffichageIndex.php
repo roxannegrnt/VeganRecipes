@@ -31,31 +31,4 @@ function KeepModalOpen($alert) {
         echo "<script> $('#myModal').modal('show'); </script>";
     }
 }
-function FormatIngredients($ingredients){
-    $ingredientsBR=nl2br($ingredients);
-    $Newingredients=str_replace('<br />', ' - ', $ingredientsBR);
-    $Newingredients=preg_replace( "/(\r|\n)/", "", $Newingredients );
-    return substr_replace($Newingredients, "- ", 0, 0);
-}
-function VerficationAdd($title, $ingredients, $descrip, $type) {
-    $param = array($title, $ingredients, $descrip, $type);
-    $paramsanitize = array();
-    foreach ($param as $value) {
-        $newstr = filter_var($value, FILTER_SANITIZE_STRING);
-        array_push($paramsanitize, $newstr);
-    }
-    return $paramsanitize;
-}
 
-function VerifyImg($files) {
-    $extensions = array("jpeg", "jpg", "gif", "png", "mp4", "mp3");
-    $elementsChemin = pathinfo($files['upload']['name']);
-    if ($elementsChemin != null) {
-        $extensionFichier = $elementsChemin['extension'];
-        if (!(in_array($extensionFichier, $extensions))) {
-            $valid = FALSE;
-        } else {
-            $valid = TRUE;
-        }
-    }
-}

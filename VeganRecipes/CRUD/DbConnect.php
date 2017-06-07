@@ -10,6 +10,7 @@ class DbConnect {
     private $ps_getRegistration = null;
     private $ps_getTypes = null;
     private $ps_insertRecipe = null;
+    private $ps_getRecipes = null;
     private $dbb = null;
 
     public function __construct() {
@@ -26,6 +27,8 @@ class DbConnect {
                 $this->ps_insertRecipe = $this->dbb->prepare("INSERT INTO recettes (`IdRecette`,`Titre`,`Ingredient`,`Description`,`Valider`,`NomFichierImg`,`IdUtilisateur`,`IdType`)"
                         . "SELECT '',:title,:ingredients,:descrip,0,:img,:id,IdType FROM types WHERE NomType= :type");
                 $this->ps_insertRecipe->setFetchMode(PDO::FETCH_ASSOC);
+                $this->ps_getRecipes = $this->dbb->prepare("SELECT * FROM `recettes` WHERE Valider= :Valid");
+                $this->ps_getRecipes->setFetchMode(PDO::FETCH_ASSOC);
             } catch (PDOException $e) {
                 die("Erreur : " . $e->getMessage());
             }
@@ -52,6 +55,11 @@ class DbConnect {
         $this->ps_insertRecipe->bindParam(':img', $param[4]);
         $this->ps_insertRecipe->bindParam(':id', $id);
         $this->ps_insertRecipe->execute();
+    }
+    function GetRecipes($valid){
+        $this->ps_getRecipes->bindParam(':Valid', $valid);
+        $this->ps_getRecipes->execute();
+        return $this->ps_getRecipes->fetchAll();
     }
 
 }
