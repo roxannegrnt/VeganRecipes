@@ -45,7 +45,6 @@
     outline:none;
     color:inherit;
     text-indent:8px;
-    height:42px;
 }
 .modal-body .btn{
     background: #f4476b;
@@ -53,7 +52,7 @@
     border-radius: 4px;
     padding: 11px;
     box-shadow: none;
-    margin-top: 26px;
+    margin-top: 20px;
     text-shadow: none;
     outline: none;
 }
@@ -74,7 +73,7 @@
 .btn-circle.btn-xl {
     width: 70px;
     height: 70px;
-    //padding: 10px 16px;
+    padding: 10px 16px;
     font-size: 24px;
     line-height: 1.33;
     border-radius: 60px;
@@ -123,5 +122,5 @@
     margin-bottom: 20px;
 }
 textarea{
-   height:auto;
+   resize: none;
 }
