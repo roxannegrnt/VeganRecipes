@@ -45,6 +45,14 @@ function VerifyImg($files) {
         }
     }
 }
+/**
+ * Vérifie si un des champs est vide
+ * @param string $title le titre de la recette
+ * @param string $ingredients la liste des ingrédients
+ * @param string $descrip la description de la recette
+ * @param string $type le type de recette
+ * @return int retourne la valeur du nombre de champs vide
+ */
 function IsEmpty($title, $ingredients, $descrip, $type){
     $param = array($title, $ingredients, $descrip, $type);
     $cpt=0;

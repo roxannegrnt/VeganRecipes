@@ -3,13 +3,14 @@
 session_start();
 require './CRUD/DbConnect.php';
 require './lib/formatFunctions.php';
-
+$recipes=array();
 //Assignation des valeurs d'erreur
 $signin_error = "";
 $img_error = "";
 $add_error="";
 //Initialisation de la classe DB
 $DB = new DbConnect();
+//Recherche des types
 $types = $DB->GetTypes();
 //Si l'utilisateur veut se logger
 if (isset($_REQUEST["login"])) {
@@ -18,14 +19,14 @@ if (isset($_REQUEST["login"])) {
         $_SESSION["uid"] = $exist["IdUtilisateur"];
         $_SESSION["IsAdmin"] = $exist["IsAdmin"];
     } else {
-        $signin_error = "Oops... There must be an error with your username or your password";
+        $signin_error = "<div class=\"alert alert-danger\">Oops... There must be an error with your username or your password</div>";
     }
-    header('Location: index.php');
 }
+//Si l'utilisateur veut ajouter une recette
 if (isset($_REQUEST["Add"])) {
     $ingredients = FormatIngredients($_REQUEST["ingredients"]);
     $cpt = IsEmpty($_REQUEST["title"], $ingredients, $_REQUEST["recipe"], $_REQUEST["type"]);
-    if ($cpt = 0) {
+    if ($cpt == 0) {
         $param = VerficationAdd($_REQUEST["title"], $ingredients, $_REQUEST["recipe"], $_REQUEST["type"]);
         $IsVerified = VerifyImg($_FILES);
         if ($IsVerified) {
@@ -35,11 +36,14 @@ if (isset($_REQUEST["Add"])) {
                 $DB->InsertRecipe($param, $_SESSION["uid"]);
             }
         } else {
-            $img_error = "Veuillez ajouter une image";
+            $img_error = "<div class=\"alert alert-danger\">Veuillez ajouter une image</div>";
         }
     }else{
-        $add_error="Veuillez remplir tous les champs";
+        $add_error="<div class=\"alert alert-danger\">Veuillez remplir tous les champs</div>";
     }
-
-    header('Location: index.php');
+}
+//Admin veut afficher les recettes à valider
+if (isset($_REQUEST["tovalidate"])) {
+    $recipes=$DB->GetRecipes(0);
+    
 }

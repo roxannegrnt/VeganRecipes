@@ -8,5 +8,16 @@ function ChangerAvatar() {
     $(".HideInput").hide();
     $("#imgRecipe").trigger("click");
 }
+function GetRecipesToValidate(){
+    $.ajax({
+        type: "POST",
+        url: "index.php",
+        data: 'tovalidate=true',
+        success: function (data) {
+            $("body").html("");
+            $("body").html(data);
+        }
+    });
+}
 
 

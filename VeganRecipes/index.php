@@ -48,7 +48,7 @@ affichage;
                         <h2 class="modal-title">Login</h2>
                     </div>
                     <div class="modal-body">
-                        <form action="controllerIndex.php" method="POST">
+                        <form action="index.php" method="POST">
                             <section class="form-group">
                                 <input type="text" name="user" class="form-control" placeholder="Username">
                             </section>
@@ -75,22 +75,23 @@ affichage;
                         <h2 class="modal-title">Add Recipe</h2>
                     </div>
                     <div class="modal-body">
-                        <form action="controllerIndex.php" method="POST" id="frmAjout" enctype="multipart/form-data">
-                            <input class="col-md-7 col-md-offset-3 frm" type="text" name="title" placeholder="Title">
+                        <form action="index.php" method="POST" id="frmAjout" enctype="multipart/form-data">
                             <img class="col-md-4" id="ImgProfil" src="upload/imgdefaut.png" value="" alt=""/>
-                            <textarea class="col-md-9 frm" rows="6" cols="15" name="ingredients" placeholder="List of Ingredients"></textarea>
-                            <select name="type">
+                            <input class="frm form-control" type="text" name="title" placeholder="Title">
+                            <textarea class=" frm form-control" rows="10" name="ingredients" placeholder="List of Ingredients"></textarea>
+                            <select name="type" class="form-control frm">
                                 <?php
                                 foreach ($types as $key => $value) {
                                     echo "<option>" . $value["NomType"] . "</option>";
                                 }
                                 ?>
                             </select>
-                            <textarea class="col-md-12 frm" rows="6" cols="20" name="recipe" placeholder="Description de la recette"></textarea>
+                            <textarea class="frm form-control" rows="10" name="recipe" placeholder="Description de la recette"></textarea>
                             <button type="submit" class="btn btn-primary btn-block" name="Add">Add Recipe</button>
                             <?php
-                        echo $img_error;
-                        ?>
+                            echo $img_error;
+                            echo $add_error;
+                            ?>
                         </form>
                     </div>
                 </div>
@@ -98,8 +99,9 @@ affichage;
         </div>
         <?php
         //Pour garder la modal ouverte si erreure
-        KeepModalOpen($signin_error);
-        KeepModalOpen($img_error);
+        KeepModalOpen($signin_error, "myModal");
+        KeepModalOpen($img_error, "AddModal");
+        KeepModalOpen($add_error, "AddModal");
         ?>
         <div id="ContainsPage" class="container-fluid col-md-12">
             <div class="alldropdown col-md-12">
@@ -126,6 +128,48 @@ affichage;
                 </div>
             </div>
             <section>
+                <?php
+                foreach ($recipes as $key => $value) {
+                    //Shorter description for basic viewing
+                    $descripShort = RestrictLengthDescrip($value["Description"]);
+echo<<<affichage
+                    <article class="well col-md-6 col-md-offset-3">
+                    <div class="pull-right star">
+                    <i class="glyphicon glyphicon-star-empty" id="Star$value[IdRecette]" onmouseover=OnHoverChangeIcon(this) onmouseout=OnHoverOutChangeIcon(this)></i>
+                    </div>
+   <img class="col-md-3" src="upload/$value[NomFichierImg]" id="imgrecipe">
+                    <h3 class="col-md-9">$value[Titre]</h3>
+                    <p class="col-md-9 descrip">
+                     $descripShort
+                     <a data-toggle="modal" data-target="#$value[IdRecette]" >Read more...</a>
+                    </p>
+                    <button type="button" class="btn btn-primary pull-right" class="Getcomment" data-toggle="collapse" data-target="#collapseComment$value[IdRecette]" aria-expanded="false" aria-controls="collapseExample">Ajouter un commentaire</button>
+<div class="collapse" id="collapseComment$value[IdRecette]">
+               <input type="text" class="form-control" name="comment">
+                   <input class="btn btn-default" type="submit" name="sendComment">
+        </div>
+        </article>
+        <div class="modal fade" id="$value[IdRecette]" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h2 class="modal-title">$value[Titre]</h2>
+                    </div>
+                    <div class="modal-body modalRecipe">
+affichage;
+                    echo ListIngredients($value["Ingredient"]);
+                    echo<<<affichage
+                         <p class="col-md-12">
+                        $value[Description]
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+affichage;
+                }
+                ?>
 
             </section>
         </div>

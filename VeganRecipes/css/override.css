@@ -120,3 +120,6 @@
 .frm{
     margin-bottom: 20px;
 }
+textarea{
+   height:100%;
+}
