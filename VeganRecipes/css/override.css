@@ -113,3 +113,10 @@
     background: none;
     -webkit-text-fill-color: #0645AD;
 }
+#ImgProfil{
+    height:120px; 
+    width:120px;
+}
+.frm{
+    margin-bottom: 20px;
+}

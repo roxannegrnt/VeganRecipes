@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Ajoute les bon icônes dépendant du statut de l'utilisateur lors de la connexion
  * @param enum $isadmin 0 si pas admin et 1 si admin
@@ -19,6 +20,7 @@ affichage;
 affichage;
     }
 }
+
 /**
  * Garde la modal ouverte si il y a une erreure et que alerte n'est pas vide
  * @param string $alert message d'erreur
@@ -27,5 +29,33 @@ function KeepModalOpen($alert) {
     $keepOpen = "";
     if (!empty($alert)) {
         echo "<script> $('#myModal').modal('show'); </script>";
+    }
+}
+function FormatIngredients($ingredients){
+    $ingredientsBR=nl2br($ingredients);
+    $Newingredients=str_replace('<br />', ' - ', $ingredientsBR);
+    $Newingredients=preg_replace( "/(\r|\n)/", "", $Newingredients );
+    return substr_replace($Newingredients, "- ", 0, 0);
+}
+function VerficationAdd($title, $ingredients, $descrip, $type) {
+    $param = array($title, $ingredients, $descrip, $type);
+    $paramsanitize = array();
+    foreach ($param as $value) {
+        $newstr = filter_var($value, FILTER_SANITIZE_STRING);
+        array_push($paramsanitize, $newstr);
+    }
+    return $paramsanitize;
+}
+
+function VerifyImg($files) {
+    $extensions = array("jpeg", "jpg", "gif", "png", "mp4", "mp3");
+    $elementsChemin = pathinfo($files['upload']['name']);
+    if ($elementsChemin != null) {
+        $extensionFichier = $elementsChemin['extension'];
+        if (!(in_array($extensionFichier, $extensions))) {
+            $valid = FALSE;
+        } else {
+            $valid = TRUE;
+        }
     }
 }

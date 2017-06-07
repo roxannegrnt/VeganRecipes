@@ -4,6 +4,7 @@ require './FonctionIndex.php';
 require './CRUD/DbConnect.php';
 $alert = "";
 $DB = new DbConnect();
+$types = $DB->GetTypes();
 if (isset($_REQUEST["login"])) {
     $exist = $DB->GetRegistration($_REQUEST["user"], sha1($_REQUEST["pwd"]));
     if (!empty($exist)) {
@@ -12,6 +13,17 @@ if (isset($_REQUEST["login"])) {
     } else {
         $alert = "Oops... There must be an error with your username or your password";
     }
+}
+if (isset($_REQUEST["Add"])) {
+    $ingredients=FormatIngredients($_REQUEST["ingredients"]);
+    $param=VerficationAdd($_REQUEST["title"], $ingredients, $_REQUEST["recipe"], $_REQUEST["type"]);
+    $img = VerifyImg($_FILES);
+    $unique = uniqid("FILE_");
+    if (move_uploaded_file($_FILES['upload']['tmp_name'], "upload/" . $unique)) {
+        array_push($param, $unique);
+        $DB->InsertRecipe($param,$_SESSION["uid"]);
+    }
+    
 }
 ?>
 <!DOCTYPE html>
@@ -23,6 +35,7 @@ if (isset($_REQUEST["login"])) {
         <link href="bootstrap-3.3.7-dist/css/bootstrap.min.css" type="text/css" rel="stylesheet">
         <script type="text/javascript" src="js/JQuery.js"></script>
         <script type="text/javascript" src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/functionsRecipe.js"></script>
         <link href="css/override.css" type="text/css" rel="stylesheet">
     </head>
     <header>
@@ -86,16 +99,18 @@ affichage;
                         <h2 class="modal-title">Add Recipe</h2>
                     </div>
                     <div class="modal-body">
-                        <form action="index.php" method="POST">
-                            <input type="text" name="titre" placeholder="Title">
-                            <input type="file" name="img">
-                            <textarea rows="4" cols="14">List of Ingredients</textarea>
-                            <select>
-                                <option></option>
-                                 <option></option>
-                                  <option></option>
+                        <form action="index.php" method="POST" id="frmAjout" enctype="multipart/form-data">
+                            <input class="col-md-7 col-md-offset-3 frm" type="text" name="title" placeholder="Title">
+                            <img class="col-md-4" id="ImgProfil" src="upload/imgdefaut.png" value="" alt=""/>
+                            <textarea class="col-md-9 frm" rows="6" cols="15" name="ingredients">- List of Ingredients</textarea>
+                            <select name="type">
+                                <?php
+                                foreach ($types as $key => $value) {
+                                    echo "<option>" . $value["NomType"] . "</option>";
+                                }
+                                ?>
                             </select>
-                            <textarea rows="3" cols="20">Description de la recette</textarea>
+                            <textarea class="col-md-12 frm" rows="6" cols="20" name="recipe">Description de la recette</textarea>
                             <button type="submit" class="btn btn-primary btn-block" name="Add">Add Recipe</button>
                         </form>
                     </div>
