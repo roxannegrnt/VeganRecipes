@@ -11,6 +11,7 @@ class DbConnect {
     private $ps_getTypes = null;
     private $ps_insertRecipe = null;
     private $ps_getRecipes = null;
+    private $ps_validateRecipe=null;
     private $dbb = null;
 
     public function __construct() {
@@ -29,6 +30,8 @@ class DbConnect {
                 $this->ps_insertRecipe->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_getRecipes = $this->dbb->prepare("SELECT * FROM `recettes` WHERE Valider= :Valid");
                 $this->ps_getRecipes->setFetchMode(PDO::FETCH_ASSOC);
+                 $this->ps_validateRecipe = $this->dbb->prepare("UPDATE recettes SET Valider=1 WHERE IdRecette=:idRecette");
+                $this->ps_validateRecipe->setFetchMode(PDO::FETCH_ASSOC);
             } catch (PDOException $e) {
                 die("Erreur : " . $e->getMessage());
             }
@@ -60,6 +63,10 @@ class DbConnect {
         $this->ps_getRecipes->bindParam(':Valid', $valid);
         $this->ps_getRecipes->execute();
         return $this->ps_getRecipes->fetchAll();
+    }
+    function ValidateRecipe($idR){
+        $this->ps_validateRecipe->bindParam(':idRecette', $idR);
+        $this->ps_validateRecipe->execute();
     }
 
 }

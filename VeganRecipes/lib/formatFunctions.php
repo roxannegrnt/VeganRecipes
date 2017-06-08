@@ -64,3 +64,45 @@ function IsEmpty($title, $ingredients, $descrip, $type){
     return $cpt;
 }
 
+/**
+ * Garde la modal ouverte si il y a une erreure et que alerte n'est pas vide
+ * @param string $alert message d'erreur
+ */
+function KeepModalOpen($alert,$modalname) {
+    $keepOpen = "";
+    if (!empty($alert)) {
+        echo "<script> $('#".$modalname."').modal('show'); </script>";
+    }
+}
+/**
+ * Format la liste d'ingreédient pour qu'elle soit affichée à l'utilisateur
+ * @param string $listIngredients le string contenant tout les ingrédients
+ */
+function ListIngredients($listIngredients) {
+    $Ingredients = explode(" - ", $listIngredients);
+    unset($Ingredients[0]);
+    foreach ($Ingredients as $value) {
+        echo "<ul>";
+        echo "<li class=\"col-md-10 ingredients\">" . $value . "</li>";
+        echo "</ul>";
+    }
+}
+/**
+ * Permet d'avoir qu'un certain nombre de caractère de la description afficher
+ * @param string $descrip la description de la recette
+ * @return string Retourne la description plus courte
+ */
+function RestrictLengthDescrip($descrip) {
+    if (strlen($descrip) > 400) {
+
+        // truncate string
+        $stringCut = substr($descrip, 0, 400);
+
+        // make sure it ends in a word so assassinate doesn't become ass...
+        $descrip = substr($stringCut, 0, strrpos($stringCut, ' '));
+        return $descrip;
+    }
+}
+
+
+

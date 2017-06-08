@@ -82,6 +82,15 @@
     color: white;
     margin-bottom: 20px;
 }
+.btn-circle.btn-xs {
+    width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 30px;
+}
 .modalRecipe{
     overflow-y: auto;
     max-height: none;
@@ -124,4 +133,12 @@
 }
 textarea{
    resize: none;
+}
+#accept{
+    border-color: green;
+    color: green;
+}
+#refuse{
+    border-color: red;
+    color: red;
 }

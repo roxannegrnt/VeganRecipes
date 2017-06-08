@@ -1,17 +1,19 @@
 <?php
+
 session_start();
 require './CRUD/DbConnect.php';
-require './lib/formatFunctions.php';
+include_once './lib/formatFunctions.php';
 //Assignation des valeurs d'erreur
 $signin_error = "";
 $img_error = "";
-$add_error="";
+$add_error = "";
 //Initialisation de la classe DB
 $DB = new DbConnect();
 //Recherche des types
 $types = $DB->GetTypes();
 
-$recipes=$DB->GetRecipes(1);
+$recipes = $DB->GetRecipes(1);
+$IndexHome = true;
 //Si l'utilisateur veut se logger
 if (isset($_REQUEST["login"])) {
     $exist = $DB->GetRegistration($_REQUEST["user"], sha1($_REQUEST["pwd"]));
@@ -38,12 +40,23 @@ if (isset($_REQUEST["Add"])) {
         } else {
             $img_error = "<div class=\"alert alert-danger\">Veuillez ajouter une image</div>";
         }
-    }else{
-        $add_error="<div class=\"alert alert-danger\">Veuillez remplir tous les champs</div>";
+    } else {
+        $add_error = "<div class=\"alert alert-danger\">Veuillez remplir tous les champs</div>";
     }
 }
 //Admin veut afficher les recettes à valider
 if (isset($_REQUEST["tovalidate"])) {
-    $recipes=$DB->GetRecipes(0);
-    
+    $recipes = $DB->GetRecipes(0);
+    $IndexHome = false;
+}
+//Si l'admin veut valider la recette
+if (isset($_REQUEST["validate"])) {
+    $DB->ValidateRecipe($_REQUEST["validate"]);
+    $recipes = $DB->GetRecipes(0);
+    $IndexHome = false;
+}
+//Si l'admin veut supprimer la recette
+if (isset($_REQUEST["remove"])) {
+    $recipes = $DB->GetRecipes(0);
+    $IndexHome = false;
 }

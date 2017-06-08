@@ -5,59 +5,83 @@
  * @param enum $isadmin 0 si pas admin et 1 si admin
  */
 function SignedIn($isadmin) {
-    if ($isadmin == 0) {
-        echo<<<affichage
+if ($isadmin == 0) {
+echo<<<affichage
         <li><a href="index.php"><span class="glyphicon glyphicon-home"></span></a></li>
         <li><a data-toggle="modal" data-keyboard="false" data-target="#AddModal"><span class="glyphicon glyphicon-plus"></span></a></li>
         <li><a href="disconnect.php"><span class="glyphicon glyphicon-log-out"></span></a></li>
 affichage;
-    } else {
-        echo<<<affichage
+} else {
+echo<<<affichage
        <li><a href="index.php"><span class="glyphicon glyphicon-home"></span></a></li>
         <li><a data-toggle="modal" data-keyboard="false" data-target="#AddModal"><span class="glyphicon glyphicon-plus"></span></a></li>
         <li><a onclick="GetRecipesToValidate();"><span class="glyphicon glyphicon-cog"></span></a></li>
         <li><a href="disconnect.php"><span class="glyphicon glyphicon-log-out"></span></a></li>
 affichage;
-    }
 }
-
-/**
- * Garde la modal ouverte si il y a une erreure et que alerte n'est pas vide
- * @param string $alert message d'erreur
- */
-function KeepModalOpen($alert,$modalname) {
-    $keepOpen = "";
-    if (!empty($alert)) {
-        echo "<script> $('#".$modalname."').modal('show'); </script>";
-    }
 }
 /**
- * Format la liste d'ingreédient pour qu'elle soit affichée à l'utilisateur
- * @param string $listIngredients le string contenant tout les ingrédients
+ * Affichage quand on clique sur Home
+ * @param array $value le tableau retourné par la base de donnée qui contient la recette
+ * @param string $descripShort la version courte de la description de la recette
  */
-function ListIngredients($listIngredients) {
-    $Ingredients = explode(" - ", $listIngredients);
-    unset($Ingredients[0]);
-    foreach ($Ingredients as $value) {
-        echo "<ul>";
-        echo "<li class=\"col-md-10 ingredients\">" . $value . "</li>";
-        echo "</ul>";
-    }
+function IndexHome($value,$descripShort){
+echo<<<affichage
+                    <article class="well col-md-6 col-md-offset-3">
+                    <div class="pull-right star">
+                    <i class="glyphicon glyphicon-star-empty" id="Star$value[IdRecette]" onmouseover=OnHoverChangeIcon(this) onmouseout=OnHoverOutChangeIcon(this)></i>
+                    </div>
+   <img class="col-md-3" src="upload/$value[NomFichierImg]" id="imgrecipe">
+                    <h3 class="col-md-9">$value[Titre]</h3>
+                    <p class="col-md-9 descrip">
+                     $descripShort
+                     <a data-toggle="modal" data-target="#$value[IdRecette]" >Read more...</a>
+                    </p>
+                    <button type="button" class="btn btn-primary pull-right" class="Getcomment" data-toggle="collapse" data-target="#collapseComment$value[IdRecette]" aria-expanded="false" aria-controls="collapseExample">Ajouter un commentaire</button>
+<div class="collapse" id="collapseComment$value[IdRecette]">
+               <input type="text" class="form-control" name="comment">
+                   <input class="btn btn-default" type="submit" name="sendComment">
+        </div>
+        </article>
+        <div class="modal fade" id="$value[IdRecette]" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h2 class="modal-title">$value[Titre]</h2>
+                    </div>
+                    <div class="modal-body modalRecipe">
+affichage;
+
 }
 /**
- * Permet d'avoir qu'un certain nombre de caractère de la description afficher
- * @param string $descrip la description de la recette
- * @return string Retourne la description plus courte
+ * Affichage quand on clique sur l'écrou pour que l'admin valide les recettes
+ * @param array $value le tableau retourné par la base de donnée qui contient la recette
+ * @param string $descripShort la version courte de la description de la recette
  */
-function RestrictLengthDescrip($descrip) {
-    if (strlen($descrip) > 400) {
-
-        // truncate string
-        $stringCut = substr($descrip, 0, 400);
-
-        // make sure it ends in a word so assassinate doesn't become ass...
-        $descrip = substr($stringCut, 0, strrpos($stringCut, ' '));
-        return $descrip;
-    }
+function IndexAdmin($value,$descripShort){
+    echo<<<affichage
+                    <article class="well col-md-6 col-md-offset-3">
+   <img class="col-md-3" src="upload/$value[NomFichierImg]" id="imgrecipe">
+                    <h3 class="col-md-9">$value[Titre]</h3>
+                    <p class="col-md-9 descrip">
+                     $descripShort
+                     <a data-toggle="modal" data-target="#$value[IdRecette]" >Read more...</a>
+                    </p>
+        </article>
+        <div class="YesNo col-lg-3" id="$value[IdRecette]">
+        <button onclick="ValidateRecipe()" class="btn btn-default btn-circle btn-xs" id="accept"><i class="glyphicon glyphicon-ok"></i></button>
+        <button onclick="RemoveRecipe()" class="btn btn-default btn-circle btn-xs" id="refuse"><i class="glyphicon glyphicon-remove"></i></button>
+        </div>
+        <div class="modal fade" id="$value[IdRecette]" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h2 class="modal-title">$value[Titre]</h2>
+                    </div>
+                    <div class="modal-body modalRecipe">
+affichage;
+                   
 }
 

@@ -1,6 +1,6 @@
 <?php
-require './lib/FonctionAffichageIndex.php';
 require_once './controllerIndex.php';
+require_once './lib/FonctionAffichageIndex.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -134,32 +134,13 @@ affichage;
                 foreach ($recipes as $key => $value) {
                     //Shorter description for basic viewing
                     $descripShort = RestrictLengthDescrip($value["Description"]);
-echo<<<affichage
-                    <article class="well col-md-6 col-md-offset-3">
-                    <div class="pull-right star">
-                    <i class="glyphicon glyphicon-star-empty" id="Star$value[IdRecette]" onmouseover=OnHoverChangeIcon(this) onmouseout=OnHoverOutChangeIcon(this)></i>
-                    </div>
-   <img class="col-md-3" src="upload/$value[NomFichierImg]" id="imgrecipe">
-                    <h3 class="col-md-9">$value[Titre]</h3>
-                    <p class="col-md-9 descrip">
-                     $descripShort
-                     <a data-toggle="modal" data-target="#$value[IdRecette]" >Read more...</a>
-                    </p>
-                    <button type="button" class="btn btn-primary pull-right" class="Getcomment" data-toggle="collapse" data-target="#collapseComment$value[IdRecette]" aria-expanded="false" aria-controls="collapseExample">Ajouter un commentaire</button>
-<div class="collapse" id="collapseComment$value[IdRecette]">
-               <input type="text" class="form-control" name="comment">
-                   <input class="btn btn-default" type="submit" name="sendComment">
-        </div>
-        </article>
-        <div class="modal fade" id="$value[IdRecette]" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h2 class="modal-title">$value[Titre]</h2>
-                    </div>
-                    <div class="modal-body modalRecipe">
-affichage;
+                    if ($IndexHome) {
+                        IndexHome($value, $descripShort);
+                    }
+                    else{
+                        IndexAdmin($value, $descripShort);
+                    }
+                    
                     echo ListIngredients($value["Ingredient"]);
                     echo<<<affichage
                          <p class="col-md-12">
