@@ -35,22 +35,14 @@ echo<<<affichage
                     <h3 class="col-md-9">$value[Titre]</h3>
                     <p class="col-md-9 descrip">
                      $descripShort
-                     <a data-toggle="modal" data-target="#$value[IdRecette]" >Read more...</a>
+                     <a data-toggle="modal" data-target=".$value[IdRecette]" >Read more...</a>
                     </p>
                     <button type="button" class="btn btn-primary pull-right" class="Getcomment" data-toggle="collapse" data-target="#collapseComment$value[IdRecette]" aria-expanded="false" aria-controls="collapseExample">Ajouter un commentaire</button>
 <div class="collapse" id="collapseComment$value[IdRecette]">
                <input type="text" class="form-control" name="comment">
                    <input class="btn btn-default" type="submit" name="sendComment">
         </div>
-        </article>
-        <div class="modal fade" id="$value[IdRecette]" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h2 class="modal-title">$value[Titre]</h2>
-                    </div>
-                    <div class="modal-body modalRecipe">
+        </article>        
 affichage;
 
 }
@@ -66,21 +58,13 @@ function IndexAdmin($value,$descripShort){
                     <h3 class="col-md-9">$value[Titre]</h3>
                     <p class="col-md-9 descrip">
                      $descripShort
-                     <a data-toggle="modal" data-target="#$value[IdRecette]" >Read more...</a>
+                     <a data-toggle="modal" data-target=".$value[IdRecette]" >Read more...</a>
                     </p>
         </article>
         <div class="YesNo col-lg-3" id="$value[IdRecette]">
         <button onclick="ValidateRecipe()" class="btn btn-default btn-circle btn-xs" id="accept"><i class="glyphicon glyphicon-ok"></i></button>
         <button onclick="RemoveRecipe()" class="btn btn-default btn-circle btn-xs" id="refuse"><i class="glyphicon glyphicon-remove"></i></button>
         </div>
-        <div class="modal fade" id="$value[IdRecette]" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h2 class="modal-title">$value[Titre]</h2>
-                    </div>
-                    <div class="modal-body modalRecipe">
 affichage;
                    
 }

@@ -11,7 +11,7 @@ $add_error = "";
 $DB = new DbConnect();
 //Recherche des types
 $types = $DB->GetTypes();
-
+$parameters=array();
 $recipes = $DB->GetRecipes(1);
 $IndexHome = true;
 //Si l'utilisateur veut se logger
@@ -26,6 +26,7 @@ if (isset($_REQUEST["login"])) {
 }
 //Si l'utilisateur veut ajouter une recette
 if (isset($_REQUEST["Add"])) {
+    $parameters=array("title"=>$_REQUEST["title"],"ingredients"=>$_REQUEST["ingredients"],"descrip"=>$_REQUEST["recipe"]);
     $ingredients = FormatIngredients($_REQUEST["ingredients"]);
     $cpt = IsEmpty($_REQUEST["title"], $ingredients, $_REQUEST["recipe"], $_REQUEST["type"]);
     if ($cpt == 0) {
@@ -36,6 +37,7 @@ if (isset($_REQUEST["Add"])) {
             if (move_uploaded_file($_FILES['upload']['tmp_name'], "upload/" . $unique)) {
                 array_push($param, $unique);
                 $DB->InsertRecipe($param, $_SESSION["uid"]);
+                $parameters=array();
             }
         } else {
             $img_error = "<div class=\"alert alert-danger\">Veuillez ajouter une image</div>";
@@ -57,6 +59,9 @@ if (isset($_REQUEST["validate"])) {
 }
 //Si l'admin veut supprimer la recette
 if (isset($_REQUEST["remove"])) {
+    $file=$DB->GetNameFile($_REQUEST["remove"]);
+    $DB->RemoveRecipe($_REQUEST["remove"]);
     $recipes = $DB->GetRecipes(0);
+    DeleteImg('upload/', $file);
     $IndexHome = false;
 }

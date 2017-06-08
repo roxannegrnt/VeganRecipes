@@ -12,6 +12,8 @@ class DbConnect {
     private $ps_insertRecipe = null;
     private $ps_getRecipes = null;
     private $ps_validateRecipe=null;
+    private $ps_removeRecipe=null;
+    private $ps_getNomFichier=null;
     private $dbb = null;
 
     public function __construct() {
@@ -32,6 +34,10 @@ class DbConnect {
                 $this->ps_getRecipes->setFetchMode(PDO::FETCH_ASSOC);
                  $this->ps_validateRecipe = $this->dbb->prepare("UPDATE recettes SET Valider=1 WHERE IdRecette=:idRecette");
                 $this->ps_validateRecipe->setFetchMode(PDO::FETCH_ASSOC);
+                 $this->ps_removeRecipe = $this->dbb->prepare("DELETE FROM recettes WHERE IdRecette=:idRecette");
+                $this->ps_removeRecipe->setFetchMode(PDO::FETCH_ASSOC);
+                 $this->ps_getNomFichier = $this->dbb->prepare("SELECT NomFichierImg FROM recettes WHERE IdRecette=:idRecette");
+                $this->ps_getNomFichier->setFetchMode(PDO::FETCH_ASSOC);
             } catch (PDOException $e) {
                 die("Erreur : " . $e->getMessage());
             }
@@ -67,6 +73,15 @@ class DbConnect {
     function ValidateRecipe($idR){
         $this->ps_validateRecipe->bindParam(':idRecette', $idR);
         $this->ps_validateRecipe->execute();
+    }
+    function RemoveRecipe($idR){
+        $this->ps_removeRecipe->bindParam(':idRecette', $idR);
+        $this->ps_removeRecipe->execute();
+    }
+    function GetNameFile($idR){
+        $this->ps_getNomFichier->bindParam(':idRecette', $idR);
+        $this->ps_getNomFichier->execute();
+        return $this->ps_getNomFichier->fetch();
     }
 
 }

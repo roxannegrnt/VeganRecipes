@@ -1,15 +1,17 @@
 <?php
+
 /**
  * Formate le textarea qui contient les ingrédients pour qu'il soit en string avec un - qui sépare les éléments
  * @param type $ingredients
  * @return type
  */
-function FormatIngredients($ingredients){
-    $ingredientsBR=nl2br($ingredients);
-    $Newingredients=str_replace('<br />', ' - ', $ingredientsBR);
-    $Newingredients=preg_replace( "/(\r|\n)/", "", $Newingredients );
+function FormatIngredients($ingredients) {
+    $ingredientsBR = nl2br($ingredients);
+    $Newingredients = str_replace('<br />', ' - ', $ingredientsBR);
+    $Newingredients = preg_replace("/(\r|\n)/", "", $Newingredients);
     return substr_replace($Newingredients, "- ", 0, 0);
 }
+
 /**
  * Nettoient les champs pour qu'il n'y ait pas d'injection
  * @param string $title le titre de la recette
@@ -24,11 +26,12 @@ function VerficationAdd($title, $ingredients, $descrip, $type) {
     foreach ($param as $value) {
         if (!empty($value)) {
             $newstr = filter_var($value, FILTER_SANITIZE_STRING);
-        array_push($paramsanitize, $newstr);
+            array_push($paramsanitize, $newstr);
         }
     }
     return $paramsanitize;
 }
+
 /**
  * Vérfier l'image ajouté qu'elle a la bonne extension
  * @param array $files la superglobal $_FILES
@@ -39,12 +42,13 @@ function VerifyImg($files) {
     if ($elementsChemin != null) {
         $extensionFichier = $elementsChemin['extension'];
         if (!(in_array($extensionFichier, $extensions))) {
-            $valid = FALSE;
+            return $valid = FALSE;
         } else {
-            $valid = TRUE;
+            return $valid = TRUE;
         }
     }
 }
+
 /**
  * Vérifie si un des champs est vide
  * @param string $title le titre de la recette
@@ -53,9 +57,9 @@ function VerifyImg($files) {
  * @param string $type le type de recette
  * @return int retourne la valeur du nombre de champs vide
  */
-function IsEmpty($title, $ingredients, $descrip, $type){
+function IsEmpty($title, $ingredients, $descrip, $type) {
     $param = array($title, $ingredients, $descrip, $type);
-    $cpt=0;
+    $cpt = 0;
     foreach ($param as $value) {
         if (empty($value)) {
             $cpt++;
@@ -68,12 +72,13 @@ function IsEmpty($title, $ingredients, $descrip, $type){
  * Garde la modal ouverte si il y a une erreure et que alerte n'est pas vide
  * @param string $alert message d'erreur
  */
-function KeepModalOpen($alert,$modalname) {
+function KeepModalOpen($alert, $modalname) {
     $keepOpen = "";
     if (!empty($alert)) {
-        echo "<script> $('#".$modalname."').modal('show'); </script>";
+        echo "<script> $('#" . $modalname . "').modal('show'); </script>";
     }
 }
+
 /**
  * Format la liste d'ingreédient pour qu'elle soit affichée à l'utilisateur
  * @param string $listIngredients le string contenant tout les ingrédients
@@ -87,6 +92,7 @@ function ListIngredients($listIngredients) {
         echo "</ul>";
     }
 }
+
 /**
  * Permet d'avoir qu'un certain nombre de caractère de la description afficher
  * @param string $descrip la description de la recette
@@ -104,5 +110,9 @@ function RestrictLengthDescrip($descrip) {
     }
 }
 
-
-
+function DeleteImg($dossier, $value) {
+    $dossier_traite = $dossier;
+    $repertoire = opendir($dossier_traite);
+    unlink($dossier_traite . $value["NomFichierImg"]);
+    closedir($repertoire);
+}

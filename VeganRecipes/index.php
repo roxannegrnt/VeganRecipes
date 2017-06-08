@@ -79,8 +79,8 @@ affichage;
                             <div class="RoundButton">
                             <button type="button" id="ImgProfil" class="btn btn-default btn-circle btn-xl"><i class="glyphicon glyphicon-camera"></i></button>
                             </div>
-                            <input class="frm form-control" type="text" name="title" placeholder="Title">
-                            <textarea class=" frm form-control" rows="8" name="ingredients" placeholder="List of Ingredients"></textarea>
+                            <input class="frm form-control" type="text" name="title" placeholder="Title" value="<?php $parameters["title"]?>">
+                            <textarea class=" frm form-control" rows="8" name="ingredients" placeholder="List of Ingredients"  value="<?php $parameters["ingredients"]?>"></textarea>
                             <select name="type" class="form-control frm">
                                 <?php
                                 foreach ($types as $key => $value) {
@@ -88,7 +88,7 @@ affichage;
                                 }
                                 ?>
                             </select>
-                            <textarea class="frm form-control" rows="5" name="recipe" placeholder="Description de la recette"></textarea>
+                            <textarea class="frm form-control" rows="5" name="recipe" placeholder="Description de la recette"  value="<?php $parameters["descrip"]?>"></textarea>
                             <button type="submit" class="btn btn-primary btn-block frm" name="Add">Add Recipe</button>
                             <?php
                             echo $img_error;
@@ -130,6 +130,8 @@ affichage;
                 </div>
             </div>
             <section>
+                <article id="Errors">
+                </article>
                 <?php
                 foreach ($recipes as $key => $value) {
                     //Shorter description for basic viewing
@@ -140,7 +142,16 @@ affichage;
                     else{
                         IndexAdmin($value, $descripShort);
                     }
-                    
+                    echo<<<affichage
+                    <div class="modal fade $value[IdRecette]" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h2 class="modal-title">$value[Titre]</h2>
+                    </div>
+                    <div class="modal-body modalRecipe">
+affichage;
                     echo ListIngredients($value["Ingredient"]);
                     echo<<<affichage
                          <p class="col-md-12">

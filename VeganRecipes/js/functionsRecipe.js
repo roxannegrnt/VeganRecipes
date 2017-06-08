@@ -27,12 +27,13 @@ function ValidateRecipe() {
         data: 'validate=' + id,
         success: function (data) {
             $("body").html("");
+            $("#Errors").append("<div class=\"alert alert-sucess\">Recipe added with sucess</div>");
             $("body").html(data);
         }
     });
 }
 function RemoveRecipe() {
-   var id = $(".YesNo").attr("id");
+    var id = $(".YesNo").attr("id");
     $.ajax({
         type: "POST",
         url: "index.php",
