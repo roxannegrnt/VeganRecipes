@@ -23,10 +23,8 @@ function FormatIngredients($ingredients) {
 function VerficationAdd($param) {
     $paramsanitize = array();
     foreach ($param as $key => $value) {
-        if (!empty($value)) {
-            $newstr = filter_var($value, FILTER_SANITIZE_STRING);
-            array_push($paramsanitize, $newstr);
-        }
+        $newstr = filter_var($value, FILTER_SANITIZE_STRING);
+        array_push($paramsanitize, $newstr);
     }
     return $paramsanitize;
 }

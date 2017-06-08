@@ -1,12 +1,28 @@
 $().ready(function () {
-    $("#ImgProfil").click(function () {
+    $("#Img").click(function () {
         ChangerAvatar();
+        IsImgSelected();
+    });
+    $('#AddModal').on('hidden.bs.modal', function () {
+        CloseModal();
     });
 });
 function ChangerAvatar() {
     $("#frmAjout").append("<div class=\"HideInput\"><input type=\"file\" class=\"form-control\" name=\"upload\" id=\"imgRecipe\" accept=\"image/*\"><div>");
     $(".HideInput").hide();
     $("#imgRecipe").trigger("click");
+}
+function IsImgSelected() {
+    if ($("#imgRecipe").get(0).files.length !== 0) {
+        $("#Img").append("<i class=\"glyphicon glyphicon-ok\" id=\"btnImg\"></i>");
+    }
+    else {
+        $("#btnImg").detach();
+    }
+}
+function CloseModal() {
+    $("#AddModal input").val("");
+    $("#AddModal textarea").val("");
 }
 function GetRecipesToValidate() {
     $.ajax({
@@ -19,8 +35,8 @@ function GetRecipesToValidate() {
         }
     });
 }
-function ValidateRecipe() {
-    var id = $(".YesNo").attr("id");
+function ValidateRecipe(star) {
+    var id = $(star).closest(".YesNo").attr("id");
     $.ajax({
         type: "POST",
         url: "index.php",
@@ -32,8 +48,8 @@ function ValidateRecipe() {
         }
     });
 }
-function RemoveRecipe() {
-    var id = $(".YesNo").attr("id");
+function RemoveRecipe(star) {
+    var id = $(star).closest(".YesNo").attr("id");
     $.ajax({
         type: "POST",
         url: "index.php",
@@ -51,7 +67,7 @@ function RemoveRecipe() {
  * @param {<i>} tag
  */
 function OnHoverChangeIcon(tag) {
-    $(tag).removeClass("glyphicon glyphicon-star-empty");
+    $(tag).removeClass();
     $(tag).addClass("glyphicon glyphicon-star");
 }
 /**
@@ -60,7 +76,18 @@ function OnHoverChangeIcon(tag) {
  */
 function OnHoverOutChangeIcon(tag) {
     $(tag).addClass("glyphicon glyphicon-star-empty");
-    $(tag).RemoveClass("glyphicon glyphicon-star");
+    $(tag).RemoveClass();
+}
+function Favorite(tag) {
+    var id = $(tag).attr("id");
+    $.ajax({
+        type: "POST",
+        url: "index.php",
+        data: 'favorite=' + id,
+        success: function () {
+            $(tag).addClass("glyphicon glyphicon-star");
+        }
+    });
 }
 
 

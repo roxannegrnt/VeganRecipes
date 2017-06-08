@@ -124,7 +124,7 @@
     background: none;
     -webkit-text-fill-color: #0645AD;
 }
-#ImgProfil{
+#Img{
     height:120px; 
     width:120px;
 }
@@ -134,11 +134,14 @@
 textarea{
    resize: none;
 }
-#accept{
+.accept{
     border-color: green;
     color: green;
 }
 #refuse{
     border-color: red;
     color: red;
+}
+#btnImg{
+    color: green;
 }

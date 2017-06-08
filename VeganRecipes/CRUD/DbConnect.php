@@ -14,6 +14,7 @@ class DbConnect {
     private $ps_validateRecipe=null;
     private $ps_removeRecipe=null;
     private $ps_getNomFichier=null;
+    private $ps_addFav=null;
     private $dbb = null;
 
     public function __construct() {
@@ -38,6 +39,8 @@ class DbConnect {
                 $this->ps_removeRecipe->setFetchMode(PDO::FETCH_ASSOC);
                  $this->ps_getNomFichier = $this->dbb->prepare("SELECT NomFichierImg FROM recettes WHERE IdRecette=:idRecette");
                 $this->ps_getNomFichier->setFetchMode(PDO::FETCH_ASSOC);
+                $this->ps_addFav = $this->dbb->prepare("INSERT INTO `favoris`(`IdUtilisateur`, `IdRecette`) VALUES(:uid,:idR)");
+                $this->ps_addFav->setFetchMode(PDO::FETCH_ASSOC);
             } catch (PDOException $e) {
                 die("Erreur : " . $e->getMessage());
             }
@@ -82,6 +85,11 @@ class DbConnect {
         $this->ps_getNomFichier->bindParam(':idRecette', $idR);
         $this->ps_getNomFichier->execute();
         return $this->ps_getNomFichier->fetch();
+    }
+    function AddFav($uid,$idR){
+        $this->ps_addFav->bindParam(':uid', $uid);
+        $this->ps_addFav->bindParam(':idRecette', $idR);
+        $this->ps_addFav->execute();
     }
 
 }

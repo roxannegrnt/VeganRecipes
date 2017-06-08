@@ -66,3 +66,9 @@ if (isset($_REQUEST["remove"])) {
     DeleteImg('upload/', $file);
     $IndexHome = false;
 }
+
+//si l'utilisateur veut mettre en favori
+if (isset($_REQUEST["favorite"])) {
+    $idR=  substr($_REQUEST["favorite"], 4);
+    $DB->AddFav($_SESSION["uid"], $idR);
+}

@@ -74,10 +74,10 @@ affichage;
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h2 class="modal-title">Add Recipe</h2>
                     </div>
-                    <div class="modal-body">
-                        <form action="index.php" method="POST" id="frmAjout" enctype="multipart/form-data">
+                    <form action="index.php" method="POST" id="frmAjout" enctype="multipart/form-data">
+                        <div class="modal-body">
                             <div class="RoundButton">
-                                <button type="button" id="ImgProfil" class="btn btn-default btn-circle btn-xl"><i class="glyphicon glyphicon-camera"></i></button>
+                                <button type="button" id="Img" class="btn btn-default btn-circle btn-xl"><i class="glyphicon glyphicon-camera"></i></button>
                             </div>
                             <input class="frm form-control" type="text" name="title" placeholder="Title" value="<?php echo (empty($parameters["title"])) ? "" : $parameters["title"] ?>">
                             <textarea class=" frm form-control" rows="8" name="ingredients" placeholder="List of Ingredients" ><?php echo (empty($parameters["ingredients"])) ? "" : $parameters["ingredients"] ?></textarea>
@@ -94,8 +94,8 @@ affichage;
                             echo $img_error;
                             echo $add_error;
                             ?>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

@@ -29,7 +29,7 @@ function IndexHome($value,$descripShort){
 echo<<<affichage
                     <article class="well col-md-6 col-md-offset-3">
                     <div class="pull-right star">
-                    <i class="glyphicon glyphicon-star-empty" id="Star$value[IdRecette]" onmouseover=OnHoverChangeIcon(this) onmouseout=OnHoverOutChangeIcon(this)></i>
+                    <i class="glyphicon glyphicon-star-empty" id="Star$value[IdRecette]" onclick="Favorite(this)" onmouseover=OnHoverChangeIcon(this) onmouseout=OnHoverOutChangeIcon(this)></i>
                     </div>
    <img class="col-md-3" src="upload/$value[NomFichierImg]" id="imgrecipe">
                     <h3 class="col-md-9">$value[Titre]</h3>
@@ -62,8 +62,8 @@ function IndexAdmin($value,$descripShort){
                     </p>
         </article>
         <div class="YesNo col-lg-3" id="$value[IdRecette]">
-        <button onclick="ValidateRecipe()" class="btn btn-default btn-circle btn-xs" id="accept"><i class="glyphicon glyphicon-ok"></i></button>
-        <button onclick="RemoveRecipe()" class="btn btn-default btn-circle btn-xs" id="refuse"><i class="glyphicon glyphicon-remove"></i></button>
+        <button onclick="ValidateRecipe(this)" class="btn btn-default btn-circle btn-xs accept"><i class="glyphicon glyphicon-ok"></i></button>
+        <button onclick="RemoveRecipe(this)" class="btn btn-default btn-circle btn-xs" id="refuse"><i class="glyphicon glyphicon-remove"></i></button>
         </div>
 affichage;
                    
