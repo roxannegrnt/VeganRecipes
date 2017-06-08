@@ -26,11 +26,12 @@ if (isset($_REQUEST["login"])) {
 }
 //Si l'utilisateur veut ajouter une recette
 if (isset($_REQUEST["Add"])) {
-    $parameters=array("title"=>$_REQUEST["title"],"ingredients"=>$_REQUEST["ingredients"],"descrip"=>$_REQUEST["recipe"]);
+    $parameters=array("title"=>$_REQUEST["title"],"ingredients"=>$_REQUEST["ingredients"],"descrip"=>$_REQUEST["recipe"],"type"=>$_REQUEST["type"]);
     $ingredients = FormatIngredients($_REQUEST["ingredients"]);
-    $cpt = IsEmpty($_REQUEST["title"], $ingredients, $_REQUEST["recipe"], $_REQUEST["type"]);
+    $cpt = IsEmpty($parameters);
     if ($cpt == 0) {
-        $param = VerficationAdd($_REQUEST["title"], $ingredients, $_REQUEST["recipe"], $_REQUEST["type"]);
+        $parameters["ingredients"]=$ingredients;
+        $param = VerficationAdd($parameters);
         $IsVerified = VerifyImg($_FILES);
         if ($IsVerified) {
             $unique = uniqid("FILE_");

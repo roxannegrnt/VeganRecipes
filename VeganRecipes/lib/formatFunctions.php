@@ -20,10 +20,9 @@ function FormatIngredients($ingredients) {
  * @param string $type le type de recette
  * @return array Retourne un tableau avec tous les paramètres
  */
-function VerficationAdd($title, $ingredients, $descrip, $type) {
-    $param = array($title, $ingredients, $descrip, $type);
+function VerficationAdd($param) {
     $paramsanitize = array();
-    foreach ($param as $value) {
+    foreach ($param as $key => $value) {
         if (!empty($value)) {
             $newstr = filter_var($value, FILTER_SANITIZE_STRING);
             array_push($paramsanitize, $newstr);
@@ -57,10 +56,9 @@ function VerifyImg($files) {
  * @param string $type le type de recette
  * @return int retourne la valeur du nombre de champs vide
  */
-function IsEmpty($title, $ingredients, $descrip, $type) {
-    $param = array($title, $ingredients, $descrip, $type);
+function IsEmpty($param) {
     $cpt = 0;
-    foreach ($param as $value) {
+    foreach ($param as $key => $value) {
         if (empty($value)) {
             $cpt++;
         }

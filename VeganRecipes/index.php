@@ -77,10 +77,10 @@ affichage;
                     <div class="modal-body">
                         <form action="index.php" method="POST" id="frmAjout" enctype="multipart/form-data">
                             <div class="RoundButton">
-                            <button type="button" id="ImgProfil" class="btn btn-default btn-circle btn-xl"><i class="glyphicon glyphicon-camera"></i></button>
+                                <button type="button" id="ImgProfil" class="btn btn-default btn-circle btn-xl"><i class="glyphicon glyphicon-camera"></i></button>
                             </div>
-                            <input class="frm form-control" type="text" name="title" placeholder="Title" value="<?php $parameters["title"]?>">
-                            <textarea class=" frm form-control" rows="8" name="ingredients" placeholder="List of Ingredients"  value="<?php $parameters["ingredients"]?>"></textarea>
+                            <input class="frm form-control" type="text" name="title" placeholder="Title" value="<?php echo (empty($parameters["title"])) ? "" : $parameters["title"] ?>">
+                            <textarea class=" frm form-control" rows="8" name="ingredients" placeholder="List of Ingredients" ><?php echo (empty($parameters["ingredients"])) ? "" : $parameters["ingredients"] ?></textarea>
                             <select name="type" class="form-control frm">
                                 <?php
                                 foreach ($types as $key => $value) {
@@ -88,7 +88,7 @@ affichage;
                                 }
                                 ?>
                             </select>
-                            <textarea class="frm form-control" rows="5" name="recipe" placeholder="Description de la recette"  value="<?php $parameters["descrip"]?>"></textarea>
+                            <textarea class="frm form-control" rows="5" name="recipe" placeholder="Description de la recette"><?php echo (empty($parameters["descrip"])) ? "" : $parameters["descrip"] ?></textarea>
                             <button type="submit" class="btn btn-primary btn-block frm" name="Add">Add Recipe</button>
                             <?php
                             echo $img_error;
@@ -138,8 +138,7 @@ affichage;
                     $descripShort = RestrictLengthDescrip($value["Description"]);
                     if ($IndexHome) {
                         IndexHome($value, $descripShort);
-                    }
-                    else{
+                    } else {
                         IndexAdmin($value, $descripShort);
                     }
                     echo<<<affichage

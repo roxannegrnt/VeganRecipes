@@ -40,9 +40,27 @@ function RemoveRecipe() {
         data: 'remove=' + id,
         success: function (data) {
             $("body").html("");
+            $("#Errors").append("<div class=\"alert alert-sucess\">Recipe removed with sucess</div>");
             $("body").html(data);
         }
     });
+}
+
+/**
+ * When star is hovered change icon to full star
+ * @param {<i>} tag
+ */
+function OnHoverChangeIcon(tag) {
+    $(tag).removeClass("glyphicon glyphicon-star-empty");
+    $(tag).addClass("glyphicon glyphicon-star");
+}
+/**
+ * When star is not hovered change icon to empty star
+ * @param {<i>} tag
+ */
+function OnHoverOutChangeIcon(tag) {
+    $(tag).addClass("glyphicon glyphicon-star-empty");
+    $(tag).RemoveClass("glyphicon glyphicon-star");
 }
 
 
