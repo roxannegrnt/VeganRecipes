@@ -8,6 +8,7 @@ define("PASSWORD", "Super");
 class DbConnect {
 
     private $ps_getRegistration = null;
+    private $ps_register = null;
     private $ps_getTypes = null;
     private $ps_insertRecipe = null;
     private $ps_getRecipes = null;
@@ -28,6 +29,8 @@ class DbConnect {
                 //Prepare statment
                 $this->ps_getRegistration = $this->dbb->prepare("SELECT * FROM `utilisateurs` WHERE Username= :user AND Password= :pwd");
                 $this->ps_getRegistration->setFetchMode(PDO::FETCH_ASSOC);
+                $this->ps_register = $this->dbb->prepare("INSERT INTO utilisateurs VALUES('',:user,:pwd,0)");
+                $this->ps_register->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_getTypes = $this->dbb->prepare("SELECT NomType FROM types");
                 $this->ps_getTypes->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_insertRecipe = $this->dbb->prepare("INSERT INTO recettes (`IdRecette`,`Titre`,`Ingredient`,`Description`,`Valider`,`NomFichierImg`,`IdUtilisateur`,`IdType`)"
@@ -58,6 +61,11 @@ class DbConnect {
         $this->ps_getRegistration->bindParam(':pwd', $pwd);
         $this->ps_getRegistration->execute();
         return $this->ps_getRegistration->fetch();
+    }
+    function Register($user, $pwd){
+       $this->ps_register->bindParam(':user', $user);
+        $this->ps_register->bindParam(':pwd', $pwd);
+        $this->ps_register->execute(); 
     }
 
     function GetTypes() {

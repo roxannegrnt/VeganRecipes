@@ -31,6 +31,13 @@ if (isset($_REQUEST["login"])) {
         $signin_error = "<div class=\"alert alert-danger\">Oops... There must be an error with your username or your password</div>";
     }
 }
+//Si l'utilisateur veut s'incrire
+if (isset($_REQUEST["signup"])) {
+$DB->Register($_REQUEST["Newuser"], sha1($_REQUEST["Newpwd"]));
+    $_SESSION["uid"] = $_REQUEST["Newuser"];
+        $_SESSION["IsAdmin"] = 0;
+}
+
 //Si l'utilisateur veut ajouter une recette
 if (isset($_REQUEST["Add"])) {
     $parameters = array("title" => $_REQUEST["title"], "ingredients" => $_REQUEST["ingredients"], "descrip" => $_REQUEST["recipe"], "type" => $_REQUEST["type"]);

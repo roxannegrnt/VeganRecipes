@@ -12,6 +12,7 @@ require_once './lib/FonctionAffichageIndex.php';
         <script type="text/javascript" src="js/JQuery.js"></script>
         <script type="text/javascript" src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/functionsRecipe.js"></script>
+        <script type="text/javascript" src="js/VerifieForm.js"></script>
         <link href="css/override.css" type="text/css" rel="stylesheet">
     </head>
     <header>
@@ -62,7 +63,7 @@ affichage;
                         ?>
                     </div>
                     <div class="modal-footer">
-                        <a  data-target="#SignUp" class="signup">Sign up</a>
+                        <a data-toggle="modal" onclick=$("#myModal").hide() data-target="#SignUp" class="signup">Sign up</a>
                     </div>
                 </div>
             </div>
@@ -72,7 +73,7 @@ affichage;
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h2 class="modal-title">Login</h2>
+                        <h2 class="modal-title">Sign up</h2>
                     </div>
                     <div class="modal-body">
                         <form action="index.php" method="POST">
@@ -89,7 +90,7 @@ affichage;
                         ?>
                     </div>
                     <div class="modal-footer">
-                        <a data-target="#SignUp" class="signup">Sign in</a>
+                        <a data-toggle="modal" onclick=$("#myModal").show() data-target="#SignUp" class="signup">Sign in</a>
                     </div>
                 </div>
             </div>
@@ -106,8 +107,8 @@ affichage;
                             <div class="RoundButton">
                                 <button type="button" id="Img" class="btn btn-default btn-circle btn-xl"><i class="glyphicon glyphicon-camera"></i></button>
                             </div>
-                            <input class="frm form-control" type="text" name="title" placeholder="Title" value="<?php echo (empty($parameters["title"])) ? "" : $parameters["title"] ?>">
-                            <textarea class=" frm form-control" rows="8" name="ingredients" placeholder="List of Ingredients" ><?php echo (empty($parameters["ingredients"])) ? "" : $parameters["ingredients"] ?></textarea>
+                            <input class="frm form-control" type="text" name="title" id="title" placeholder="Title" value="<?php echo (empty($parameters["title"])) ? "" : $parameters["title"] ?>">
+                            <textarea class=" frm form-control" rows="8" id="LIngredients" name="ingredients" placeholder="List of Ingredients" ><?php echo (empty($parameters["ingredients"])) ? "" : $parameters["ingredients"] ?></textarea>
                             <select name="type" class="form-control frm">
                                 <?php
                                 foreach ($types as $key => $value) {
@@ -115,7 +116,7 @@ affichage;
                                 }
                                 ?>
                             </select>
-                            <textarea class="frm form-control" rows="5" name="recipe" placeholder="Description de la recette"><?php echo (empty($parameters["descrip"])) ? "" : $parameters["descrip"] ?></textarea>
+                            <textarea class="frm form-control" rows="5" name="recipe" id="descrip" placeholder="Description de la recette"><?php echo (empty($parameters["descrip"])) ? "" : $parameters["descrip"] ?></textarea>
                             <button type="submit" class="btn btn-primary btn-block frm" name="Add">Add Recipe</button>
                             <div class="errorModal">
                                 <?php
