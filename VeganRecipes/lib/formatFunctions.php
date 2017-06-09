@@ -45,7 +45,19 @@ function VerifyImg($files) {
         }
     }
 }
-
+function MoveImg($files){
+    $unique = ""; 
+    if (!empty($files)) {
+            $IsVerified = VerifyImg($files);
+            if ($IsVerified) {
+                $unique = uniqid("FILE_");
+                if (!move_uploaded_file($files['upload']['tmp_name'], "upload/" . $unique))
+                    $unique = "";
+            } else
+                $unique = "extension";
+        }
+        return $unique;
+}
 /**
  * Vérifie si un des champs est vide
  * @param string $title le titre de la recette

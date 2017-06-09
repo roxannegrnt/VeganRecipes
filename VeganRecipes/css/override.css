@@ -45,7 +45,9 @@
     outline:none;
     color:inherit;
     text-indent:8px;
-    //height: 42px;
+}
+.modal-body input{
+    height: 42px;
 }
 .modal-body .btn{
     background: #f4476b;

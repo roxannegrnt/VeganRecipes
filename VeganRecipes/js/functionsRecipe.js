@@ -37,7 +37,7 @@ function GetRecipesToValidate() {
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
-            $('#msg').delay(5000).fadeOut('slow');
+            $('#msg').delay(1000).fadeOut('slow');
         }
     });
 }
@@ -51,11 +51,11 @@ function ValidateRecipe(tick) {
             $("body").html("");
             $("body").html(data);
             $('#msg').append("<div class=\"alert alert-success\"role=\"alert\">recipe validated successfully</div>").fadeIn('slow'); //also show a success message 
-            $('#msg').delay(5000).fadeOut('slow');
+            $('#msg').delay(1000).fadeOut('slow');
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
-            $('#msg').delay(5000).fadeOut('slow');
+            $('#msg').delay(1000).fadeOut('slow');
         }
     });
 }
@@ -68,12 +68,12 @@ function RemoveRecipe(cross) {
         success: function (data) {
             $("body").html("");
             $("body").html(data);
-            $('#msg').append("<div class=\"alert alert-success\"role=\"alert\">recipe deleted successfully</div>").fadeIn('slow'); //also show a success message 
-            $('#msg').delay(5000).fadeOut('slow');
+            $('#msg').append("<div class=\"alert alert-success col-md-12\"role=\"alert\">recipe deleted successfully</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').delay(1000).fadeOut('slow');
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
-            $('#msg').delay(5000).fadeOut('slow');
+            $('#msg').delay(1000).fadeOut('slow');
         }
     });
 }
@@ -113,7 +113,7 @@ function Favorite(tag) {
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
-            $('#msg').delay(5000).fadeOut('slow');
+            $('#msg').delay(1000).fadeOut('slow');
         }
     });
 }
@@ -132,7 +132,7 @@ function UnFavorite(tag) {
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
-            $('#msg').delay(5000).fadeOut('slow');
+            $('#msg').delay(1000).fadeOut('slow');
         }
     });
 }

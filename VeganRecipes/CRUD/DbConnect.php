@@ -65,12 +65,12 @@ class DbConnect {
         return $this->ps_getTypes->fetchAll();
     }
 
-    function InsertRecipe($param, $id) {
+    function InsertRecipe($param, $id,$img) {
         $this->ps_insertRecipe->bindParam(':title', $param[0]);
         $this->ps_insertRecipe->bindParam(':ingredients', $param[1]);
         $this->ps_insertRecipe->bindParam(':descrip', $param[2]);
         $this->ps_insertRecipe->bindParam(':type', $param[3]);
-        $this->ps_insertRecipe->bindParam(':img', $param[4]);
+        $this->ps_insertRecipe->bindParam(':img', $img);
         $this->ps_insertRecipe->bindParam(':id', $id);
         $this->ps_insertRecipe->execute();
     }

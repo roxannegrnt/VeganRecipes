@@ -62,7 +62,34 @@ affichage;
                         ?>
                     </div>
                     <div class="modal-footer">
-                        <a class="signup">Sign up</a>
+                        <a  data-target="#SignUp" class="signup">Sign up</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="SignUp" data-backdrop="static" data-keyboard="false" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h2 class="modal-title">Login</h2>
+                    </div>
+                    <div class="modal-body">
+                        <form action="index.php" method="POST">
+                            <section class="form-group">
+                                <input type="text" name="Newuser" class="form-control" placeholder="Username">
+                            </section>
+                            <section class="form-group">
+                                <input type="password" name="Newpwd" class="form-control" placeholder="Password">
+                            </section>
+                            <button type="submit" class="btn btn-primary btn-block" name="signup">Sign up</button>
+                        </form>
+                        <?php
+                        echo $signin_error;
+                        ?>
+                    </div>
+                    <div class="modal-footer">
+                        <a data-target="#SignUp" class="signup">Sign in</a>
                     </div>
                 </div>
             </div>
