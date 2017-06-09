@@ -90,10 +90,12 @@ affichage;
                             </select>
                             <textarea class="frm form-control" rows="5" name="recipe" placeholder="Description de la recette"><?php echo (empty($parameters["descrip"])) ? "" : $parameters["descrip"] ?></textarea>
                             <button type="submit" class="btn btn-primary btn-block frm" name="Add">Add Recipe</button>
-                            <?php
-                            echo $img_error;
-                            echo $add_error;
-                            ?>
+                            <div class="errorModal">
+                                <?php
+                                echo $img_error;
+                                echo $add_error;
+                                ?>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -130,8 +132,9 @@ affichage;
                 </div>
             </div>
             <section>
-                <article id="Errors">
-                </article>
+                <div class="col-lg-5" id="msg">
+                    <?php echo $add_success; ?>
+                </div>
                 <?php
                 foreach ($recipes as $key => $value) {
                     //Shorter description for basic viewing

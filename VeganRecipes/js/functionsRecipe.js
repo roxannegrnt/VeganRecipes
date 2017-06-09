@@ -23,6 +23,8 @@ function IsImgSelected() {
 function CloseModal() {
     $("#AddModal input").val("");
     $("#AddModal textarea").val("");
+    $(".errorModal").html("");
+    window.location = "index.php";
 }
 function GetRecipesToValidate() {
     $.ajax({
@@ -32,32 +34,46 @@ function GetRecipesToValidate() {
         success: function (data) {
             $("body").html("");
             $("body").html(data);
+        },
+        error: function (error) {
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').delay(5000).fadeOut('slow');
         }
     });
 }
-function ValidateRecipe(star) {
-    var id = $(star).closest(".YesNo").attr("id");
+function ValidateRecipe(tick) {
+    var id = $(tick).closest(".YesNo").attr("id");
     $.ajax({
         type: "POST",
         url: "index.php",
         data: 'validate=' + id,
         success: function (data) {
             $("body").html("");
-            $("#Errors").append("<div class=\"alert alert-sucess\">Recipe added with sucess</div>");
             $("body").html(data);
+            $('#msg').append("<div class=\"alert alert-success\"role=\"alert\">recipe validated successfully</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').delay(5000).fadeOut('slow');
+        },
+        error: function (error) {
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').delay(5000).fadeOut('slow');
         }
     });
 }
-function RemoveRecipe(star) {
-    var id = $(star).closest(".YesNo").attr("id");
+function RemoveRecipe(cross) {
+    var id = $(cross).closest(".YesNo").attr("id");
     $.ajax({
         type: "POST",
         url: "index.php",
         data: 'remove=' + id,
         success: function (data) {
             $("body").html("");
-            $("#Errors").append("<div class=\"alert alert-sucess\">Recipe removed with sucess</div>");
             $("body").html(data);
+            $('#msg').append("<div class=\"alert alert-success\"role=\"alert\">recipe deleted successfully</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').delay(5000).fadeOut('slow');
+        },
+        error: function (error) {
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').delay(5000).fadeOut('slow');
         }
     });
 }
@@ -66,18 +82,18 @@ function RemoveRecipe(star) {
  * When star is hovered change icon to full star
  * @param {<i>} tag
  */
-function OnHoverChangeIcon(tag) {
-    $(tag).removeClass();
-    $(tag).addClass("glyphicon glyphicon-star");
-}
+//function OnHoverChangeIcon(tag) {
+//    $(tag).removeClass();
+//    $(tag).addClass("glyphicon glyphicon-star");
+//}
 /**
  * When star is not hovered change icon to empty star
  * @param {<i>} tag
  */
-function OnHoverOutChangeIcon(tag) {
-    $(tag).addClass("glyphicon glyphicon-star-empty");
-    $(tag).RemoveClass();
-}
+//function OnHoverOutChangeIcon(tag) {
+//    $(tag).addClass("glyphicon glyphicon-star-empty");
+//    $(tag).RemoveClass();
+//}
 function Favorite(tag) {
     var id = $(tag).attr("id");
     $.ajax({
@@ -86,6 +102,10 @@ function Favorite(tag) {
         data: 'favorite=' + id,
         success: function () {
             $(tag).addClass("glyphicon glyphicon-star");
+        },
+        error: function (error) {
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').delay(5000).fadeOut('slow');
         }
     });
 }

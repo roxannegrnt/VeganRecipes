@@ -7,6 +7,7 @@ include_once './lib/formatFunctions.php';
 $signin_error = "";
 $img_error = "";
 $add_error = "";
+$add_success="";
 //Initialisation de la classe DB
 $DB = new DbConnect();
 //Recherche des types
@@ -39,12 +40,13 @@ if (isset($_REQUEST["Add"])) {
                 array_push($param, $unique);
                 $DB->InsertRecipe($param, $_SESSION["uid"]);
                 $parameters=array();
+                $add_success = "<div class=\"alert alert-success\">Recipe added sucessfully</div>";
             }
         } else {
-            $img_error = "<div class=\"alert alert-danger\">Veuillez ajouter une image</div>";
+            $img_error = "<div class=\"alert alert-danger\">Please add an image</div>";
         }
     } else {
-        $add_error = "<div class=\"alert alert-danger\">Veuillez remplir tous les champs</div>";
+        $add_error = "<div class=\"alert alert-danger\">Please fill out all inputs</div>";
     }
 }
 //Admin veut afficher les recettes à valider
