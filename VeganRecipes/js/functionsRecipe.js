@@ -82,26 +82,53 @@ function RemoveRecipe(cross) {
  * When star is hovered change icon to full star
  * @param {<i>} tag
  */
-//function OnHoverChangeIcon(tag) {
-//    $(tag).removeClass();
-//    $(tag).addClass("glyphicon glyphicon-star");
-//}
+function OnHoverChangeIcon(tag) {
+    $(tag).removeClass();
+    $(tag).addClass("glyphicon glyphicon-star");
+}
 /**
  * When star is not hovered change icon to empty star
  * @param {<i>} tag
  */
-//function OnHoverOutChangeIcon(tag) {
-//    $(tag).addClass("glyphicon glyphicon-star-empty");
-//    $(tag).RemoveClass();
-//}
+function OnHoverOutChangeIcon(tag) {
+    $(tag).addClass("glyphicon glyphicon-star-empty");
+    $(tag).RemoveClass();
+}
 function Favorite(tag) {
     var id = $(tag).attr("id");
+    var loader = $(tag).closest("#loader").attr("id");
     $.ajax({
         type: "POST",
         url: "index.php",
         data: 'favorite=' + id,
+//        beforeSend: function () {
+//                $(loader).css("background", "url(LoaderIcon.gif) no-repeat 165px");
+//            },
         success: function () {
+            $(tag).removeClass();
             $(tag).addClass("glyphicon glyphicon-star");
+            $(tag).on('click', function() { UnFavorite(tag); });
+            $(tag).attr('onmouseover','');
+             $(tag).attr('onmouseout','');
+        },
+        error: function (error) {
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').delay(5000).fadeOut('slow');
+        }
+    });
+}
+function UnFavorite(tag) {
+    var id = $(tag).attr("id");
+    $.ajax({
+        type: "POST",
+        url: "index.php",
+        data: 'Unfavorite=' + id,
+        success: function () {
+            $(tag).removeClass();
+            $(tag).addClass("glyphicon glyphicon-star-empty");
+           $(tag).on('click', function() { Favorite(tag); });
+           $(tag).attr('onmouseover','OnHoverChangeIcon(this)');
+             $(tag).attr('onmouseout','OnHoverOutChangeIcon(this)');
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 

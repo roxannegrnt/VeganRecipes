@@ -112,3 +112,13 @@ function DeleteImg($dossier, $value) {
     unlink($dossier_traite . $value["NomFichierImg"]);
     closedir($repertoire);
 }
+
+function IsFav($value, $favorite) {
+    $Isfav = false;
+    foreach ($favorite as $k => $fav) {
+        if ($value["IdRecette"] == $fav["IdRecette"]) {
+            $Isfav = true;
+        }
+    }
+    return $Isfav;
+}

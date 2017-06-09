@@ -15,6 +15,8 @@ class DbConnect {
     private $ps_removeRecipe=null;
     private $ps_getNomFichier=null;
     private $ps_addFav=null;
+    private $ps_getFavByID=null;
+    private $ps_removeFav=null;
     private $dbb = null;
 
     public function __construct() {
@@ -41,6 +43,10 @@ class DbConnect {
                 $this->ps_getNomFichier->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_addFav = $this->dbb->prepare("INSERT INTO `favoris`(`IdUtilisateur`, `IdRecette`) VALUES(:uid,:idR)");
                 $this->ps_addFav->setFetchMode(PDO::FETCH_ASSOC);
+                $this->ps_getFavByID = $this->dbb->prepare("SELECT IdRecette FROM favoris WHERE IdUtilisateur=:uid");
+                $this->ps_getFavByID->setFetchMode(PDO::FETCH_ASSOC);
+                $this->ps_removeFav = $this->dbb->prepare("DELETE FROM favoris WHERE IdRecette=:idR AND IdUtilisateur=:uid");
+                $this->ps_removeFav->setFetchMode(PDO::FETCH_ASSOC);
             } catch (PDOException $e) {
                 die("Erreur : " . $e->getMessage());
             }
@@ -88,8 +94,18 @@ class DbConnect {
     }
     function AddFav($uid,$idR){
         $this->ps_addFav->bindParam(':uid', $uid);
-        $this->ps_addFav->bindParam(':idRecette', $idR);
+        $this->ps_addFav->bindParam(':idR', $idR);
         $this->ps_addFav->execute();
+    }
+    function getFavByID($uid){
+        $this->ps_getFavByID->bindParam(':uid', $uid);
+        $this->ps_getFavByID->execute();
+        return $this->ps_getFavByID->fetchAll();
+    }
+    function removeFav($uid,$idR){
+        $this->ps_removeFav->bindParam(':uid', $uid);
+        $this->ps_removeFav->bindParam(':idR', $idR);
+        $this->ps_removeFav->execute();
     }
 
 }

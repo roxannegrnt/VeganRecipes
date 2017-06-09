@@ -140,7 +140,8 @@ affichage;
                     //Shorter description for basic viewing
                     $descripShort = RestrictLengthDescrip($value["Description"]);
                     if ($IndexHome) {
-                        IndexHome($value, $descripShort);
+                        $Isfav = IsFav($value, $favorite);
+                        IndexHome($value, $descripShort, $Isfav);
                     } else {
                         IndexAdmin($value, $descripShort);
                     }
