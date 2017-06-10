@@ -96,14 +96,10 @@ function OnHoverOutChangeIcon(tag) {
 }
 function Favorite(tag) {
     var id = $(tag).attr("id");
-    var loader = $(tag).closest("#loader").attr("id");
     $.ajax({
         type: "POST",
         url: "index.php",
         data: 'favorite=' + id,
-//        beforeSend: function () {
-//                $(loader).css("background", "url(LoaderIcon.gif) no-repeat 165px");
-//            },
         success: function () {
             $(tag).removeClass();
             $(tag).addClass("glyphicon glyphicon-star");

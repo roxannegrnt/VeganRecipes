@@ -116,7 +116,9 @@ affichage;
                                 }
                                 ?>
                             </select>
+                            <section class="form-group textareaD">
                             <textarea class="frm form-control" rows="5" name="recipe" id="descrip" placeholder="Description de la recette"><?php echo (empty($parameters["descrip"])) ? "" : $parameters["descrip"] ?></textarea>
+                            </section>
                             <button type="submit" class="btn btn-primary btn-block frm" name="Add">Add Recipe</button>
                             <div class="errorModal">
                                 <?php
