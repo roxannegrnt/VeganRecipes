@@ -34,16 +34,14 @@ function VerficationAdd($param) {
  * @param array $files la superglobal $_FILES
  */
 function VerifyImg($files) {
+    $valid = FALSE;
     $extensions = array("jpeg", "jpg", "gif", "png", "mp4", "mp3");
     $elementsChemin = pathinfo($files['upload']['name']);
-    if ($elementsChemin != null) {
         $extensionFichier = $elementsChemin['extension'];
-        if (!(in_array($extensionFichier, $extensions))) {
-            return $valid = FALSE;
-        } else {
-            return $valid = TRUE;
-        }
-    }
+        if ((in_array($extensionFichier, $extensions))) {
+            $valid = TRUE;
+        } 
+    return $valid;
 }
 function MoveImg($files){
     $unique = ""; 
