@@ -59,12 +59,12 @@ function ValidateRecipe(tick) {
         }
     });
 }
-function RemoveRecipe(cross) {
+function RemoveRecipe(cross,IsIndexhome) {
     var id = $(cross).closest(".YesNo").attr("id");
     $.ajax({
         type: "POST",
         url: "index.php",
-        data: 'remove=' + id,
+        data:{remove: id, indexhome: IsIndexhome},
         success: function (data) {
             $("body").html("");
             $("body").html(data);
@@ -84,14 +84,14 @@ function RemoveRecipe(cross) {
  */
 function OnHoverChangeIcon(tag) {
     $(tag).removeClass();
-    $(tag).addClass("glyphicon glyphicon-star");
+    $(tag).addClass("glyphicon glyphicon-star pull-left");
 }
 /**
  * When star is not hovered change icon to empty star
  * @param {<i>} tag
  */
 function OnHoverOutChangeIcon(tag) {
-    $(tag).addClass("glyphicon glyphicon-star-empty");
+    $(tag).addClass("glyphicon glyphicon-star-empty pull-left");
     $(tag).RemoveClass();
 }
 function Favorite(tag) {
@@ -100,9 +100,12 @@ function Favorite(tag) {
         type: "POST",
         url: "index.php",
         data: 'favorite=' + id,
+        beforeSend: function () {
+                $(tag).css("background", "#FFF url(loaderIcon.gif) no-repeat 165px");
+            },
         success: function () {
             $(tag).removeClass();
-            $(tag).addClass("glyphicon glyphicon-star");
+            $(tag).addClass("glyphicon glyphicon-star pull-left");
             $(tag).on('click', function () {
                 UnFavorite(tag);
             });
@@ -123,7 +126,7 @@ function UnFavorite(tag) {
         data: 'Unfavorite=' + id,
         success: function () {
             $(tag).removeClass();
-            $(tag).addClass("glyphicon glyphicon-star-empty");
+            $(tag).addClass("glyphicon glyphicon-star-empty pull-left");
             $(tag).on('click', function () {
                 Favorite(tag);
             });

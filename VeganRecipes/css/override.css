@@ -150,3 +150,9 @@ textarea{
 .well .well-sm{
     background-color: white;
 }
+.glyphicon-star-empty{
+    font-size: 25px;
+}
+.glyphicon-star{
+    font-size: 25px;
+}

@@ -29,9 +29,9 @@ affichage;
 function IndexHome($value, $descripShort, $fav, $comments, $isadmin) {
     echo<<<affichage
                     <article class="well col-md-6 col-md-offset-3">
-                    <div class="pull-right star">
+                    <div class="pull-right YesNo" id=$value[IdRecette]>
 affichage;
-    AdminCross($isadmin);
+    AdmincrossRecipe($isadmin);
     echo<<<reste
     </div>
     <img class = "col-md-3" src = "upload/$value[NomFichierImg]" id = "imgrecipe">
@@ -81,7 +81,7 @@ function IndexAdmin($value, $descripShort) {
         </article>
         <div class="YesNo col-lg-3" id="$value[IdRecette]">
         <button onclick="ValidateRecipe(this)" class="btn btn-default btn-circle btn-xs accept"><i class="glyphicon glyphicon-ok"></i></button>
-        <button onclick="RemoveRecipe(this)" class="btn btn-default btn-circle btn-xs" id="refuse"><i class="glyphicon glyphicon-remove"></i></button>
+        <button onclick="RemoveRecipe(this,false)" class="btn btn-default btn-circle btn-xs" id="refuse"><i class="glyphicon glyphicon-remove"></i></button>
         </div>
 affichage;
 }
@@ -90,6 +90,13 @@ function AdminCross($IsAdmin) {
     if ($IsAdmin) {
         echo "<div class=\"pull-right\">";
         echo "<button type=\"button\" class=\"close\" onclick=RemoveComment(this) data-dismiss=\"modal\">&times;</button>";
+        echo "</div>";
+    }
+}
+function AdmincrossRecipe($IsAdmin) {
+    if ($IsAdmin) {
+        echo "<div class=\"pull-right\">";
+        echo "<button type=\"button\" class=\"close\" onclick=RemoveRecipe(this,true) data-dismiss=\"modal\">&times;</button>";
         echo "</div>";
     }
 }

@@ -74,11 +74,15 @@ if (isset($_REQUEST["validate"])) {
 if (isset($_REQUEST["remove"])) {
     $file = $DB->GetNameFile($_REQUEST["remove"]);
     $DB->RemoveRecipe($_REQUEST["remove"]);
-    $recipes = $DB->GetRecipes(0);
+    if ($_REQUEST["indexhome"]) {
+        $recipes = $DB->GetRecipes(1);
+    } else {
+        $recipes = $DB->GetRecipes(0);
+    }
     if ($file["NomFichierImg"] != "") {
         DeleteImg('upload/', $file);
     }
-    $IndexHome = false;
+    $IndexHome = $_REQUEST["indexhome"];
 }
 
 //si l'utilisateur veut mettre en favori
@@ -86,12 +90,12 @@ if (isset($_REQUEST["favorite"])) {
     $idR = substr($_REQUEST["favorite"], 4);
     $DB->AddFav($_SESSION["uid"], $idR);
 }
-//si l'utilisateur enklève un favori
+//si l'utilisateur enkève un favori
 if (isset($_REQUEST["Unfavorite"])) {
     $idR = substr($_REQUEST["Unfavorite"], 4);
     $DB->removeFav($_SESSION["uid"], $idR);
 }
-//so l'utilisateur veut ajouter un commentaire
+//Si l'utilisateur veut ajouter un commentaire
 if (isset($_REQUEST["commenttext"])) {
     $idR = substr($_REQUEST["idRecipe"], 15);
     $comments = filter_var($_REQUEST["commenttext"], FILTER_SANITIZE_STRING);
