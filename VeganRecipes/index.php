@@ -29,7 +29,9 @@ require_once './lib/FonctionAffichageIndex.php';
                     <?php
                     if (isset($_SESSION["IsAdmin"])) {
                         SignedIn($_SESSION["IsAdmin"]);
+                        $IsAdmin=$_SESSION["IsAdmin"];
                     } else {
+                        $IsAdmin="";
                         echo<<<affichage
         <li><a class="active" href="index.php"><span class="glyphicon glyphicon-home"></span></a></li>
         <li><a data-toggle="modal" data-keyboard="false" data-target="#myModal"><span class="glyphicon glyphicon-user"></span></a></li>
@@ -107,7 +109,9 @@ affichage;
                             <div class="RoundButton">
                                 <button type="button" id="Img" class="btn btn-default btn-circle btn-xl"><i class="glyphicon glyphicon-camera"></i></button>
                             </div>
+                             <section class="form-group inputT">
                             <input class="frm form-control" type="text" name="title" id="title" placeholder="Title" value="<?php echo (empty($parameters["title"])) ? "" : $parameters["title"] ?>">
+                            </section>
                             <textarea class=" frm form-control" rows="8" id="LIngredients" name="ingredients" placeholder="List of Ingredients" ><?php echo (empty($parameters["ingredients"])) ? "" : $parameters["ingredients"] ?></textarea>
                             <select name="type" class="form-control frm">
                                 <?php
@@ -171,7 +175,8 @@ affichage;
                     $descripShort = RestrictLengthDescrip($value["Description"]);
                     if ($IndexHome) {
                         $Isfav = IsFav($value, $favorite);
-                        IndexHome($value, $descripShort, $Isfav);
+                        $comments=  ShowComment($value, $comment);
+                        IndexHome($value, $descripShort, $Isfav,$comments,$IsAdmin);
                     } else {
                         IndexAdmin($value, $descripShort);
                     }

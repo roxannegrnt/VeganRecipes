@@ -16,6 +16,7 @@ $parameters = array();
 $favorite = array();
 $Isfav = false;
 $recipes = $DB->GetRecipes(1);
+$comment = $DB->GetComment();
 $IndexHome = true;
 if (!empty($_SESSION["uid"])) {
     $favorite = $DB->getFavByID($_SESSION["uid"]);
@@ -89,4 +90,11 @@ if (isset($_REQUEST["favorite"])) {
 if (isset($_REQUEST["Unfavorite"])) {
     $idR = substr($_REQUEST["Unfavorite"], 4);
     $DB->removeFav($_SESSION["uid"], $idR);
+}
+
+if (isset($_REQUEST["commenttext"])) {
+    $idR = substr($_REQUEST["idRecipe"], 15);
+    $comments = filter_var($_REQUEST["commenttext"], FILTER_SANITIZE_STRING);
+    $DB->insertComment($comments,$_SESSION["uid"], $idR);
+    $comment = $DB->GetComment();
 }

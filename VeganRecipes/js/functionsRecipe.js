@@ -133,4 +133,22 @@ function UnFavorite(tag) {
     });
 }
 
+function AddComment(button) {
+    var idR = $(button).closest(".collapse").attr("id");
+    var comment = $("#comment").val();
+    $.ajax({
+        type: "POST",
+        url: "index.php",
+        data: {commenttext: comment, idRecipe: idR},
+        success: function (data) {
+            $("body").html("");
+            $("body").html(data);
+        },
+        error: function (error) {
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').delay(1000).fadeOut('slow');
+        }
+    });
+}
+
 

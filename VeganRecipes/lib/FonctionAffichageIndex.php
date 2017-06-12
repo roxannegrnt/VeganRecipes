@@ -26,15 +26,15 @@ affichage;
  * @param array $value le tableau retourné par la base de donnée qui contient la recette
  * @param string $descripShort la version courte de la description de la recette
  */
-function IndexHome($value, $descripShort, $fav) {
+function IndexHome($value, $descripShort, $fav, $comments, $isadmin) {
     echo<<<affichage
                     <article class="well col-md-6 col-md-offset-3">
                     <div class="pull-right star">
 affichage;
+    AdminCross($isadmin);
     if (!$fav) {
         echo " <i class=\"glyphicon glyphicon-star-empty\" id=\"Star$value[IdRecette]\" onclick=Favorite(this) onmouseover=OnHoverChangeIcon(this) onmouseout=OnHoverOutChangeIcon(this)></i>";
-    echo "<div class=\"loader\" id=\"$value[IdRecette]\"></div>";
-        
+        echo "<div class=\"loader\" id=\"$value[IdRecette]\"></div>";
     } else {
         echo " <i class=\"glyphicon glyphicon-star\" id=\"Star$value[IdRecette]\" onclick=UnFavorite(this)></i>";
     }
@@ -46,10 +46,19 @@ affichage;
     $descripShort
     <a data-toggle = "modal" data-target = ".$value[IdRecette]" >Read more...</a>
     </p>
+reste;
+    foreach ($comments as $key => $value) {
+        echo "<article class=\"well well-sm col-md-12\">";
+        AdminCross($isadmin);
+        echo "<p class=\"col-lg-3\">" . $value["Username"] . "</p>";
+        echo "<p class=\"col-lg-12\">" . $value["Commentaire"] . "</p>";
+        echo "</article>";
+    }
+    echo<<<reste
     <button type = "button" class = "btn btn-primary pull-right" class = "Getcomment" data-toggle = "collapse" data-target = "#collapseComment$value[IdRecette]" aria-expanded = "false" aria-controls = "collapseExample">Ajouter un commentaire</button>
     <div class = "collapse" id = "collapseComment$value[IdRecette]">
-    <input type = "text" class = "form-control" name = "comment">
-    <input class = "btn btn-default" type = "submit" name = "sendComment">
+    <input type = "text" class = "form-control" id = "comment">
+    <input class = "btn btn-default" type = "button" value = "send comment" onclick=AddComment(this)>
     </div>
     </article >
 reste;
@@ -75,4 +84,12 @@ function IndexAdmin($value, $descripShort) {
         <button onclick="RemoveRecipe(this)" class="btn btn-default btn-circle btn-xs" id="refuse"><i class="glyphicon glyphicon-remove"></i></button>
         </div>
 affichage;
+}
+
+function AdminCross($IsAdmin) {
+    if ($IsAdmin) {
+        echo "<div class=\"pull-right\">";
+        echo "<button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>";
+        echo "</div>";
+    }
 }

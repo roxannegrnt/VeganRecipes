@@ -147,3 +147,6 @@ textarea{
 #btnImg{
     color: green;
 }
+.well .well-sm{
+    background-color: white;
+}

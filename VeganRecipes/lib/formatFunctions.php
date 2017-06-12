@@ -132,3 +132,12 @@ function IsFav($value, $favorite) {
     }
     return $Isfav;
 }
+function ShowComment($value, $comment) {
+    $comments = array();
+    foreach ($comment as $k => $com) {
+        if ($value["IdRecette"] == $com["IdRecette"]) {
+            $comments[]=$com;
+        }
+    }
+    return $comments;
+}

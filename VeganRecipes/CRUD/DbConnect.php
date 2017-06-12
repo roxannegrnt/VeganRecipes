@@ -18,6 +18,8 @@ class DbConnect {
     private $ps_addFav=null;
     private $ps_getFavByID=null;
     private $ps_removeFav=null;
+    private $ps_insertComment=null;
+    private $ps_getComment=null;
     private $dbb = null;
 
     public function __construct() {
@@ -50,6 +52,10 @@ class DbConnect {
                 $this->ps_getFavByID->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_removeFav = $this->dbb->prepare("DELETE FROM favoris WHERE IdRecette=:idR AND IdUtilisateur=:uid");
                 $this->ps_removeFav->setFetchMode(PDO::FETCH_ASSOC);
+                $this->ps_insertComment = $this->dbb->prepare("INSERT INTO commentaires VALUES ('',:comment,:uid,:idR)");
+                $this->ps_insertComment->setFetchMode(PDO::FETCH_ASSOC);
+                $this->ps_getComment = $this->dbb->prepare("SELECT IdCommentaire, Commentaire, IdRecette, Username FROM commentaires NATURAL JOIN utilisateurs");
+                $this->ps_getComment->setFetchMode(PDO::FETCH_ASSOC);
             } catch (PDOException $e) {
                 die("Erreur : " . $e->getMessage());
             }
@@ -114,6 +120,16 @@ class DbConnect {
         $this->ps_removeFav->bindParam(':uid', $uid);
         $this->ps_removeFav->bindParam(':idR', $idR);
         $this->ps_removeFav->execute();
+    }
+    function insertComment($comment,$uid,$idR){
+        $this->ps_insertComment->bindParam(':comment', $comment);
+        $this->ps_insertComment->bindParam(':uid', $uid);
+        $this->ps_insertComment->bindParam(':idR', $idR);
+        $this->ps_insertComment->execute();
+    }
+    function GetComment() {
+        $this->ps_getComment->execute();
+        return $this->ps_getComment->fetchAll();
     }
 
 }
