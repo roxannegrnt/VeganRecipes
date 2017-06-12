@@ -9,6 +9,7 @@ function SignedIn($isadmin) {
         echo<<<affichage
         <li><a href="index.php"><span class="glyphicon glyphicon-home"></span></a></li>
         <li><a data-toggle="modal" data-keyboard="false" data-target="#AddModal"><span class="glyphicon glyphicon-plus"></span></a></li>
+        <li><a onclick="GetMyRecipes()"><span class="glyphicon glyphicon-list-alt"></span></a></li>
         <li><a href="disconnect.php"><span class="glyphicon glyphicon-log-out"></span></a></li>
 affichage;
     } else {
@@ -61,6 +62,7 @@ reste;
     } else {
         echo " <i class=\"glyphicon glyphicon-star pull-left\" id=\"Star$value[IdRecette]\" onclick=UnFavorite(this)></i>";
     }
+    echo "<div class=\"loader\"></div>";
     echo "</article>";
 }
 
@@ -81,7 +83,7 @@ function IndexAdmin($value, $descripShort) {
         </article>
         <div class="YesNo col-lg-3" id="$value[IdRecette]">
         <button onclick="ValidateRecipe(this)" class="btn btn-default btn-circle btn-xs accept"><i class="glyphicon glyphicon-ok"></i></button>
-        <button onclick="RemoveRecipe(this,false)" class="btn btn-default btn-circle btn-xs" id="refuse"><i class="glyphicon glyphicon-remove"></i></button>
+        <button onclick="RemoveRecipe(this,0)" class="btn btn-default btn-circle btn-xs" id="refuse"><i class="glyphicon glyphicon-remove"></i></button>
         </div>
 affichage;
 }
@@ -96,7 +98,7 @@ function AdminCross($IsAdmin) {
 function AdmincrossRecipe($IsAdmin) {
     if ($IsAdmin) {
         echo "<div class=\"pull-right\">";
-        echo "<button type=\"button\" class=\"close\" onclick=RemoveRecipe(this,true) data-dismiss=\"modal\">&times;</button>";
+        echo "<button type=\"button\" class=\"close\" onclick=RemoveRecipe(this,1) data-dismiss=\"modal\">&times;</button>";
         echo "</div>";
     }
 }

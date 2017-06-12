@@ -29,9 +29,9 @@ require_once './lib/FonctionAffichageIndex.php';
                     <?php
                     if (isset($_SESSION["IsAdmin"])) {
                         SignedIn($_SESSION["IsAdmin"]);
-                        $IsAdmin=$_SESSION["IsAdmin"];
+                        $IsAdmin = $_SESSION["IsAdmin"];
                     } else {
-                        $IsAdmin="";
+                        $IsAdmin = "";
                         echo<<<affichage
         <li><a class="active" href="index.php"><span class="glyphicon glyphicon-home"></span></a></li>
         <li><a data-toggle="modal" data-keyboard="false" data-target="#myModal"><span class="glyphicon glyphicon-user"></span></a></li>
@@ -109,12 +109,12 @@ affichage;
                             <label for="FileInput">
                                 <img id="AddPhoto" alt="Add a picture" src="upload/add.ico">
                             </label>
-                            <input type="file" class="col-xs-3 form-control-file" accept="image/*" name="imgFile" id="FileInput">
-<!--                            <div class="RoundButton">
-                                <button type="button" id="Img" class="btn btn-default btn-circle btn-xl"><i class="glyphicon glyphicon-camera"></i></button>
-                            </div>-->
-                             <section class="form-group inputT">
-                            <input class="frm form-control" type="text" name="title" id="title" placeholder="Title" value="<?php echo (empty($parameters["title"])) ? "" : $parameters["title"] ?>">
+                            <input type="file" class="col-xs-3 form-control-file" accept="image/*" name="upload" id="FileInput">
+                            <!--                            <div class="RoundButton">
+                                                            <button type="button" id="Img" class="btn btn-default btn-circle btn-xl"><i class="glyphicon glyphicon-camera"></i></button>
+                                                        </div>-->
+                            <section class="form-group inputT">
+                                <input class="frm form-control" type="text" name="title" id="title" placeholder="Title" value="<?php echo (empty($parameters["title"])) ? "" : $parameters["title"] ?>">
                             </section>
                             <textarea class=" frm form-control" rows="8" id="LIngredients" name="ingredients" placeholder="List of Ingredients" ><?php echo (empty($parameters["ingredients"])) ? "" : $parameters["ingredients"] ?></textarea>
                             <select name="type" class="form-control frm">
@@ -125,7 +125,7 @@ affichage;
                                 ?>
                             </select>
                             <section class="form-group textareaD">
-                            <textarea class="frm form-control" rows="5" name="recipe" id="descrip" placeholder="Description de la recette"><?php echo (empty($parameters["descrip"])) ? "" : $parameters["descrip"] ?></textarea>
+                                <textarea class="frm form-control" rows="5" name="recipe" id="descrip" placeholder="Description de la recette"><?php echo (empty($parameters["descrip"])) ? "" : $parameters["descrip"] ?></textarea>
                             </section>
                             <button type="submit" class="btn btn-primary btn-block frm" name="Add">Add Recipe</button>
                             <div class="errorModal">
@@ -160,7 +160,7 @@ affichage;
                 </div>
                 <div class="dropdown col-md-2 ">
                     <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        Options
+                        Filter by
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right" id="dropdown2" aria-labelledby="dropdownMenu1">
@@ -177,12 +177,12 @@ affichage;
                 foreach ($recipes as $key => $value) {
                     //Shorter description for basic viewing
                     $descripShort = RestrictLengthDescrip($value["Description"]);
-                    if ($IndexHome) {
-                        $Isfav = IsFav($value, $favorite);
-                        $comments=  ShowComment($value, $comment);
-                        IndexHome($value, $descripShort, $Isfav,$comments,$IsAdmin);
-                    } else {
+                    if ($IndexHome == 0) {
                         IndexAdmin($value, $descripShort);
+                    } else {
+                        $Isfav = IsFav($value, $favorite);
+                        $comments = ShowComment($value, $comment);
+                        IndexHome($value, $descripShort, $Isfav, $comments, $IsAdmin);
                     }
                     echo<<<affichage
                     <div class="modal fade $value[IdRecette]" role="dialog">

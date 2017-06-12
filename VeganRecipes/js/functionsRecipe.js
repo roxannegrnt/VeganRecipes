@@ -65,12 +65,28 @@ function ValidateRecipe(tick) {
         }
     });
 }
+function GetMyRecipes(){
+    $.ajax({
+        type: "POST",
+        url: "index.php",
+        data: 'myrecipes=true',
+        success: function (data) {
+            $("body").html("");
+            $("body").html(data);
+            $(".YesNo").append("<button type=\"button\" class=\"close\" onclick=RemoveRecipe(this,true) data-dismiss=\"modal\">&times;</button>");
+        },
+        error: function (error) {
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').delay(1000).fadeOut('slow');
+        }
+    });
+}
 function RemoveRecipe(cross, IsIndexhome) {
     var id = $(cross).closest(".YesNo").attr("id");
     $.ajax({
         type: "POST",
         url: "index.php",
-        data: {remove: id, indexhome: IsIndexhome ? 1 : 0},
+        data: {remove: id, indexhome: IsIndexhome},
         success: function (data) {
             $("body").html("");
             $("body").html(data);
@@ -106,9 +122,9 @@ function Favorite(tag) {
         type: "POST",
         url: "index.php",
         data: 'favorite=' + id,
-        beforeSend: function () {
-            $(tag).css("background", "#FFF url(loaderIcon.gif) no-repeat 165px");
-        },
+//        beforeSend: function () {
+//            $(".loader").css("background", "#FFF url(loaderIcon.gif) no-repeat 165px");
+//        },
         success: function () {
             $(tag).removeClass();
             $(tag).addClass("glyphicon glyphicon-star pull-left");

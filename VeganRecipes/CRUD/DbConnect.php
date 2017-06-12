@@ -12,15 +12,16 @@ class DbConnect {
     private $ps_getTypes = null;
     private $ps_insertRecipe = null;
     private $ps_getRecipes = null;
-    private $ps_validateRecipe=null;
-    private $ps_removeRecipe=null;
-    private $ps_getNomFichier=null;
-    private $ps_addFav=null;
-    private $ps_getFavByID=null;
-    private $ps_removeFav=null;
-    private $ps_insertComment=null;
-    private $ps_getComment=null;
-    private $ps_removeComment=null;
+    private $ps_getByRecipesId = null;
+    private $ps_validateRecipe = null;
+    private $ps_removeRecipe = null;
+    private $ps_getNomFichier = null;
+    private $ps_addFav = null;
+    private $ps_getFavByID = null;
+    private $ps_removeFav = null;
+    private $ps_insertComment = null;
+    private $ps_getComment = null;
+    private $ps_removeComment = null;
     private $dbb = null;
 
     public function __construct() {
@@ -41,11 +42,13 @@ class DbConnect {
                 $this->ps_insertRecipe->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_getRecipes = $this->dbb->prepare("SELECT * FROM `recettes` WHERE Valider= :Valid");
                 $this->ps_getRecipes->setFetchMode(PDO::FETCH_ASSOC);
-                 $this->ps_validateRecipe = $this->dbb->prepare("UPDATE recettes SET Valider=1 WHERE IdRecette=:idRecette");
+                $this->ps_getByRecipesId = $this->dbb->prepare("SELECT * FROM `recettes` WHERE IdUtilisateur= :uid");
+                $this->ps_getByRecipesId->setFetchMode(PDO::FETCH_ASSOC);
+                $this->ps_validateRecipe = $this->dbb->prepare("UPDATE recettes SET Valider=1 WHERE IdRecette=:idRecette");
                 $this->ps_validateRecipe->setFetchMode(PDO::FETCH_ASSOC);
-                 $this->ps_removeRecipe = $this->dbb->prepare("DELETE FROM recettes WHERE IdRecette=:idRecette");
+                $this->ps_removeRecipe = $this->dbb->prepare("DELETE FROM recettes WHERE IdRecette=:idRecette");
                 $this->ps_removeRecipe->setFetchMode(PDO::FETCH_ASSOC);
-                 $this->ps_getNomFichier = $this->dbb->prepare("SELECT NomFichierImg FROM recettes WHERE IdRecette=:idRecette");
+                $this->ps_getNomFichier = $this->dbb->prepare("SELECT NomFichierImg FROM recettes WHERE IdRecette=:idRecette");
                 $this->ps_getNomFichier->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_addFav = $this->dbb->prepare("INSERT INTO `favoris`(`IdUtilisateur`, `IdRecette`) VALUES(:uid,:idR)");
                 $this->ps_addFav->setFetchMode(PDO::FETCH_ASSOC);
@@ -71,10 +74,11 @@ class DbConnect {
         $this->ps_getRegistration->execute();
         return $this->ps_getRegistration->fetch();
     }
-    function Register($user, $pwd){
-       $this->ps_register->bindParam(':user', $user);
+
+    function Register($user, $pwd) {
+        $this->ps_register->bindParam(':user', $user);
         $this->ps_register->bindParam(':pwd', $pwd);
-        $this->ps_register->execute(); 
+        $this->ps_register->execute();
     }
 
     function GetTypes() {
@@ -82,7 +86,7 @@ class DbConnect {
         return $this->ps_getTypes->fetchAll();
     }
 
-    function InsertRecipe($param, $id,$img) {
+    function InsertRecipe($param, $id, $img) {
         $this->ps_insertRecipe->bindParam(':title', $param[0]);
         $this->ps_insertRecipe->bindParam(':ingredients', $param[1]);
         $this->ps_insertRecipe->bindParam(':descrip', $param[2]);
@@ -91,51 +95,66 @@ class DbConnect {
         $this->ps_insertRecipe->bindParam(':id', $id);
         $this->ps_insertRecipe->execute();
     }
-    function GetRecipes($valid){
+
+    function GetRecipes($valid) {
         $this->ps_getRecipes->bindParam(':Valid', $valid);
         $this->ps_getRecipes->execute();
         return $this->ps_getRecipes->fetchAll();
     }
-    function ValidateRecipe($idR){
+
+    function GetRecipesById($uid) {
+        $this->ps_getByRecipesId->bindParam(':uid', $uid);
+        $this->ps_getByRecipesId->execute();
+        return $this->ps_getByRecipesId->fetchAll();
+    }
+
+    function ValidateRecipe($idR) {
         $this->ps_validateRecipe->bindParam(':idRecette', $idR);
         $this->ps_validateRecipe->execute();
     }
-    function RemoveRecipe($idR){
+
+    function RemoveRecipe($idR) {
         $this->ps_removeRecipe->bindParam(':idRecette', $idR);
         $this->ps_removeRecipe->execute();
     }
-    function GetNameFile($idR){
+
+    function GetNameFile($idR) {
         $this->ps_getNomFichier->bindParam(':idRecette', $idR);
         $this->ps_getNomFichier->execute();
         return $this->ps_getNomFichier->fetch();
     }
-    function AddFav($uid,$idR){
+
+    function AddFav($uid, $idR) {
         $this->ps_addFav->bindParam(':uid', $uid);
         $this->ps_addFav->bindParam(':idR', $idR);
         $this->ps_addFav->execute();
     }
-    function getFavByID($uid){
+
+    function getFavByID($uid) {
         $this->ps_getFavByID->bindParam(':uid', $uid);
         $this->ps_getFavByID->execute();
         return $this->ps_getFavByID->fetchAll();
     }
-    function removeFav($uid,$idR){
+
+    function removeFav($uid, $idR) {
         $this->ps_removeFav->bindParam(':uid', $uid);
         $this->ps_removeFav->bindParam(':idR', $idR);
         $this->ps_removeFav->execute();
     }
-    function insertComment($comment,$uid,$idR){
+
+    function insertComment($comment, $uid, $idR) {
         $this->ps_insertComment->bindParam(':comment', $comment);
         $this->ps_insertComment->bindParam(':uid', $uid);
         $this->ps_insertComment->bindParam(':idR', $idR);
         $this->ps_insertComment->execute();
     }
+
     function GetComment() {
         $this->ps_getComment->execute();
         return $this->ps_getComment->fetchAll();
     }
-    
-    function removeComment($idC){
+
+    function removeComment($idC) {
         $this->ps_removeComment->bindParam(':idC', $idC);
         $this->ps_removeComment->execute();
     }

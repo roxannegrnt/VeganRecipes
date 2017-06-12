@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 require './CRUD/DbConnect.php';
 include_once './lib/formatFunctions.php';
@@ -61,30 +62,35 @@ if (isset($_REQUEST["Add"])) {
 //Admin veut afficher les recettes à valider
 if (isset($_REQUEST["tovalidate"])) {
     $recipes = $DB->GetRecipes(0);
-    $IndexHome = false;
+    $IndexHome = 0;
 }
 //Si l'admin veut valider la recette
 if (isset($_REQUEST["validate"])) {
     $DB->ValidateRecipe($_REQUEST["validate"]);
     $recipes = $DB->GetRecipes(0);
-    $IndexHome = false;
+    $IndexHome = 0;
 }
 //Si l'admin veut supprimer la recette
 if (isset($_REQUEST["remove"])) {
     $file = $DB->GetNameFile($_REQUEST["remove"]);
     $DB->RemoveRecipe($_REQUEST["remove"]);
     $IndexHome = $_REQUEST["indexhome"];
-    if ($IndexHome==1) {
-        $recipes = $DB->GetRecipes(1);
-    } else {
-        $recipes = $DB->GetRecipes(0);
+    switch ($IndexHome) {
+        case 1:$recipes = $DB->GetRecipes(1);
+            break;
+        case 0:$recipes = $DB->GetRecipes(0);
+        default: $recipes = $DB->GetRecipesById($_SESSION["uid"]);
+            break;
     }
     if ($file["NomFichierImg"] != "") {
         DeleteImg('upload/', $file);
     }
-    
 }
-
+//si l'utilisateur veut obtenir ces propres recettes
+if (isset($_REQUEST["myrecipes"])) {
+    $recipes = $DB->GetRecipesById($_SESSION["uid"]);
+    $IndexHome=3;
+}
 //si l'utilisateur veut mettre en favori
 if (isset($_REQUEST["favorite"])) {
     $idR = substr($_REQUEST["favorite"], 4);
