@@ -106,9 +106,13 @@ affichage;
                     </div>
                     <form action="index.php" method="POST" id="frmAjout" enctype="multipart/form-data">
                         <div class="modal-body">
-                            <div class="RoundButton">
+                            <label for="FileInput">
+                                <img id="AddPhoto" alt="Add a picture" src="upload/add.ico">
+                            </label>
+                            <input type="file" class="col-xs-3 form-control-file" accept="image/*" name="imgFile" id="FileInput">
+<!--                            <div class="RoundButton">
                                 <button type="button" id="Img" class="btn btn-default btn-circle btn-xl"><i class="glyphicon glyphicon-camera"></i></button>
-                            </div>
+                            </div>-->
                              <section class="form-group inputT">
                             <input class="frm form-control" type="text" name="title" id="title" placeholder="Title" value="<?php echo (empty($parameters["title"])) ? "" : $parameters["title"] ?>">
                             </section>

@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 require './CRUD/DbConnect.php';
 include_once './lib/formatFunctions.php';
@@ -74,7 +73,8 @@ if (isset($_REQUEST["validate"])) {
 if (isset($_REQUEST["remove"])) {
     $file = $DB->GetNameFile($_REQUEST["remove"]);
     $DB->RemoveRecipe($_REQUEST["remove"]);
-    if ($_REQUEST["indexhome"]) {
+    $IndexHome = $_REQUEST["indexhome"];
+    if ($IndexHome==1) {
         $recipes = $DB->GetRecipes(1);
     } else {
         $recipes = $DB->GetRecipes(0);
@@ -82,7 +82,7 @@ if (isset($_REQUEST["remove"])) {
     if ($file["NomFichierImg"] != "") {
         DeleteImg('upload/', $file);
     }
-    $IndexHome = $_REQUEST["indexhome"];
+    
 }
 
 //si l'utilisateur veut mettre en favori

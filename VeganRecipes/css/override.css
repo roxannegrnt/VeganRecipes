@@ -70,9 +70,6 @@
     text-decoration:none;
     outline: 0;
 }
-.RoundButton{
-    text-align: center
-}
 .btn-circle.btn-xl {
     width: 70px;
     height: 70px;
@@ -155,4 +152,11 @@ textarea{
 }
 .glyphicon-star{
     font-size: 25px;
+}
+#AddPhoto{
+    height: 70px;
+    width: 70px;
+}
+#FileInput{
+    display: none;
 }

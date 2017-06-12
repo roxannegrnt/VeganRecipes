@@ -1,23 +1,29 @@
 $().ready(function () {
-    $("#Img").click(function () {
-        ChangerAvatar();
-        IsImgSelected();
+    $('#FileInput').on('change', function (e) {
+        prepareUpload(e);
     });
     $('#AddModal').on('hidden.bs.modal', function () {
         CloseModal();
     });
 });
-function ChangerAvatar() {
-    $("#frmAjout").append("<div class=\"HideInput\"><input type=\"file\" class=\"form-control\" name=\"upload\" id=\"imgRecipe\" accept=\"image/*\"><div>");
-    $(".HideInput").hide();
-    $("#imgRecipe").trigger("click");
-}
-function IsImgSelected() {
-    if ($("#imgRecipe").get(0).files.length !== 0) {
-        $("#Img").append("<i class=\"glyphicon glyphicon-ok\" id=\"btnImg\"></i>");
-    }
-    else {
-        $("#btnImg").detach();
+
+function prepareUpload(event) {
+//    var infoFilesWithFilesEncoded = [];
+//    
+//    infoFilesWithFilesEncoded[0] = [];
+//    infoFilesWithFilesEncoded[0][0] = [];
+//    infoFilesWithFilesEncoded[0][0] = files[0];
+//    infoFilesWithFilesEncoded[0][1] = "";
+
+    if (typeof window.FileReader !== 'undefined') {
+        reader = new FileReader();
+
+        //event onload s'execute à la fin de la function chargeFiles
+        reader.onload = function (event) {
+            //infoFilesWithFilesEncoded[0][1] = event.target.result; // données DataURL
+            $("#AddPhoto").attr('src', event.target.result); // show image tumbnail
+        };
+        // reader.readAsDataURL(infoFilesWithFilesEncoded[0][0]);
     }
 }
 function CloseModal() {
@@ -59,12 +65,12 @@ function ValidateRecipe(tick) {
         }
     });
 }
-function RemoveRecipe(cross,IsIndexhome) {
+function RemoveRecipe(cross, IsIndexhome) {
     var id = $(cross).closest(".YesNo").attr("id");
     $.ajax({
         type: "POST",
         url: "index.php",
-        data:{remove: id, indexhome: IsIndexhome},
+        data: {remove: id, indexhome: IsIndexhome ? 1 : 0},
         success: function (data) {
             $("body").html("");
             $("body").html(data);
@@ -101,8 +107,8 @@ function Favorite(tag) {
         url: "index.php",
         data: 'favorite=' + id,
         beforeSend: function () {
-                $(tag).css("background", "#FFF url(loaderIcon.gif) no-repeat 165px");
-            },
+            $(tag).css("background", "#FFF url(loaderIcon.gif) no-repeat 165px");
+        },
         success: function () {
             $(tag).removeClass();
             $(tag).addClass("glyphicon glyphicon-star pull-left");
