@@ -20,6 +20,7 @@ class DbConnect {
     private $ps_removeFav=null;
     private $ps_insertComment=null;
     private $ps_getComment=null;
+    private $ps_removeComment=null;
     private $dbb = null;
 
     public function __construct() {
@@ -56,6 +57,8 @@ class DbConnect {
                 $this->ps_insertComment->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_getComment = $this->dbb->prepare("SELECT IdCommentaire, Commentaire, IdRecette, Username FROM commentaires NATURAL JOIN utilisateurs");
                 $this->ps_getComment->setFetchMode(PDO::FETCH_ASSOC);
+                $this->ps_removeComment = $this->dbb->prepare("DELETE FROM commentaires WHERE IdCommentaire=:idC");
+                $this->ps_removeComment->setFetchMode(PDO::FETCH_ASSOC);
             } catch (PDOException $e) {
                 die("Erreur : " . $e->getMessage());
             }
@@ -130,6 +133,11 @@ class DbConnect {
     function GetComment() {
         $this->ps_getComment->execute();
         return $this->ps_getComment->fetchAll();
+    }
+    
+    function removeComment($idC){
+        $this->ps_removeComment->bindParam(':idC', $idC);
+        $this->ps_removeComment->execute();
     }
 
 }

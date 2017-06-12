@@ -8,9 +8,9 @@ require_once './lib/FonctionAffichageIndex.php';
         <meta charset="ISO-8859-1">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Home</title>
-        <link href="bootstrap-3.3.7-dist/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+        <link href="bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
         <script type="text/javascript" src="js/JQuery.js"></script>
-        <script type="text/javascript" src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/functionsRecipe.js"></script>
         <script type="text/javascript" src="js/VerifieForm.js"></script>
         <link href="css/override.css" type="text/css" rel="stylesheet">

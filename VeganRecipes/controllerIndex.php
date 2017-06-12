@@ -34,9 +34,9 @@ if (isset($_REQUEST["login"])) {
 }
 //Si l'utilisateur veut s'incrire
 if (isset($_REQUEST["signup"])) {
-$DB->Register($_REQUEST["Newuser"], sha1($_REQUEST["Newpwd"]));
+    $DB->Register($_REQUEST["Newuser"], sha1($_REQUEST["Newpwd"]));
     $_SESSION["uid"] = $_REQUEST["Newuser"];
-        $_SESSION["IsAdmin"] = 0;
+    $_SESSION["IsAdmin"] = 0;
 }
 
 //Si l'utilisateur veut ajouter une recette
@@ -91,10 +91,15 @@ if (isset($_REQUEST["Unfavorite"])) {
     $idR = substr($_REQUEST["Unfavorite"], 4);
     $DB->removeFav($_SESSION["uid"], $idR);
 }
-
+//so l'utilisateur veut ajouter un commentaire
 if (isset($_REQUEST["commenttext"])) {
     $idR = substr($_REQUEST["idRecipe"], 15);
     $comments = filter_var($_REQUEST["commenttext"], FILTER_SANITIZE_STRING);
-    $DB->insertComment($comments,$_SESSION["uid"], $idR);
+    $DB->insertComment($comments, $_SESSION["uid"], $idR);
+    $comment = $DB->GetComment();
+}
+//Si l'admin veut supprimer un commentaire 
+if (isset($_REQUEST["idComment"])) {
+    $DB->removeComment($_REQUEST["idComment"]);
     $comment = $DB->GetComment();
 }

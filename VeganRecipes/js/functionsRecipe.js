@@ -103,9 +103,11 @@ function Favorite(tag) {
         success: function () {
             $(tag).removeClass();
             $(tag).addClass("glyphicon glyphicon-star");
-            $(tag).on('click', function() { UnFavorite(tag); });
-            $(tag).attr('onmouseover','');
-             $(tag).attr('onmouseout','');
+            $(tag).on('click', function () {
+                UnFavorite(tag);
+            });
+            $(tag).attr('onmouseover', '');
+            $(tag).attr('onmouseout', '');
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
@@ -122,9 +124,11 @@ function UnFavorite(tag) {
         success: function () {
             $(tag).removeClass();
             $(tag).addClass("glyphicon glyphicon-star-empty");
-           $(tag).on('click', function() { Favorite(tag); });
-           $(tag).attr('onmouseover','OnHoverChangeIcon(this)');
-             $(tag).attr('onmouseout','OnHoverOutChangeIcon(this)');
+            $(tag).on('click', function () {
+                Favorite(tag);
+            });
+            $(tag).attr('onmouseover', 'OnHoverChangeIcon(this)');
+            $(tag).attr('onmouseout', 'OnHoverOutChangeIcon(this)');
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
@@ -135,11 +139,27 @@ function UnFavorite(tag) {
 
 function AddComment(button) {
     var idR = $(button).closest(".collapse").attr("id");
-    var comment = $("#comment").val();
+    var comment = $(button).closest(".collapse").find("input[name=comment]").val();
     $.ajax({
         type: "POST",
         url: "index.php",
         data: {commenttext: comment, idRecipe: idR},
+        success: function (data) {
+            $("body").html("");
+            $("body").html(data);
+        },
+        error: function (error) {
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').delay(1000).fadeOut('slow');
+        }
+    });
+}
+function RemoveComment(close) {
+    var id = $(close).closest("article").find(".Usercomment").attr("id");
+    $.ajax({
+        type: "POST",
+        url: "index.php",
+        data: 'idComment=' + id,
         success: function (data) {
             $("body").html("");
             $("body").html(data);

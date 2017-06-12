@@ -32,12 +32,6 @@ function IndexHome($value, $descripShort, $fav, $comments, $isadmin) {
                     <div class="pull-right star">
 affichage;
     AdminCross($isadmin);
-    if (!$fav) {
-        echo " <i class=\"glyphicon glyphicon-star-empty\" id=\"Star$value[IdRecette]\" onclick=Favorite(this) onmouseover=OnHoverChangeIcon(this) onmouseout=OnHoverOutChangeIcon(this)></i>";
-        echo "<div class=\"loader\" id=\"$value[IdRecette]\"></div>";
-    } else {
-        echo " <i class=\"glyphicon glyphicon-star\" id=\"Star$value[IdRecette]\" onclick=UnFavorite(this)></i>";
-    }
     echo<<<reste
     </div>
     <img class = "col-md-3" src = "upload/$value[NomFichierImg]" id = "imgrecipe">
@@ -47,21 +41,27 @@ affichage;
     <a data-toggle = "modal" data-target = ".$value[IdRecette]" >Read more...</a>
     </p>
 reste;
-    foreach ($comments as $key => $value) {
+    foreach ($comments as $k => $v) {
         echo "<article class=\"well well-sm col-md-12\">";
         AdminCross($isadmin);
-        echo "<p class=\"col-lg-3\">" . $value["Username"] . "</p>";
-        echo "<p class=\"col-lg-12\">" . $value["Commentaire"] . "</p>";
+        echo "<p class=\"col-lg-3\">" . $v["Username"] . "</p>";
+        echo "<p id=$v[IdCommentaire] class=\"col-lg-12 Usercomment\">" . $v["Commentaire"] . "</p>";
         echo "</article>";
     }
     echo<<<reste
-    <button type = "button" class = "btn btn-primary pull-right" class = "Getcomment" data-toggle = "collapse" data-target = "#collapseComment$value[IdRecette]" aria-expanded = "false" aria-controls = "collapseExample">Ajouter un commentaire</button>
+    <button type = "button" class = "btn btn-primary pull-right" class = "Getcomment" data-toggle = "collapse" data-target = "#collapseComment$value[IdRecette]" aria-expanded = "false" aria-controls = "collapseExample">Add a comment</button>
     <div class = "collapse" id = "collapseComment$value[IdRecette]">
-    <input type = "text" class = "form-control" id = "comment">
+    <input type = "text" class = "form-control" name=comment>
     <input class = "btn btn-default" type = "button" value = "send comment" onclick=AddComment(this)>
     </div>
-    </article >
 reste;
+    if (!$fav) {
+        echo " <i class=\"glyphicon glyphicon-star-empty pull-left\" id=\"Star$value[IdRecette]\" onclick=Favorite(this) onmouseover=OnHoverChangeIcon(this) onmouseout=OnHoverOutChangeIcon(this)></i>";
+        echo "<div class=\"loader\" id=\"$value[IdRecette]\"></div>";
+    } else {
+        echo " <i class=\"glyphicon glyphicon-star pull-left\" id=\"Star$value[IdRecette]\" onclick=UnFavorite(this)></i>";
+    }
+    echo "</article>";
 }
 
 /**
@@ -89,7 +89,7 @@ affichage;
 function AdminCross($IsAdmin) {
     if ($IsAdmin) {
         echo "<div class=\"pull-right\">";
-        echo "<button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>";
+        echo "<button type=\"button\" class=\"close\" onclick=RemoveComment(this) data-dismiss=\"modal\">&times;</button>";
         echo "</div>";
     }
 }
