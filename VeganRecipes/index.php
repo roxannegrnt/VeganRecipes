@@ -53,19 +53,21 @@ affichage;
                     <div class="modal-body">
                         <form action="index.php" method="POST">
                             <section class="form-group">
-                                <input type="text" name="user" class="form-control" placeholder="Username">
+                                <input type="text" name="user" class="form-control" placeholder="Username*" required>
                             </section>
                             <section class="form-group">
-                                <input type="password" name="pwd" class="form-control" placeholder="Password">
+                                <input type="password" name="pwd" class="form-control" placeholder="Password*" required>
                             </section>
                             <button type="submit" class="btn btn-primary btn-block" name="login">Login</button>
                         </form>
+                         <div id="signinE">
                         <?php
                         echo $signin_error;
                         ?>
+                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a data-toggle="modal" onclick=$("#myModal").hide() data-target="#SignUp" class="signup">Sign up</a>
+                        <a data-toggle="modal" onclick="EmptyModalSignin()" data-target="#SignUp" class="signup">Sign up</a>
                     </div>
                 </div>
             </div>
@@ -80,19 +82,21 @@ affichage;
                     <div class="modal-body">
                         <form action="index.php" method="POST">
                             <section class="form-group">
-                                <input type="text" name="Newuser" class="form-control" placeholder="Username">
+                                <input type="text" name="Newuser" class="form-control" placeholder="Username*" required>
                             </section>
                             <section class="form-group">
-                                <input type="password" name="Newpwd" class="form-control" placeholder="Password">
+                                <input type="password" name="Newpwd" class="form-control" placeholder="Password*" required>
                             </section>
                             <button type="submit" class="btn btn-primary btn-block" name="signup">Sign up</button>
                         </form>
+                        <div id="signupE">
                         <?php
-                        echo $signin_error;
+                       echo $signup_error;
                         ?>
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <a data-toggle="modal" onclick=$("#myModal").show() data-target="#SignUp" class="signup">Sign in</a>
+                        <a data-toggle="modal" onclick="EmptyModalSignup()" data-target="#myModal" class="signup">Sign in</a>
                     </div>
                 </div>
             </div>
@@ -106,13 +110,10 @@ affichage;
                     </div>
                     <form action="index.php" method="POST" id="frmAjout" enctype="multipart/form-data">
                         <div class="modal-body">
-                            <label for="FileInput">
-                                <img id="AddPhoto" alt="Add a picture" src="upload/add.ico">
+                            <label for="FileInput" id="labelImg">
+                                <img class="col-lg-offset-5" id="AddPhoto" alt="Add a picture" src="upload/add.ico">
                             </label>
                             <input type="file" class="col-xs-3 form-control-file" accept="image/*" name="upload" id="FileInput">
-                            <!--                            <div class="RoundButton">
-                                                            <button type="button" id="Img" class="btn btn-default btn-circle btn-xl"><i class="glyphicon glyphicon-camera"></i></button>
-                                                        </div>-->
                             <section class="form-group inputT">
                                 <input class="frm form-control" type="text" name="title" id="title" placeholder="Title" value="<?php echo (empty($parameters["title"])) ? "" : $parameters["title"] ?>">
                             </section>
@@ -142,6 +143,7 @@ affichage;
         <?php
         //Pour garder la modal ouverte si erreure
         KeepModalOpen($signin_error, "myModal");
+        KeepModalOpen($signup_error, "SignUp");
         KeepModalOpen($img_error, "AddModal");
         KeepModalOpen($add_error, "AddModal");
         ?>

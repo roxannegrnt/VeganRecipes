@@ -1,9 +1,16 @@
 $().ready(function () {
+    CallTitles();
     $('#FileInput').on('change', function (e) {
         prepareUpload(e);
     });
     $('#AddModal').on('hidden.bs.modal', function () {
         CloseModal();
+    });
+    $('#myModal').on('hidden.bs.modal', function () {
+        EmptyModalSignin();
+    });
+    $('#SignUp').on('hidden.bs.modal', function () {
+        EmptyModalSignup();
     });
 });
 
@@ -18,6 +25,14 @@ function prepareUpload(event) {
         reader.readAsDataURL(files[0]);
     }
 }
+function EmptyModalSignin() {
+    $('#myModal').modal('hide').data('bs.modal', null);
+    $("#signinE").html("");
+}
+function EmptyModalSignup() {
+    $('#SignUp').modal('hide').data('bs.modal', null);
+    $("#signupE").html("");
+}
 function CloseModal() {
     $("#AddModal input").val("");
     $("#AddModal textarea").val("");
@@ -29,6 +44,11 @@ function GetRecipesToValidate() {
         type: "POST",
         url: "index.php",
         data: 'tovalidate=true',
+        async: true,
+        beforeSend: function () {
+            $("section").html("");
+            $("section").append("<img class=\"col-lg-offset-6\" src=\"upload/loaderIcon.gif\" id=\"loader\">");
+        },
         success: function (data) {
             $("body").html("");
             $("body").html(data);
@@ -84,6 +104,9 @@ function RemoveRecipe(cross, IsIndexhome) {
             $("body").html(data);
             $('#msg').append("<div class=\"alert alert-success col-md-12\"role=\"alert\">recipe deleted successfully</div>").fadeIn('slow'); //also show a success message 
             $('#msg').delay(1000).fadeOut('slow');
+            if (IsIndexhome == 3) {
+                $(".YesNo").append("<button type=\"button\" class=\"close\" onclick=RemoveRecipe(this,3) data-dismiss=\"modal\">&times;</button>");
+            }
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
@@ -114,9 +137,10 @@ function Favorite(tag) {
         type: "POST",
         url: "index.php",
         data: 'favorite=' + id,
-//        beforeSend: function () {
-//            $(".loader").css("background", "#FFF url(loaderIcon.gif) no-repeat 165px");
-//        },
+        async: true,
+        beforeSend: function () {
+            $(".loader").css("background", "#FFF url(loaderIcon.gif) no-repeat 165px");
+        },
         success: function () {
             $(tag).removeClass();
             $(tag).addClass("glyphicon glyphicon-star pull-left");
@@ -161,6 +185,10 @@ function AddComment(button) {
         type: "POST",
         url: "index.php",
         data: {commenttext: comment, idRecipe: idR},
+        async: true,
+        beforeSend: function () {
+            $("#inputComment").val("<img class=\"col-lg-offset-6\" src=\"upload/loaderIcon.gif\" id=\"loader\">");
+        },
         success: function (data) {
             $("body").html("");
             $("body").html(data);
@@ -196,6 +224,11 @@ function FilterByType(link) {
         type: "POST",
         url: "index.php",
         data: 'type=' + type,
+        async: true,
+        beforeSend: function () {
+            $("section").html("");
+            $("section").append("<img class=\"col-lg-offset-6\" src=\"upload/loaderIcon.gif\" id=\"loader\">");
+        },
         success: function (data) {
             $("body").html("");
             $("body").html(data);
@@ -208,5 +241,58 @@ function FilterByType(link) {
         }
     });
 }
+function CallTitles() {
+    // AJAX call for autocomplete 
+    $("#search-box").keyup(function () {
+        $.ajax({
+            type: "POST",
+            url: "ajaxcallAutocomplete.php",
+            data: 'keyword=' + $(this).val(),
+            async: true,
+            beforeSend: function () {
+                $("#search-box").css("background", "#FFF url(upload/loaderIcon.gif) no-repeat 50px");
+            },
+            success: function (data) {
+                $("#suggesstion-box").show();
+                 $("#suggesstion-box").html(data);
+//                $("body").html("");
+//                $("body").html(data);
+//                $("#search-box").text($(this).val());
+                $("#search-box").css("background", "#FFF");
+            }
+        });
+    });
+}
+/**
+ * To select title of recipe
+ */
+function selectTitle(val) {
+    $("#search-box").val(val);
+    $("#suggesstion-box").hide();
+}
+/**
+ * Sends complete search and returns results
+ */
+function SubmitSearch() {
+    $.ajax({
+        type: "POST",
+        url: "index.php",
+        data: 'search=' + $("#search-box").val(),
+        async: true,
+        beforeSend: function () {
+            $("section").html("");
+            $("section").append("<img class=\"col-lg-offset-6\" src=\"upload/loaderIcon.gif\" id=\"loader\">");
+        },
+        success: function (data) {
+            $("body").html("");
+            $("body").html(data);
+        },
+        error: function (error) {
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').delay(1000).fadeOut('slow');
+        }
+    });
+}
+
 
 

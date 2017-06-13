@@ -1,13 +1,13 @@
 $(document).ready(function () {
-    $('frmAjout').bind('input propertychange', function () {
+    $('#title').keydown(function(event){
         if ((/[^A-Za-z0-9'-°/():,.~:]/gi.test($("#descrip").val())) || ($("#descrip").val() === "")) {
-            $('.textareaD').addClass('has-error');
+            $('.textareaD').css('border-color','red');
         }
         if ((/[^A-Za-z0-9'-°/():,.~:]/gi.test($("#descrip").val())) || ($("#descrip").val() === "")) {
-            $('.textareaD').addClass('has-error');
+            $('.textareaD').css('border-color','red');
         }
         if ((/[^A-Za-z]/gi.test($("#title").val())) || ($("#title").val() === "")) {
-            $('.inputT').addClass('has-error');
+            $('.inputT').css('border-color','red');
         }
         else {
             $('.inputT').removeClass('has-error');

@@ -4,6 +4,7 @@ require './CRUD/DbConnect.php';
 include_once './lib/formatFunctions.php';
 //Assignation des valeurs d'erreur
 $signin_error = "";
+$signup_error = "";
 $img_error = "";
 $add_error = "";
 $add_success = "";
@@ -14,6 +15,7 @@ $types = $DB->GetTypes();
 $parameters = array();
 $favorite = array();
 $Isfav = false;
+$resultAuto="";
 $recipes = $DB->GetRecipes(1);
 $comment = $DB->GetComment();
 $IndexHome = true;
@@ -34,9 +36,21 @@ if (isset($_REQUEST["login"])) {
 }
 //Si l'utilisateur veut s'incrire
 if (isset($_REQUEST["signup"])) {
-    $DB->Register($_REQUEST["Newuser"], sha1($_REQUEST["Newpwd"]));
-    $_SESSION["uid"] = $_REQUEST["Newuser"];
-    $_SESSION["IsAdmin"] = 0;
+    $parameters = array("user" => $_REQUEST["Newuser"], "pwd" => $_REQUEST["Newpwd"]);
+    $cpt = IsEmpty($parameters);
+    if ($cpt == 0) {
+        $param = VerficationAdd($parameters);
+        $registration = $DB->GetUser($_REQUEST["Newuser"]);
+        if (empty($registration)) {
+            $DB->Register($_REQUEST["Newuser"], sha1($_REQUEST["Newpwd"]));
+            $_SESSION["uid"] = $_REQUEST["Newuser"];
+            $_SESSION["IsAdmin"] = 0;
+        } else {
+            $signup_error = "<div class=\"alert alert-danger\">This user is already used on the site</div>";
+        }
+    } else {
+        $signup_error = "<div class=\"alert alert-danger\">Please fill out the required fields</div>";
+    }
 }
 
 //Si l'utilisateur veut ajouter une recette
@@ -89,7 +103,7 @@ if (isset($_REQUEST["remove"])) {
 //si l'utilisateur veut obtenir ces propres recettes
 if (isset($_REQUEST["myrecipes"])) {
     $recipes = $DB->GetRecipesById($_SESSION["uid"]);
-    $IndexHome=3;
+    $IndexHome = 3;
 }
 //si l'utilisateur veut mettre en favori
 if (isset($_REQUEST["favorite"])) {
@@ -115,10 +129,15 @@ if (isset($_REQUEST["idComment"])) {
 }
 
 if (isset($_REQUEST["type"])) {
-    if ($_REQUEST["type"]!="") {
-        $recipes=$DB->filterByType($_REQUEST["type"]);
+    if ($_REQUEST["type"] != "") {
+        $recipes = $DB->filterByType($_REQUEST["type"]);
+    } else {
+        $recipes = $DB->GetRecipes(1);
     }
-    else{
-        $recipes=$DB->GetRecipes(1);
-    }
+}
+if (isset($_REQUEST["keyword"])) {
+    $resultAuto = $DB->Autocomplete($_REQUEST["keyword"]);
+}
+if (isset($_REQUEST["search"])) {
+    $recipes = $DB->Autocomplete($_REQUEST["search"]);
 }

@@ -8,6 +8,7 @@ define("PASSWORD", "Super");
 class DbConnect {
 
     private $ps_getRegistration = null;
+    private $ps_getUser = null;
     private $ps_register = null;
     private $ps_getTypes = null;
     private $ps_insertRecipe = null;
@@ -23,6 +24,8 @@ class DbConnect {
     private $ps_getComment = null;
     private $ps_removeComment = null;
     private $ps_filterbyType = null;
+    private $ps_filterbyid = null;
+    private $ps_autocomplete=null;
     private $dbb = null;
 
     public function __construct() {
@@ -34,6 +37,8 @@ class DbConnect {
                 //Prepare statment
                 $this->ps_getRegistration = $this->dbb->prepare("SELECT * FROM `utilisateurs` WHERE Username= :user AND Password= :pwd");
                 $this->ps_getRegistration->setFetchMode(PDO::FETCH_ASSOC);
+                 $this->ps_getUser = $this->dbb->prepare("SELECT * FROM `utilisateurs` WHERE Username= :user");
+                $this->ps_getUser->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_register = $this->dbb->prepare("INSERT INTO utilisateurs VALUES('',:user,:pwd,0)");
                 $this->ps_register->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_getTypes = $this->dbb->prepare("SELECT NomType FROM types");
@@ -65,6 +70,10 @@ class DbConnect {
                 $this->ps_removeComment->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_filterbyType = $this->dbb->prepare("SELECT * FROM `recettes` NATURAL JOIN types WHERE NomType= :type");
                 $this->ps_filterbyType->setFetchMode(PDO::FETCH_ASSOC);
+                $this->ps_filterbyid = $this->dbb->prepare("SELECT * FROM `recettes`ORDER BY IdRecette DESC");
+                $this->ps_filterbyid->setFetchMode(PDO::FETCH_ASSOC);
+                $this->ps_autocomplete = $this->dbb->prepare("select * from recettes WHERE Titre like :keyword ORDER BY titre LIMIT 0,6");
+                $this->ps_autocomplete->setFetchMode(PDO::FETCH_ASSOC);
             } catch (PDOException $e) {
                 die("Erreur : " . $e->getMessage());
             }
@@ -77,8 +86,12 @@ class DbConnect {
         $this->ps_getRegistration->execute();
         return $this->ps_getRegistration->fetch();
     }
-
-    function Register($user, $pwd) {
+    function GetUser($user){
+        $this->ps_getUser->bindParam(':user', $user);
+        $this->ps_getUser->execute();
+        return $this->ps_getUser->fetch();
+    }
+            function Register($user, $pwd) {
         $this->ps_register->bindParam(':user', $user);
         $this->ps_register->bindParam(':pwd', $pwd);
         $this->ps_register->execute();
@@ -165,6 +178,16 @@ class DbConnect {
         $this->ps_filterbyType->bindParam(':type', $type); 
         $this->ps_filterbyType->execute();
         return $this->ps_filterbyType->fetchAll();
+    }
+    function filterById(){
+        $this->ps_filterbyid->execute();
+        return $this->ps_filterbyid->fetchAll();
+    }
+    function Autocomplete($keyword){
+        $keyword=$keyword.'%';
+        $this->ps_autocomplete->bindParam(':keyword', $keyword); 
+        $this->ps_autocomplete->execute();
+        return $this->ps_autocomplete->fetchAll();
     }
 
 }

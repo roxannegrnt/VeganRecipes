@@ -11,6 +11,9 @@
     padding: 10px;
     border: #bababa 1px solid;
 }
+#suggesstion-box{
+}
+
 #filters{
     width: 100%;
     min-height: 50px;
@@ -83,12 +86,12 @@
 }
 .btn-circle.btn-xs {
     width: 30px;
-  height: 30px;
-  text-align: center;
-  padding: 6px 0;
-  font-size: 12px;
-  line-height: 1.428571429;
-  border-radius: 30px;
+    height: 30px;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 1.428571429;
+    border-radius: 30px;
 }
 .modalRecipe{
     overflow-y: auto;
@@ -123,15 +126,16 @@
     background: none;
     -webkit-text-fill-color: #0645AD;
 }
-#Img{
+#AddPhoto{
     height:120px; 
     width:120px;
+    margin-bottom: 20px;
 }
 .frm{
     margin-bottom: 20px;
 }
 textarea{
-   resize: none;
+    resize: none;
 }
 .accept{
     border-color: green;
@@ -159,4 +163,13 @@ textarea{
 }
 #FileInput{
     display: none;
+}
+#labelImg{
+    display: block;
+    margin: auto;
+    margin-bottom: 20px;
+}
+#loader{
+    height: 50px;
+    width: 50px;
 }
