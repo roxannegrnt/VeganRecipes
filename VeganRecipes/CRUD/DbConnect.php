@@ -22,6 +22,7 @@ class DbConnect {
     private $ps_insertComment = null;
     private $ps_getComment = null;
     private $ps_removeComment = null;
+    private $ps_filterbyType = null;
     private $dbb = null;
 
     public function __construct() {
@@ -62,6 +63,8 @@ class DbConnect {
                 $this->ps_getComment->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_removeComment = $this->dbb->prepare("DELETE FROM commentaires WHERE IdCommentaire=:idC");
                 $this->ps_removeComment->setFetchMode(PDO::FETCH_ASSOC);
+                $this->ps_filterbyType = $this->dbb->prepare("SELECT * FROM `recettes` NATURAL JOIN types WHERE NomType= :type");
+                $this->ps_filterbyType->setFetchMode(PDO::FETCH_ASSOC);
             } catch (PDOException $e) {
                 die("Erreur : " . $e->getMessage());
             }
@@ -157,6 +160,11 @@ class DbConnect {
     function removeComment($idC) {
         $this->ps_removeComment->bindParam(':idC', $idC);
         $this->ps_removeComment->execute();
+    }
+    function filterByType($type){
+        $this->ps_filterbyType->bindParam(':type', $type); 
+        $this->ps_filterbyType->execute();
+        return $this->ps_filterbyType->fetchAll();
     }
 
 }

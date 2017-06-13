@@ -8,22 +8,14 @@ $().ready(function () {
 });
 
 function prepareUpload(event) {
-//    var infoFilesWithFilesEncoded = [];
-//    
-//    infoFilesWithFilesEncoded[0] = [];
-//    infoFilesWithFilesEncoded[0][0] = [];
-//    infoFilesWithFilesEncoded[0][0] = files[0];
-//    infoFilesWithFilesEncoded[0][1] = "";
-
+    var files = event.target.files;
     if (typeof window.FileReader !== 'undefined') {
         reader = new FileReader();
-
         //event onload s'execute à la fin de la function chargeFiles
         reader.onload = function (event) {
-            //infoFilesWithFilesEncoded[0][1] = event.target.result; // données DataURL
             $("#AddPhoto").attr('src', event.target.result); // show image tumbnail
         };
-        // reader.readAsDataURL(infoFilesWithFilesEncoded[0][0]);
+        reader.readAsDataURL(files[0]);
     }
 }
 function CloseModal() {
@@ -65,7 +57,7 @@ function ValidateRecipe(tick) {
         }
     });
 }
-function GetMyRecipes(){
+function GetMyRecipes() {
     $.ajax({
         type: "POST",
         url: "index.php",
@@ -73,7 +65,7 @@ function GetMyRecipes(){
         success: function (data) {
             $("body").html("");
             $("body").html(data);
-            $(".YesNo").append("<button type=\"button\" class=\"close\" onclick=RemoveRecipe(this,true) data-dismiss=\"modal\">&times;</button>");
+            $(".YesNo").append("<button type=\"button\" class=\"close\" onclick=RemoveRecipe(this,3) data-dismiss=\"modal\">&times;</button>");
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
@@ -188,6 +180,27 @@ function RemoveComment(close) {
         success: function (data) {
             $("body").html("");
             $("body").html(data);
+        },
+        error: function (error) {
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').delay(1000).fadeOut('slow');
+        }
+    });
+}
+function FilterByType(link) {
+    var type = $(link).text();
+    if (type == "All") {
+        var type = "";
+    }
+    $.ajax({
+        type: "POST",
+        url: "index.php",
+        data: 'type=' + type,
+        success: function (data) {
+            $("body").html("");
+            $("body").html(data);
+            $('#dropdownMenu1').dropdown();
+            $('#dropdownMenu2').dropdown();
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 

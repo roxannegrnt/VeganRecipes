@@ -153,13 +153,14 @@ affichage;
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right" id="dropdown1" aria-labelledby="dropdownMenu1">
-                        <li><a href="#">Starter</a></li>
-                        <li><a href="#">Main</a></li>
-                        <li><a href="#">Dessert</a></li>
+                        <li><a onclick="FilterByType(this)">Starter</a></li>
+                        <li><a onclick="FilterByType(this)">Main</a></li>
+                        <li><a onclick="FilterByType(this)">Dessert</a></li>
+                        <li><a onclick="FilterByType(this)">All</a></li>
                     </ul>
                 </div>
                 <div class="dropdown col-md-2 ">
-                    <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown">
                         Filter by
                         <span class="caret"></span>
                     </button>

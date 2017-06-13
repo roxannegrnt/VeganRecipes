@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 require './CRUD/DbConnect.php';
 include_once './lib/formatFunctions.php';
@@ -21,6 +20,7 @@ $IndexHome = true;
 if (!empty($_SESSION["uid"])) {
     $favorite = $DB->getFavByID($_SESSION["uid"]);
 }
+
 //Si l'utilisateur veut se logger
 if (isset($_REQUEST["login"])) {
     $exist = $DB->GetRegistration($_REQUEST["user"], sha1($_REQUEST["pwd"]));
@@ -112,4 +112,13 @@ if (isset($_REQUEST["commenttext"])) {
 if (isset($_REQUEST["idComment"])) {
     $DB->removeComment($_REQUEST["idComment"]);
     $comment = $DB->GetComment();
+}
+
+if (isset($_REQUEST["type"])) {
+    if ($_REQUEST["type"]!="") {
+        $recipes=$DB->filterByType($_REQUEST["type"]);
+    }
+    else{
+        $recipes=$DB->GetRecipes(1);
+    }
 }
