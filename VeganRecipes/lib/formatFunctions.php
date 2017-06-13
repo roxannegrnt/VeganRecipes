@@ -45,7 +45,7 @@ function VerifyImg($files) {
 }
 function MoveImg($files){
     $unique = ""; 
-    if (!empty($files)) {
+    if (!empty($files['upload']['tmp_name'])) {
             $IsVerified = VerifyImg($files);
             if ($IsVerified) {
                 $unique = uniqid("FILE_");

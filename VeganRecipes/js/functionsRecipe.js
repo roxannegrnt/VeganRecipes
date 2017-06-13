@@ -250,15 +250,11 @@ function CallTitles() {
             data: 'keyword=' + $(this).val(),
             async: true,
             beforeSend: function () {
-                $("#search-box").css("background", "#FFF url(upload/loaderIcon.gif) no-repeat 50px");
+                $("#search-box").css("background-image", "url(upload/loaderIcon.gif) no-repeat 50px");
             },
             success: function (data) {
                 $("#suggesstion-box").show();
                  $("#suggesstion-box").html(data);
-//                $("body").html("");
-//                $("body").html(data);
-//                $("#search-box").text($(this).val());
-                $("#search-box").css("background", "#FFF");
             }
         });
     });
