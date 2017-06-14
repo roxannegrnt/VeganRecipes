@@ -21,7 +21,7 @@ require_once './lib/FonctionAffichageIndex.php';
             <a class="navbar-brand" href="index.php">B</a>
             <div class = "collapse navbar-collapse" id = "example-navbar-collapse">
                 <div class="navbar-form navbar-left frmSearch" role="search">
-                    <input type="text" name="search" id="search-box" class="form-control" placeholder="Search">
+                    <input type="text" name="search" id="search-box" class="form-control col-lg-8" placeholder="Search">
                     <button type="submit" class="btn btn-default" data-backdrop="static" name="SubmitSearch" onclick="SubmitSearch()">Submit</button>
                     <div id="suggesstion-box"></div>
                 </div>

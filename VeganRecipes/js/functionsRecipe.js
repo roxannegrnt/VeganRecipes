@@ -217,13 +217,18 @@ function RemoveComment(close) {
 }
 function FilterByType(link) {
     var type = $(link).text();
-    var date=null;
-    switch(type){
-        case "All": type=null;
+    var date = null;
+    switch (type) {
+        case "All":
+            type = null;
             break;
-        case "Last added": date="DESC"; type=null;
+        case "Last added":
+            date = type;
+            type = null;
             break;
-        case "Oldest post": date="ASC"; type=null;
+        case "Oldest post":
+            date = type;
+            type = null;
             break;
     }
     $.ajax({
@@ -238,6 +243,10 @@ function FilterByType(link) {
         success: function (data) {
             $("body").html("");
             $("body").html(data);
+            $("#dropdownMenu1").text((type !== null ? type : "Filter By"));
+            $("#dropdownMenu1").append("<span class=\"caret\"></span>");
+            $('#dropdownMenu2').text((date !== null ? date : "Filter By"));
+            $("#dropdownMenu2").append("<span class=\"caret\"></span>");
             $('#dropdownMenu1').dropdown();
             $('#dropdownMenu2').dropdown();
         },
@@ -256,7 +265,7 @@ function CallTitles() {
             data: 'keyword=' + $(this).val(),
             async: true,
             beforeSend: function () {
-                $("#search-box").css("background-image", "url(upload/loaderIcon.gif) no-repeat 50px");
+                $("#search-box").addClass(".loading");
             },
             success: function (data) {
                 $("#suggesstion-box").show();

@@ -130,15 +130,15 @@ if (isset($_REQUEST["idComment"])) {
 }
 if (!empty($_REQUEST["date"])) {
     switch ($_REQUEST["date"]) {
-        case "ASC": $recipes = $DB->filterByDateA();
+        case "Last added": $recipes = $DB->filterByDateA();
             break;
-        case "DESC": $recipes = $DB->filterByDateD();
+        case "Oldest post": $recipes = $DB->filterByDateD();
             break;
         default :$recipes = $DB->GetRecipes(1);
     }
 }
 if (!empty($_REQUEST["type"])) {
-     $recipes = $DB->filterByType($_REQUEST["type"]);
+    $recipes = $DB->filterByType($_REQUEST["type"]);
 }
 if (isset($_REQUEST["keyword"])) {
     $resultAuto = $DB->Autocomplete($_REQUEST["keyword"]);

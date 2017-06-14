@@ -7,9 +7,9 @@
     background:#f7f9fc;
 }
 #search-box {
-    border-radius: 33px;
-    padding: 10px;
     border: #bababa 1px solid;
+    margin:0;
+    padding:5px;
 }
 #suggesstion-box{
 }
@@ -106,13 +106,12 @@
     list-style:none;
     margin:0;
     padding:0;
-    width:170px;
+
 }
 #recipeTitle-list li{
-    padding: 10px;
+    padding: 5px;
     background:#FAFAFA;
     border:#bababa 1px solid;
-    border-radius: 33px;
 }
 #recipeTitle-list li:hover{
     background:#bababa;
@@ -172,4 +171,11 @@ textarea{
 #loader{
     height: 50px;
     width: 50px;
+}
+.loading {    
+    background-color: #ffffff;
+    background-image: url("upload/loaderIcon2.gif");
+    background-size: 165px 15px;
+    background-position:right center;
+    background-repeat: no-repeat;
 }
