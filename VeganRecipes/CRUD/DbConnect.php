@@ -23,8 +23,9 @@ class DbConnect {
     private $ps_insertComment = null;
     private $ps_getComment = null;
     private $ps_removeComment = null;
-    private $ps_filterbyType = null;
-    private $ps_filterbyid = null;
+    private $ps_filterbyTypeA = null;
+    private $ps_filterbyTypeD = null;
+    private $ps_filterbyDate = null;
     private $ps_autocomplete=null;
     private $dbb = null;
 
@@ -68,11 +69,13 @@ class DbConnect {
                 $this->ps_getComment->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_removeComment = $this->dbb->prepare("DELETE FROM commentaires WHERE IdCommentaire=:idC");
                 $this->ps_removeComment->setFetchMode(PDO::FETCH_ASSOC);
-                $this->ps_filterbyType = $this->dbb->prepare("SELECT * FROM `recettes` NATURAL JOIN types WHERE NomType= :type");
+                $this->ps_filterbyType = $this->dbb->prepare("SELECT * FROM `recettes` NATURAL JOIN types WHERE NomType= :type AND Valider=1");
                 $this->ps_filterbyType->setFetchMode(PDO::FETCH_ASSOC);
-                $this->ps_filterbyid = $this->dbb->prepare("SELECT * FROM `recettes`ORDER BY IdRecette DESC");
-                $this->ps_filterbyid->setFetchMode(PDO::FETCH_ASSOC);
-                $this->ps_autocomplete = $this->dbb->prepare("select * from recettes WHERE Titre like :keyword ORDER BY titre LIMIT 0,6");
+                $this->ps_filterbyDateA = $this->dbb->prepare("SELECT * FROM `recettes` WHERE Valider=1 ORDER BY DateTimeInsert ASC");
+                $this->ps_filterbyDateA->setFetchMode(PDO::FETCH_ASSOC);
+                $this->ps_filterbyDateD = $this->dbb->prepare("SELECT * FROM `recettes`WHERE Valider=1 ORDER BY DateTimeInsert DESC");
+                $this->ps_filterbyDateD->setFetchMode(PDO::FETCH_ASSOC);
+                $this->ps_autocomplete = $this->dbb->prepare("select * from recettes WHERE Valider=1 AND Titre like :keyword ORDER BY titre LIMIT 0,6");
                 $this->ps_autocomplete->setFetchMode(PDO::FETCH_ASSOC);
             } catch (PDOException $e) {
                 die("Erreur : " . $e->getMessage());
@@ -179,9 +182,13 @@ class DbConnect {
         $this->ps_filterbyType->execute();
         return $this->ps_filterbyType->fetchAll();
     }
-    function filterById(){
-        $this->ps_filterbyid->execute();
-        return $this->ps_filterbyid->fetchAll();
+    function filterByDateA(){
+        $this->ps_filterbyDateA->execute();
+        return $this->ps_filterbyDateA->fetchAll();
+    }
+    function filterByDateD(){
+        $this->ps_filterbyDateD->execute();
+        return $this->ps_filterbyDateD->fetchAll();
     }
     function Autocomplete($keyword){
         $keyword=$keyword.'%';
@@ -189,5 +196,4 @@ class DbConnect {
         $this->ps_autocomplete->execute();
         return $this->ps_autocomplete->fetchAll();
     }
-
 }

@@ -167,8 +167,8 @@ affichage;
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right" id="dropdown2" aria-labelledby="dropdownMenu1">
-                        <li><a href="#">Last added</a></li>
-                        <li><a href="#">Oldest post</a></li>
+                        <li><a onclick="FilterByType(this)">Last added</a></li>
+                        <li><a onclick="FilterByType(this)">Oldest post</a></li>
                     </ul>
                 </div>
             </div>

@@ -217,13 +217,19 @@ function RemoveComment(close) {
 }
 function FilterByType(link) {
     var type = $(link).text();
-    if (type == "All") {
-        var type = "";
+    var date=null;
+    switch(type){
+        case "All": type=null;
+            break;
+        case "Last added": date="DESC"; type=null;
+            break;
+        case "Oldest post": date="ASC"; type=null;
+            break;
     }
     $.ajax({
         type: "POST",
         url: "index.php",
-        data: 'type=' + type,
+        data: {type: type, date: date},
         async: true,
         beforeSend: function () {
             $("section").html("");
@@ -254,7 +260,7 @@ function CallTitles() {
             },
             success: function (data) {
                 $("#suggesstion-box").show();
-                 $("#suggesstion-box").html(data);
+                $("#suggesstion-box").html(data);
             }
         });
     });

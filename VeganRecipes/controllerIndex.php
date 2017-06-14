@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 require './CRUD/DbConnect.php';
 include_once './lib/formatFunctions.php';
@@ -15,7 +16,7 @@ $types = $DB->GetTypes();
 $parameters = array();
 $favorite = array();
 $Isfav = false;
-$resultAuto="";
+$resultAuto = "";
 $recipes = $DB->GetRecipes(1);
 $comment = $DB->GetComment();
 $IndexHome = true;
@@ -127,13 +128,17 @@ if (isset($_REQUEST["idComment"])) {
     $DB->removeComment($_REQUEST["idComment"]);
     $comment = $DB->GetComment();
 }
-
-if (isset($_REQUEST["type"])) {
-    if ($_REQUEST["type"] != "") {
-        $recipes = $DB->filterByType($_REQUEST["type"]);
-    } else {
-        $recipes = $DB->GetRecipes(1);
+if (!empty($_REQUEST["date"])) {
+    switch ($_REQUEST["date"]) {
+        case "ASC": $recipes = $DB->filterByDateA();
+            break;
+        case "DESC": $recipes = $DB->filterByDateD();
+            break;
+        default :$recipes = $DB->GetRecipes(1);
     }
+}
+if (!empty($_REQUEST["type"])) {
+     $recipes = $DB->filterByType($_REQUEST["type"]);
 }
 if (isset($_REQUEST["keyword"])) {
     $resultAuto = $DB->Autocomplete($_REQUEST["keyword"]);
