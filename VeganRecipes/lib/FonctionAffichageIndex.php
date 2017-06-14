@@ -7,14 +7,14 @@
 function SignedIn($isadmin) {
     if ($isadmin == 0) {
         echo<<<affichage
-        <li><a href="index.php"><span class="glyphicon glyphicon-home"></span></a></li>
+        <li><a href="DestroyRecipe.php"><span class="glyphicon glyphicon-home"></span></a></li>
         <li><a data-toggle="modal" data-keyboard="false" data-target="#AddModal"><span class="glyphicon glyphicon-plus"></span></a></li>
         <li><a onclick="GetMyRecipes()"><span class="glyphicon glyphicon-list-alt"></span></a></li>
         <li><a href="disconnect.php"><span class="glyphicon glyphicon-log-out"></span></a></li>
 affichage;
     } else {
         echo<<<affichage
-       <li><a href="index.php"><span class="glyphicon glyphicon-home"></span></a></li>
+       <li><a href="DestroyRecipe.php"><span class="glyphicon glyphicon-home"></span></a></li>
         <li><a data-toggle="modal" data-keyboard="false" data-target="#AddModal"><span class="glyphicon glyphicon-plus"></span></a></li>
         <li><a onclick="GetRecipesToValidate();"><span class="glyphicon glyphicon-cog"></span></a></li>
         <li><a href="disconnect.php"><span class="glyphicon glyphicon-log-out"></span></a></li>
@@ -42,13 +42,7 @@ affichage;
     <a data-toggle = "modal" data-target = ".$value[IdRecette]" >Read more...</a>
     </p>
 reste;
-    foreach ($comments as $k => $v) {
-        echo "<article class=\"well well-sm col-md-12\">";
-        AdminCross($isadmin);
-        echo "<h4 class=\"col-lg-3\">" . $v["Username"] . "</h4>";
-        echo "<p id=$v[IdCommentaire] class=\"col-lg-12 Usercomment\">" . $v["Commentaire"] . "</p>";
-        echo "</article>";
-    }
+    AfficherComment($comments,$isadmin);
     if (IsConnected()) {
         echo<<<reste
     <button type = "button" class = "btn btn-primary pull-right" class = "Getcomment" data-toggle = "collapse" data-target = "#collapseComment$value[IdRecette]" aria-expanded = "false" aria-controls = "collapseExample">Add a comment</button>
@@ -104,4 +98,15 @@ function AdmincrossRecipe($IsAdmin) {
         echo "<button type=\"button\" class=\"close\" onclick=RemoveRecipe(this,1) data-dismiss=\"modal\">&times;</button>";
         echo "</div>";
     }
+}
+function AfficherComment($comments,$isadmin){
+    echo "<div id=\"Allcomments\">";
+    foreach ($comments as $k => $v) {
+        echo "<article class=\"well well-sm col-md-12\">";
+        AdminCross($isadmin);
+        echo "<h4 class=\"col-lg-3\">" . $v["Username"] . "</h4>";
+        echo "<p id=$v[IdCommentaire] class=\"col-lg-12 Usercomment\">" . $v["Commentaire"] . "</p>";
+        echo "</article>";
+    }
+    echo "</div>";
 }

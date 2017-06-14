@@ -25,6 +25,11 @@ function prepareUpload(event) {
         reader.readAsDataURL(files[0]);
     }
 }
+function onLoad() {
+    $('#dropdownMenu1').dropdown();
+    $('#dropdownMenu2').dropdown();
+    $('.collapse').collapse("toggle");
+}
 function EmptyModalSignin() {
     $('#myModal').modal('hide').data('bs.modal', null);
     $("#signinE").html("");
@@ -137,10 +142,6 @@ function Favorite(tag) {
         type: "POST",
         url: "index.php",
         data: 'favorite=' + id,
-        async: true,
-        beforeSend: function () {
-            $(".loader").css("background", "#FFF url(loaderIcon.gif) no-repeat 165px");
-        },
         success: function () {
             $(tag).removeClass();
             $(tag).addClass("glyphicon glyphicon-star pull-left");
@@ -186,12 +187,10 @@ function AddComment(button) {
         url: "index.php",
         data: {commenttext: comment, idRecipe: idR},
         async: true,
-        beforeSend: function () {
-            $("#inputComment").val("<img class=\"col-lg-offset-6\" src=\"upload/loaderIcon.gif\" id=\"loader\">");
-        },
         success: function (data) {
             $("body").html("");
             $("body").html(data);
+            onLoad();
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
@@ -208,6 +207,7 @@ function RemoveComment(close) {
         success: function (data) {
             $("body").html("");
             $("body").html(data);
+            onLoad();
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
@@ -220,7 +220,7 @@ function FilterByType(link) {
     var date = null;
     switch (type) {
         case "All":
-            type = null;
+            type = null; date="all";
             break;
         case "Last added":
             date = type;
@@ -234,7 +234,7 @@ function FilterByType(link) {
     $.ajax({
         type: "POST",
         url: "index.php",
-        data: {type: type, date: date},
+        data: {Filtertype: type, date: date},
         async: true,
         beforeSend: function () {
             $("section").html("");
@@ -247,8 +247,8 @@ function FilterByType(link) {
             $("#dropdownMenu1").append("<span class=\"caret\"></span>");
             $('#dropdownMenu2').text((date !== null ? date : "Filter By"));
             $("#dropdownMenu2").append("<span class=\"caret\"></span>");
-            $('#dropdownMenu1').dropdown();
-            $('#dropdownMenu2').dropdown();
+            onLoad();
+
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
@@ -257,7 +257,7 @@ function FilterByType(link) {
     });
 }
 function CallTitles() {
-    // AJAX call for autocomplete 
+    // call AJAX for autocomplete 
     $("#search-box").keyup(function () {
         $.ajax({
             type: "POST",

@@ -1,8 +1,8 @@
 <?php
-
 session_start();
 require './CRUD/DbConnect.php';
 include_once './lib/formatFunctions.php';
+require_once './lib/FonctionAffichageIndex.php';
 //Assignation des valeurs d'erreur
 $signin_error = "";
 $signup_error = "";
@@ -17,7 +17,12 @@ $parameters = array();
 $favorite = array();
 $Isfav = false;
 $resultAuto = "";
-$recipes = $DB->GetRecipes(1);
+if (isset($_SESSION["recipe"])) {
+    $recipes = $_SESSION["recipe"];
+} else {
+    $recipes = $DB->GetRecipes(1);
+}
+
 $comment = $DB->GetComment();
 $IndexHome = true;
 if (!empty($_SESSION["uid"])) {
@@ -120,7 +125,9 @@ if (isset($_REQUEST["Unfavorite"])) {
 if (isset($_REQUEST["commenttext"])) {
     $idR = substr($_REQUEST["idRecipe"], 15);
     $comments = filter_var($_REQUEST["commenttext"], FILTER_SANITIZE_STRING);
-    $DB->insertComment($comments, $_SESSION["uid"], $idR);
+    if (!empty($comments)) {
+        $DB->insertComment($comments, $_SESSION["uid"], $idR);
+    }
     $comment = $DB->GetComment();
 }
 //Si l'admin veut supprimer un commentaire 
@@ -130,15 +137,15 @@ if (isset($_REQUEST["idComment"])) {
 }
 if (!empty($_REQUEST["date"])) {
     switch ($_REQUEST["date"]) {
-        case "Last added": $recipes = $DB->filterByDateA();
+        case "Last added": $recipes = $DB->filterByDateD();
             break;
-        case "Oldest post": $recipes = $DB->filterByDateD();
+        case "Oldest post": $recipes = $DB->filterByDateA();
             break;
         default :$recipes = $DB->GetRecipes(1);
     }
 }
-if (!empty($_REQUEST["type"])) {
-    $recipes = $DB->filterByType($_REQUEST["type"]);
+if (!empty($_REQUEST["Filtertype"])) {
+    $recipes = $DB->filterByType($_REQUEST["Filtertype"]);
 }
 if (isset($_REQUEST["keyword"])) {
     $resultAuto = $DB->Autocomplete($_REQUEST["keyword"]);
@@ -146,3 +153,4 @@ if (isset($_REQUEST["keyword"])) {
 if (isset($_REQUEST["search"])) {
     $recipes = $DB->Autocomplete($_REQUEST["search"]);
 }
+$_SESSION["recipe"]=$recipes;

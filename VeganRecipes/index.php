@@ -1,6 +1,5 @@
 <?php
 require_once './controllerIndex.php';
-require_once './lib/FonctionAffichageIndex.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -33,7 +32,7 @@ require_once './lib/FonctionAffichageIndex.php';
                     } else {
                         $IsAdmin = "";
                         echo<<<affichage
-        <li><a class="active" href="index.php"><span class="glyphicon glyphicon-home"></span></a></li>
+        <li><a class="active" href="DestroyRecipe.php"><span class="glyphicon glyphicon-home"></span></a></li>
         <li><a data-toggle="modal" data-keyboard="false" data-target="#myModal"><span class="glyphicon glyphicon-user"></span></a></li>
 affichage;
                     }
@@ -177,7 +176,7 @@ affichage;
                     <?php echo $add_success; ?>
                 </div>
                 <?php
-                foreach ($recipes as $key => $value) {
+                foreach ($_SESSION["recipe"] as $key => $value) {
                     //Shorter description for basic viewing
                     $descripShort = RestrictLengthDescrip($value["Description"]);
                     if ($IndexHome == 0) {

@@ -25,8 +25,7 @@ class DbConnect {
     private $ps_removeComment = null;
     private $ps_filterbyTypeA = null;
     private $ps_filterbyTypeD = null;
-    private $ps_filterbyDate = null;
-    private $ps_autocomplete=null;
+    private $ps_autocomplete = null;
     private $dbb = null;
 
     public function __construct() {
@@ -38,7 +37,7 @@ class DbConnect {
                 //Prepare statment
                 $this->ps_getRegistration = $this->dbb->prepare("SELECT * FROM `utilisateurs` WHERE Username= :user AND Password= :pwd");
                 $this->ps_getRegistration->setFetchMode(PDO::FETCH_ASSOC);
-                 $this->ps_getUser = $this->dbb->prepare("SELECT * FROM `utilisateurs` WHERE Username= :user");
+                $this->ps_getUser = $this->dbb->prepare("SELECT * FROM `utilisateurs` WHERE Username= :user");
                 $this->ps_getUser->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_register = $this->dbb->prepare("INSERT INTO utilisateurs VALUES('',:user,:pwd,0)");
                 $this->ps_register->setFetchMode(PDO::FETCH_ASSOC);
@@ -89,12 +88,14 @@ class DbConnect {
         $this->ps_getRegistration->execute();
         return $this->ps_getRegistration->fetch();
     }
-    function GetUser($user){
+
+    function GetUser($user) {
         $this->ps_getUser->bindParam(':user', $user);
         $this->ps_getUser->execute();
         return $this->ps_getUser->fetch();
     }
-            function Register($user, $pwd) {
+
+    function Register($user, $pwd) {
         $this->ps_register->bindParam(':user', $user);
         $this->ps_register->bindParam(':pwd', $pwd);
         $this->ps_register->execute();
@@ -106,13 +107,18 @@ class DbConnect {
     }
 
     function InsertRecipe($param, $id, $img) {
+        $this->dbb->beginTransaction();
         $this->ps_insertRecipe->bindParam(':title', $param[0]);
         $this->ps_insertRecipe->bindParam(':ingredients', $param[1]);
         $this->ps_insertRecipe->bindParam(':descrip', $param[2]);
         $this->ps_insertRecipe->bindParam(':type', $param[3]);
         $this->ps_insertRecipe->bindParam(':img', $img);
         $this->ps_insertRecipe->bindParam(':id', $id);
-        $this->ps_insertRecipe->execute();
+        if ($this->ps_insertRecipe->execute()) {
+            $this->dbb->commit();
+        } else {
+            $this->dbb->rollBack();
+        }
     }
 
     function GetRecipes($valid) {
@@ -144,9 +150,14 @@ class DbConnect {
     }
 
     function AddFav($uid, $idR) {
+        $this->dbb->beginTransaction();
         $this->ps_addFav->bindParam(':uid', $uid);
         $this->ps_addFav->bindParam(':idR', $idR);
-        $this->ps_addFav->execute();
+        if ($this->ps_addFav->execute()) {
+            $this->dbb->commit();
+        } else {
+            $this->dbb->rollBack();
+        }
     }
 
     function getFavByID($uid) {
@@ -162,10 +173,15 @@ class DbConnect {
     }
 
     function insertComment($comment, $uid, $idR) {
+        $this->dbb->beginTransaction();
         $this->ps_insertComment->bindParam(':comment', $comment);
         $this->ps_insertComment->bindParam(':uid', $uid);
         $this->ps_insertComment->bindParam(':idR', $idR);
-        $this->ps_insertComment->execute();
+        if ($this->ps_insertComment->execute()) {
+            $this->dbb->commit();
+        } else {
+            $this->dbb->rollBack();
+        }
     }
 
     function GetComment() {
@@ -177,23 +193,28 @@ class DbConnect {
         $this->ps_removeComment->bindParam(':idC', $idC);
         $this->ps_removeComment->execute();
     }
-    function filterByType($type){
-        $this->ps_filterbyType->bindParam(':type', $type); 
+
+    function filterByType($type) {
+        $this->ps_filterbyType->bindParam(':type', $type);
         $this->ps_filterbyType->execute();
         return $this->ps_filterbyType->fetchAll();
     }
-    function filterByDateA(){
+
+    function filterByDateA() {
         $this->ps_filterbyDateA->execute();
         return $this->ps_filterbyDateA->fetchAll();
     }
-    function filterByDateD(){
+
+    function filterByDateD() {
         $this->ps_filterbyDateD->execute();
         return $this->ps_filterbyDateD->fetchAll();
     }
-    function Autocomplete($keyword){
-        $keyword=$keyword.'%';
-        $this->ps_autocomplete->bindParam(':keyword', $keyword); 
+
+    function Autocomplete($keyword) {
+        $keyword = $keyword . '%';
+        $this->ps_autocomplete->bindParam(':keyword', $keyword);
         $this->ps_autocomplete->execute();
         return $this->ps_autocomplete->fetchAll();
     }
+
 }
