@@ -1,9 +1,10 @@
 <?php
+
 session_start();
 require './CRUD/DbConnect.php';
 include_once './lib/formatFunctions.php';
 require_once './lib/FonctionAffichageIndex.php';
-//Assignation des valeurs d'erreur
+//Declaring variables for errors
 $signin_error = "";
 $signup_error = "";
 $img_error = "";
@@ -145,7 +146,11 @@ if (!empty($_REQUEST["date"])) {
     }
 }
 if (!empty($_REQUEST["Filtertype"])) {
-    $recipes = $DB->filterByType($_REQUEST["Filtertype"]);
+    if ($_REQUEST["Filtertype"] == "All") {
+        $recipes = $DB->GetRecipes(1);
+    } else {
+        $recipes = $DB->filterByType($_REQUEST["Filtertype"]);
+    }
 }
 if (isset($_REQUEST["keyword"])) {
     $resultAuto = $DB->Autocomplete($_REQUEST["keyword"]);
@@ -153,4 +158,4 @@ if (isset($_REQUEST["keyword"])) {
 if (isset($_REQUEST["search"])) {
     $recipes = $DB->Autocomplete($_REQUEST["search"]);
 }
-$_SESSION["recipe"]=$recipes;
+$_SESSION["recipe"] = $recipes;

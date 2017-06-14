@@ -142,6 +142,10 @@ function Favorite(tag) {
         type: "POST",
         url: "index.php",
         data: 'favorite=' + id,
+        beforeSend: function () {
+            $("section").html("");
+            $("section").append("<img class=\"col-lg-offset-6\" src=\"upload/loaderIcon.gif\" id=\"loader\">");
+        },
         success: function () {
             $(tag).removeClass();
             $(tag).addClass("glyphicon glyphicon-star pull-left");
@@ -220,7 +224,7 @@ function FilterByType(link) {
     var date = null;
     switch (type) {
         case "All":
-            type = null; date="all";
+            type = "All";
             break;
         case "Last added":
             date = type;
@@ -297,6 +301,7 @@ function SubmitSearch() {
         success: function (data) {
             $("body").html("");
             $("body").html(data);
+            onLoad();
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 

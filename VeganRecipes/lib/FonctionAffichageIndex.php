@@ -56,6 +56,7 @@ reste;
             echo "<div class=\"loader\" id=\"$value[IdRecette]\"></div>";
         } else {
             echo " <i class=\"glyphicon glyphicon-star pull-left\" id=\"Star$value[IdRecette]\" onclick=UnFavorite(this)></i>";
+            echo "<div class=\"loader\" id=\"$value[IdRecette]\"></div>";
         }
     }
     echo "<div class=\"loader\"></div>";
