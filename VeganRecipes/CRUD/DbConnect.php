@@ -19,6 +19,7 @@ class DbConnect {
     private $ps_getNomFichier = null;
     private $ps_addFav = null;
     private $ps_getFavByID = null;
+    private $ps_getRecetteByFav = null;
     private $ps_removeFav = null;
     private $ps_insertComment = null;
     private $ps_getComment = null;
@@ -51,6 +52,8 @@ class DbConnect {
                 $this->ps_getRecipes->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_getByRecipesId = $this->dbb->prepare("SELECT * FROM `recettes` WHERE IdUtilisateur= :uid");
                 $this->ps_getByRecipesId->setFetchMode(PDO::FETCH_ASSOC);
+                $this->ps_getRecetteByFav = $this->dbb->prepare("SELECT * FROM `favoris` JOIN recettes USING (IdRecette) WHERE favoris.IdUtilisateur = :uid");
+                $this->ps_getRecetteByFav->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_validateRecipe = $this->dbb->prepare("UPDATE recettes SET Valider=1 WHERE IdRecette=:idRecette");
                 $this->ps_validateRecipe->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_removeRecipe = $this->dbb->prepare("DELETE FROM recettes WHERE IdRecette=:idRecette");
@@ -134,6 +137,11 @@ class DbConnect {
         $this->ps_getByRecipesId->bindParam(':uid', $uid);
         $this->ps_getByRecipesId->execute();
         return $this->ps_getByRecipesId->fetchAll();
+    }
+    function GetRecipesByFav($uid){
+        $this->ps_getRecetteByFav->bindParam(':uid', $uid);
+        $this->ps_getRecetteByFav->execute();
+        return $this->ps_getRecetteByFav->fetchAll();
     }
 
     function ValidateRecipe($idR) {

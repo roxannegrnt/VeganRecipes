@@ -87,10 +87,39 @@ function GetMyRecipes() {
         type: "POST",
         url: "index.php",
         data: 'myrecipes=true',
+        async: true,
+        beforeSend: function () {
+            $("section").html("");
+            $("section").append("<img class=\"col-lg-offset-6\" src=\"upload/loaderIcon.gif\" id=\"loader\">");
+        },
         success: function (data) {
             $("body").html("");
             $("body").html(data);
             $(".YesNo").append("<button type=\"button\" class=\"close\" onclick=RemoveRecipe(this,3) data-dismiss=\"modal\">&times;</button>");
+        },
+        error: function (error) {
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').delay(1000).fadeOut('slow');
+        }
+    });
+}
+function GetMyFav() {
+  var Fav= "Favorites";
+    $.ajax({
+        type: "POST",
+        url: "index.php",
+        data: 'myFav=true',
+        async: true,
+        beforeSend: function () {
+            $("section").html("");
+            $("section").append("<img class=\"col-lg-offset-6\" src=\"upload/loaderIcon.gif\" id=\"loader\">");
+        },
+        success: function (data) {
+            $("body").html("");
+            $("body").html(data);
+            $('#dropdownMenu2').text(Fav);
+            $("#dropdownMenu2").append("<span class=\"caret\"></span>");
+            onLoad();
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 

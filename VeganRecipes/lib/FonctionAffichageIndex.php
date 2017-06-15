@@ -7,14 +7,14 @@
 function SignedIn($isadmin) {
     if ($isadmin == 0) {
         echo<<<affichage
-        <li><a href="DestroyRecipe.php"><span class="glyphicon glyphicon-home"></span></a></li>
+        <li><a href="index.php"><span class="glyphicon glyphicon-home"></span></a></li>
         <li><a data-toggle="modal" data-keyboard="false" data-target="#AddModal"><span class="glyphicon glyphicon-plus"></span></a></li>
         <li><a onclick="GetMyRecipes()"><span class="glyphicon glyphicon-list-alt"></span></a></li>
         <li><a href="disconnect.php"><span class="glyphicon glyphicon-log-out"></span></a></li>
 affichage;
     } else {
         echo<<<affichage
-       <li><a href="DestroyRecipe.php"><span class="glyphicon glyphicon-home"></span></a></li>
+       <li><a href="index.php"><span class="glyphicon glyphicon-home"></span></a></li>
         <li><a data-toggle="modal" data-keyboard="false" data-target="#AddModal"><span class="glyphicon glyphicon-plus"></span></a></li>
         <li><a onclick="GetRecipesToValidate();"><span class="glyphicon glyphicon-cog"></span></a></li>
         <li><a href="disconnect.php"><span class="glyphicon glyphicon-log-out"></span></a></li>
@@ -49,7 +49,7 @@ reste;
         echo<<<reste
     <button type = "button" class = "btn btn-primary pull-right Getcomment" data-toggle = "collapse" data-target = "#collapseComment$value[IdRecette]" aria-expanded = "false" aria-controls = "collapseExample">Add a comment</button>
     <div class = "collapse" id = "collapseComment$value[IdRecette]">
-    <input type = "text" class = "form-control" name=comment id="inputComment">
+    <input type = "text" class = "form-control" name=comment id="inputComment" autofocus>
     <input class = "btn btn-default" type = "button" value = "send comment" onclick=AddComment(this)>
     </div>
 reste;
@@ -123,4 +123,9 @@ function AutocompleteResult($resultAuto) {
         echo "</li>";
     }
     echo "</ul>";
+}
+function FilterSignIn($signin){
+    if (!empty($signin)) {
+        echo "<li><a onclick=\"GetMyFav()\">Favorites</a></li>";
+    }
 }

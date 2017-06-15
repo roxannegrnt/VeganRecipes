@@ -72,6 +72,10 @@
 .signup:hover{
     text-decoration:none;
     outline: 0;
+    
+}
+a:hover{
+    cursor: pointer;
 }
 .btn-circle.btn-xl {
     width: 70px;
@@ -178,4 +182,7 @@ textarea{
     background-size: 165px 15px;
     background-position:right center;
     background-repeat: no-repeat;
+}
+.Allcomments{
+    margin-top: 30px;
 }

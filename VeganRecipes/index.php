@@ -17,7 +17,7 @@ require_once './controllerIndex.php';
     <header>
 
         <nav class="navbar navbar-default" id="nav">
-            <a class="navbar-brand" href="index.php">B</a>
+            <a class="navbar-brand" href="index.php">Veganyums</a>
             <div class = "collapse navbar-collapse" id = "example-navbar-collapse">
                 <div class="navbar-form navbar-left frmSearch" role="search">
                     <input type="text" name="search" id="search-box" class="form-control col-lg-8" placeholder="Search">
@@ -32,7 +32,7 @@ require_once './controllerIndex.php';
                     } else {
                         $IsAdmin = "";
                         echo<<<affichage
-        <li><a class="active" href="DestroyRecipe.php"><span class="glyphicon glyphicon-home"></span></a></li>
+        <li><a class="active" href="index.php"><span class="glyphicon glyphicon-home"></span></a></li>
         <li><a data-toggle="modal" data-keyboard="false" data-target="#myModal"><span class="glyphicon glyphicon-user"></span></a></li>
 affichage;
                     }
@@ -168,15 +168,16 @@ affichage;
                     <ul class="dropdown-menu dropdown-menu-right" id="dropdown2" aria-labelledby="dropdownMenu1">
                         <li><a onclick="FilterByType(this)">Last added</a></li>
                         <li><a onclick="FilterByType(this)">Oldest post</a></li>
+                        <?php FilterSignIn($_SESSION["uid"])?>
                     </ul>
                 </div>
             </div>
             <section>
                 <div class="col-lg-5" id="msg">
-                    <?php echo $add_success; ?>
+                    <?php echo $add_success; echo $none_error; ?>
                 </div>
                 <?php
-                foreach ($_SESSION["recipe"] as $key => $value) {
+                foreach ($recipes as $key => $value) {
                     //Shorter description for basic viewing
                     $descripShort = RestrictLengthDescrip($value["Description"]);
                     if ($IndexHome == 0) {

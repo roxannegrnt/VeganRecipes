@@ -9,6 +9,7 @@ $signup_error = "";
 $img_error = "";
 $add_error = "";
 $add_success = "";
+$none_error="";
 //Initialisation de la classe DB
 $DB = new DbConnect();
 //Recherche des types
@@ -17,12 +18,7 @@ $parameters = array();
 $favorite = array();
 $Isfav = false;
 $resultAuto = "";
-if (isset($_SESSION["recipe"])) {
-    $recipes = $_SESSION["recipe"];
-} else {
-    $recipes = $DB->GetRecipes(1);
-}
-
+$recipes = $DB->GetRecipes(1);
 $comment = $DB->GetComment();
 $IndexHome = true;
 if (!empty($_SESSION["uid"])) {
@@ -92,9 +88,17 @@ if (isset($_REQUEST["validate"])) {
     $IndexHome = 0;
 }
 
+if (isset($_REQUEST["myFav"])) {
+    $recipes= $DB->GetRecipesByFav($_SESSION["uid"]);
+    $IndexHome = 1;
+}
+
 //si l'utilisateur veut obtenir ces propres recettes
 if (isset($_REQUEST["myrecipes"])) {
     $recipes = $DB->GetRecipesById($_SESSION["uid"]);
+    if (empty($recipes)) {
+        $none_error="<div class=\"alert alert-success\">You haven't created any recipes</div>";
+    }
     $IndexHome = 3;
 }
 //si l'utilisateur veut mettre en favori
@@ -130,4 +134,3 @@ if (isset($_REQUEST["keyword"])) {
 if (isset($_REQUEST["search"])) {
     $recipes = $DB->Autocomplete($_REQUEST["search"]);
 }
-$_SESSION["recipe"] = $recipes;
