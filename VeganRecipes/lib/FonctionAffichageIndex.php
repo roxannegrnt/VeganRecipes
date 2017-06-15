@@ -42,10 +42,12 @@ affichage;
     <a data-toggle = "modal" data-target = ".$value[IdRecette]" >Read more...</a>
     </p>
 reste;
-    AfficherComment($comments,$isadmin);
+    echo "<div class=\"Allcomments\">";
+    AfficherComment($comments, $isadmin);
+    echo "</div>";
     if (IsConnected()) {
         echo<<<reste
-    <button type = "button" class = "btn btn-primary pull-right" class = "Getcomment" data-toggle = "collapse" data-target = "#collapseComment$value[IdRecette]" aria-expanded = "false" aria-controls = "collapseExample">Add a comment</button>
+    <button type = "button" class = "btn btn-primary pull-right Getcomment" data-toggle = "collapse" data-target = "#collapseComment$value[IdRecette]" aria-expanded = "false" aria-controls = "collapseExample">Add a comment</button>
     <div class = "collapse" id = "collapseComment$value[IdRecette]">
     <input type = "text" class = "form-control" name=comment id="inputComment">
     <input class = "btn btn-default" type = "button" value = "send comment" onclick=AddComment(this)>
@@ -60,7 +62,7 @@ reste;
         }
     }
     echo "<div class=\"loader\"></div>";
-        echo "</article>";
+    echo "</article>";
 }
 
 /**
@@ -77,11 +79,12 @@ function IndexAdmin($value, $descripShort) {
                      $descripShort
                      <a data-toggle="modal" data-target=".$value[IdRecette]" >Read more...</a>
                     </p>
-        </article>
+        
         <div class="YesNo col-lg-3" id="$value[IdRecette]">
         <button onclick="ValidateRecipe(this)" class="btn btn-default btn-circle btn-xs accept"><i class="glyphicon glyphicon-ok"></i></button>
         <button onclick="RemoveRecipe(this,0)" class="btn btn-default btn-circle btn-xs" id="refuse"><i class="glyphicon glyphicon-remove"></i></button>
         </div>
+            </article>
 affichage;
 }
 
@@ -100,8 +103,8 @@ function AdmincrossRecipe($IsAdmin) {
         echo "</div>";
     }
 }
-function AfficherComment($comments,$isadmin){
-    echo "<div id=\"Allcomments\">";
+
+function AfficherComment($comments, $isadmin) {
     foreach ($comments as $k => $v) {
         echo "<article class=\"well well-sm col-md-12\">";
         AdminCross($isadmin);
@@ -109,5 +112,15 @@ function AfficherComment($comments,$isadmin){
         echo "<p id=$v[IdCommentaire] class=\"col-lg-12 Usercomment\">" . $v["Commentaire"] . "</p>";
         echo "</article>";
     }
-    echo "</div>";
+}
+
+function AutocompleteResult($resultAuto) {
+    echo "<ul id=\"recipeTitle-list\" class=\"col-lg-8\">";
+    foreach ($resultAuto as $title) {
+        $titre = $title["Titre"];
+        echo "<li  onClick=\"selectTitle('$titre');\">";
+        echo $titre;
+        echo "</li>";
+    }
+    echo "</ul>";
 }

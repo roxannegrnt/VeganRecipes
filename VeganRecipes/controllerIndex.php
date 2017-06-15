@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 require './CRUD/DbConnect.php';
 include_once './lib/formatFunctions.php';
@@ -75,6 +74,7 @@ if (isset($_REQUEST["Add"])) {
             $DB->InsertRecipe($param, $_SESSION["uid"], $unique);
             $parameters = array();
             $add_success = "<div class=\"alert alert-success\">Recipe added sucessfully</div>";
+            $recipes=$DB->GetRecipes(1);
         }
     } else {
         $add_error = "<div class=\"alert alert-danger\">Please fill out all inputs</div>";
@@ -91,22 +91,7 @@ if (isset($_REQUEST["validate"])) {
     $recipes = $DB->GetRecipes(0);
     $IndexHome = 0;
 }
-//Si l'admin veut supprimer la recette
-if (isset($_REQUEST["remove"])) {
-    $file = $DB->GetNameFile($_REQUEST["remove"]);
-    $DB->RemoveRecipe($_REQUEST["remove"]);
-    $IndexHome = $_REQUEST["indexhome"];
-    switch ($IndexHome) {
-        case 1:$recipes = $DB->GetRecipes(1);
-            break;
-        case 0:$recipes = $DB->GetRecipes(0);
-        default: $recipes = $DB->GetRecipesById($_SESSION["uid"]);
-            break;
-    }
-    if ($file["NomFichierImg"] != "") {
-        DeleteImg('upload/', $file);
-    }
-}
+
 //si l'utilisateur veut obtenir ces propres recettes
 if (isset($_REQUEST["myrecipes"])) {
     $recipes = $DB->GetRecipesById($_SESSION["uid"]);
@@ -122,20 +107,7 @@ if (isset($_REQUEST["Unfavorite"])) {
     $idR = substr($_REQUEST["Unfavorite"], 4);
     $DB->removeFav($_SESSION["uid"], $idR);
 }
-//Si l'utilisateur veut ajouter un commentaire
-if (isset($_REQUEST["commenttext"])) {
-    $idR = substr($_REQUEST["idRecipe"], 15);
-    $comments = filter_var($_REQUEST["commenttext"], FILTER_SANITIZE_STRING);
-    if (!empty($comments)) {
-        $DB->insertComment($comments, $_SESSION["uid"], $idR);
-    }
-    $comment = $DB->GetComment();
-}
-//Si l'admin veut supprimer un commentaire 
-if (isset($_REQUEST["idComment"])) {
-    $DB->removeComment($_REQUEST["idComment"]);
-    $comment = $DB->GetComment();
-}
+//Si l'utilisateur veut filtrer par date de post
 if (!empty($_REQUEST["date"])) {
     switch ($_REQUEST["date"]) {
         case "Last added": $recipes = $DB->filterByDateD();

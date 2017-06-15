@@ -28,7 +28,7 @@ function prepareUpload(event) {
 function onLoad() {
     $('#dropdownMenu1').dropdown();
     $('#dropdownMenu2').dropdown();
-    $('.collapse').collapse("toggle");
+
 }
 function EmptyModalSignin() {
     $('#myModal').modal('hide').data('bs.modal', null);
@@ -99,19 +99,22 @@ function GetMyRecipes() {
     });
 }
 function RemoveRecipe(cross, IsIndexhome) {
+    console.log($(cross).closest(".YesNo").closest("article").html());
     var id = $(cross).closest(".YesNo").attr("id");
     $.ajax({
         type: "POST",
-        url: "index.php",
+        url: "CallAjax.php",
         data: {remove: id, indexhome: IsIndexhome},
-        success: function (data) {
-            $("body").html("");
-            $("body").html(data);
+        success: function () {
+            if (IsIndexhome == 0) {
+                $(cross).closest(".YesNo").closest("article").remove();
+                $(cross).closest(".YesNo").remove();
+            }
+            else {
+                $(cross).closest(".YesNo").parent().closest("article").remove();
+            }
             $('#msg').append("<div class=\"alert alert-success col-md-12\"role=\"alert\">recipe deleted successfully</div>").fadeIn('slow'); //also show a success message 
             $('#msg').delay(1000).fadeOut('slow');
-            if (IsIndexhome == 3) {
-                $(".YesNo").append("<button type=\"button\" class=\"close\" onclick=RemoveRecipe(this,3) data-dismiss=\"modal\">&times;</button>");
-            }
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
@@ -142,10 +145,6 @@ function Favorite(tag) {
         type: "POST",
         url: "index.php",
         data: 'favorite=' + id,
-        beforeSend: function () {
-            $("section").html("");
-            $("section").append("<img class=\"col-lg-offset-6\" src=\"upload/loaderIcon.gif\" id=\"loader\">");
-        },
         success: function () {
             $(tag).removeClass();
             $(tag).addClass("glyphicon glyphicon-star pull-left");
@@ -188,13 +187,12 @@ function AddComment(button) {
     var comment = $(button).closest(".collapse").find("input[name=comment]").val();
     $.ajax({
         type: "POST",
-        url: "index.php",
+        url: "CallAjax.php",
         data: {commenttext: comment, idRecipe: idR},
-        async: true,
         success: function (data) {
-            $("body").html("");
-            $("body").html(data);
-            onLoad();
+            $(button).closest(".collapse").parent().find(".Allcomments").html("");
+            $(button).closest(".collapse").parent().find(".Allcomments").html(data);
+            $(button).closest(".collapse").find("input[name=comment]").val("");
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
@@ -204,14 +202,13 @@ function AddComment(button) {
 }
 function RemoveComment(close) {
     var id = $(close).closest("article").find(".Usercomment").attr("id");
+    var idR = $(close).closest(".Allcomments").parent().find(".YesNo").attr("id");
     $.ajax({
         type: "POST",
-        url: "index.php",
-        data: 'idComment=' + id,
+        url: "CallAjax.php",
+        data: {idComment: id, idR: idR},
         success: function (data) {
-            $("body").html("");
-            $("body").html(data);
-            onLoad();
+            $(close).closest(".Allcomments").html(data);
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
@@ -265,7 +262,7 @@ function CallTitles() {
     $("#search-box").keyup(function () {
         $.ajax({
             type: "POST",
-            url: "ajaxcallAutocomplete.php",
+            url: "CallAjax.php",
             data: 'keyword=' + $(this).val(),
             async: true,
             beforeSend: function () {

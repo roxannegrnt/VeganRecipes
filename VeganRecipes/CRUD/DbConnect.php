@@ -22,6 +22,7 @@ class DbConnect {
     private $ps_removeFav = null;
     private $ps_insertComment = null;
     private $ps_getComment = null;
+     private $ps_getCommentbyId = null;
     private $ps_removeComment = null;
     private $ps_filterbyTypeA = null;
     private $ps_filterbyTypeD = null;
@@ -66,6 +67,8 @@ class DbConnect {
                 $this->ps_insertComment->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_getComment = $this->dbb->prepare("SELECT IdCommentaire, Commentaire, IdRecette, Username FROM commentaires NATURAL JOIN utilisateurs");
                 $this->ps_getComment->setFetchMode(PDO::FETCH_ASSOC);
+                $this->ps_getCommentbyId = $this->dbb->prepare("SELECT IdCommentaire, Commentaire, IdRecette, Username FROM commentaires NATURAL JOIN utilisateurs WHERE IdRecette=:idR");
+                $this->ps_getCommentbyId->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_removeComment = $this->dbb->prepare("DELETE FROM commentaires WHERE IdCommentaire=:idC");
                 $this->ps_removeComment->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_filterbyType = $this->dbb->prepare("SELECT * FROM `recettes` NATURAL JOIN types WHERE NomType= :type AND Valider=1");
@@ -187,6 +190,11 @@ class DbConnect {
     function GetComment() {
         $this->ps_getComment->execute();
         return $this->ps_getComment->fetchAll();
+    }
+    function GetCommentById($idR) {
+        $this->ps_getCommentbyId->bindParam(':idR', $idR);
+        $this->ps_getCommentbyId->execute();
+        return $this->ps_getCommentbyId->fetchAll();
     }
 
     function removeComment($idC) {
