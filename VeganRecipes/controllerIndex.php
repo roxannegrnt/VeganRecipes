@@ -38,8 +38,9 @@ if (isset($_REQUEST["login"])) {
 }
 //Si l'utilisateur veut s'incrire
 if (isset($_REQUEST["signup"])) {
-    $parameters = array("user" => $_REQUEST["Newuser"], "pwd" => $_REQUEST["Newpwd"]);
+    $parameters = array("user" => $_REQUEST["Newuser"], "pwd" => $_REQUEST["Newpwd"],"conf" => $_REQUEST["confirmation"]);
     $cpt = IsEmpty($parameters);
+    if ($_REQUEST["Newpwd"]==$_REQUEST["confirmation"]) {    
     if ($cpt == 0) {
         $param = VerficationAdd($parameters);
         $registration = $DB->GetUser($_REQUEST["Newuser"]);
@@ -52,6 +53,10 @@ if (isset($_REQUEST["signup"])) {
         }
     } else {
         $signup_error = "<div class=\"alert alert-danger\">Please fill out the required fields</div>";
+    }
+    }
+    else{
+        $signup_error = "<div class=\"alert alert-danger\">The password and the confirmation need to be the same</div>";
     }
 }
 
@@ -111,25 +116,10 @@ if (isset($_REQUEST["Unfavorite"])) {
     $idR = substr($_REQUEST["Unfavorite"], 4);
     $DB->removeFav($_SESSION["uid"], $idR);
 }
-//Si l'utilisateur veut filtrer par date de post
-if (!empty($_REQUEST["date"])) {
-    switch ($_REQUEST["date"]) {
-        case "Last added": $recipes = $DB->filterByDateD();
-            break;
-        case "Oldest post": $recipes = $DB->filterByDateA();
-            break;
-        default :$recipes = $DB->GetRecipes(1);
-    }
-}
-if (!empty($_REQUEST["Filtertype"])) {
-    if ($_REQUEST["Filtertype"] == "All") {
-        $recipes = $DB->GetRecipes(1);
-    } else {
-        $recipes = $DB->filterByType($_REQUEST["Filtertype"]);
-    }
-}
-if (isset($_REQUEST["keyword"])) {
-    $resultAuto = $DB->Autocomplete($_REQUEST["keyword"]);
+
+if (isset($_REQUEST["AjaxFilter"])) {
+        $recipes = $DB->filterSearchByCriterea($_REQUEST["searchKeyWord"], $_REQUEST["Filtertype"],$_REQUEST["FilterDate"]);
+
 }
 if (isset($_REQUEST["search"])) {
     $recipes = $DB->Autocomplete($_REQUEST["search"]);

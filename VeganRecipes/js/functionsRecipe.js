@@ -1,4 +1,7 @@
 $().ready(function () {
+    $(".filterRecipes li").on("click", function (e) {
+        FilterByType(e);
+    });
     CallTitles();
     $('#FileInput').on('change', function (e) {
         prepareUpload(e);
@@ -104,7 +107,7 @@ function GetMyRecipes() {
     });
 }
 function GetMyFav() {
-  var Fav= "Favorites";
+    var Fav = "Favorites";
     $.ajax({
         type: "POST",
         url: "index.php",
@@ -245,26 +248,23 @@ function RemoveComment(close) {
         }
     });
 }
-function FilterByType(link) {
-    var type = $(link).text();
-    var date = null;
-    switch (type) {
-        case "All":
-            type = "All";
-            break;
-        case "Last added":
-            date = type;
-            type = null;
-            break;
-        case "Oldest post":
-            date = type;
-            type = null;
-            break;
+function FilterByType(e) {
+    var FilterRecipes = $(e.target).closest("ul").attr("id");
+    var type = "";
+    var sort = "";
+    if (FilterRecipes === "MealTypes") {
+        type = $(e.target).text();
+        sort = $("input[name=filterSort]").val();
     }
+    else {
+        sort = $(e.target).text();
+        type = $("input[name=filterType]").val();
+    }
+    var searchKeyWord = $("input[name=searchKeyWord]").val();
     $.ajax({
         type: "POST",
         url: "index.php",
-        data: {Filtertype: type, date: date},
+        data: {AjaxFilter: true, Filtertype: type, FilterDate: sort, searchKeyWord: searchKeyWord},
         async: true,
         beforeSend: function () {
             $("section").html("");
@@ -273,10 +273,13 @@ function FilterByType(link) {
         success: function (data) {
             $("body").html("");
             $("body").html(data);
-            $("#dropdownMenu1").text((type !== null ? type : "Filter By"));
+            $("#dropdownMenu1").text((type !== "" ? type : "Filter By"));
             $("#dropdownMenu1").append("<span class=\"caret\"></span>");
-            $('#dropdownMenu2').text((date !== null ? date : "Filter By"));
+            $('#dropdownMenu2').text((sort !== "" ? sort : "Sort By"));
             $("#dropdownMenu2").append("<span class=\"caret\"></span>");
+             $("input[name=filterType]").val(type);
+              $("input[name=filterSort]").val(sort);
+              $("input[name=searchKeyWord]").val(searchKeyWord);
             onLoad();
 
         },
@@ -300,6 +303,7 @@ function CallTitles() {
             success: function (data) {
                 $("#suggesstion-box").show();
                 $("#suggesstion-box").html(data);
+
             }
         });
     });
@@ -315,10 +319,11 @@ function selectTitle(val) {
  * Sends complete search and returns results
  */
 function SubmitSearch() {
+    var valeur = $("#search-box").val();
     $.ajax({
         type: "POST",
         url: "index.php",
-        data: 'search=' + $("#search-box").val(),
+        data: 'search=' + valeur,
         async: true,
         beforeSend: function () {
             $("section").html("");
@@ -327,6 +332,7 @@ function SubmitSearch() {
         success: function (data) {
             $("body").html("");
             $("body").html(data);
+            $("input[name=searchKeyWord]").val(valeur);
             onLoad();
         },
         error: function (error) {

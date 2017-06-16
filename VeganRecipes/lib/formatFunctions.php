@@ -28,6 +28,14 @@ function VerficationAdd($param) {
     }
     return $paramsanitize;
 }
+function VerifySignup($param){
+    $error="";
+    if($param["Newpwd"]<6)
+        $error="<div class=\"alert alert-danger\">The password must be at least 6 characters long</div>";
+}
+//preg_match("/[^A-Za-z'-]/gi",$param["Newuser"]) {
+    
+//}
 
 /**
  * Vérfier l'image ajouté qu'elle a la bonne extension

@@ -11,13 +11,12 @@ require_once './controllerIndex.php';
         <script type="text/javascript" src="js/JQuery.js"></script>
         <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/functionsRecipe.js"></script>
-        <script type="text/javascript" src="js/VerifieForm.js"></script>
         <link href="css/override.css" type="text/css" rel="stylesheet">
     </head>
     <header>
 
         <nav class="navbar navbar-default" id="nav">
-            <a class="navbar-brand" href="index.php">Veganyums</a>
+            <a class="navbar-brand" href="index.php"><img src="upload/VeganYums.png" style="height: 300%;margin-top:-20px;"></a>
             <div class = "collapse navbar-collapse" id = "example-navbar-collapse">
                 <div class="navbar-form navbar-left frmSearch" role="search">
                     <input type="text" name="search" id="search-box" class="form-control col-lg-8" placeholder="Search">
@@ -86,6 +85,9 @@ affichage;
                             <section class="form-group">
                                 <input type="password" name="Newpwd" class="form-control" placeholder="Password*" required>
                             </section>
+                             <section class="form-group">
+                                <input type="password" name="confirmation" class="form-control" placeholder="Confirmation*" required>
+                            </section>
                             <button type="submit" class="btn btn-primary btn-block" name="signup">Sign up</button>
                         </form>
                         <div id="signupE">
@@ -153,22 +155,20 @@ affichage;
                         Filter by
                         <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-right" id="dropdown1" aria-labelledby="dropdownMenu1">
-                        <li><a onclick="FilterByType(this)">Starter</a></li>
-                        <li><a onclick="FilterByType(this)">Main</a></li>
-                        <li><a onclick="FilterByType(this)">Dessert</a></li>
-                        <li><a onclick="FilterByType(this)">All</a></li>
+                    <ul id="MealTypes" class="dropdown-menu dropdown-menu-right filterRecipes" id="dropdown1" aria-labelledby="dropdownMenu1">
+                        <li><a >Starter</a></li>
+                        <li><a>Main</a></li>
+                        <li><a>Dessert</a></li>
                     </ul>
                 </div>
                 <div class="dropdown col-md-2 ">
                     <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown">
-                        Filter by
+                        Sort by
                         <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-right" id="dropdown2" aria-labelledby="dropdownMenu1">
-                        <li><a onclick="FilterByType(this)">Last added</a></li>
-                        <li><a onclick="FilterByType(this)">Oldest post</a></li>
-                        <?php FilterSignIn($_SESSION["uid"])?>
+                    <ul id="DateTypes" class="dropdown-menu dropdown-menu-right filterRecipes" id="dropdown2" aria-labelledby="dropdownMenu1">
+                        <li><a>Last added</a></li>
+                        <li><a>Oldest post</a></li>
                     </ul>
                 </div>
             </div>
@@ -212,6 +212,9 @@ affichage;
 
             </section>
         </div>
+        <input type="hidden" name="searchKeyWord" value="">
+        <input type="hidden" name="filterType" value="">
+        <input type="hidden" name="filterSort" value="">
     </body>
     <footer></footer>
 </html>

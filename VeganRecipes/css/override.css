@@ -132,6 +132,7 @@ a:hover{
 #AddPhoto{
     height:120px; 
     width:120px;
+    border-radius: 50px;
     margin-bottom: 20px;
 }
 .frm{
@@ -159,6 +160,9 @@ textarea{
 }
 .glyphicon-star{
     font-size: 25px;
+}
+li .glyphicon-star{
+    font-size: 18px;
 }
 #AddPhoto{
     height: 70px;

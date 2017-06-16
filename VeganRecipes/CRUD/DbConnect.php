@@ -225,8 +225,23 @@ class DbConnect {
         $this->ps_filterbyDateD->execute();
         return $this->ps_filterbyDateD->fetchAll();
     }
-
-    function Autocomplete($keyword) {
+    function filterSearchByCriterea($searchKeyWord, $type, $sort){
+        $searchKeyWord.='%';
+        $query="SELECT * FROM `recettes` NATURAL JOIN types WHERE (NomType= :type OR :type = '')  AND (Titre like :search OR :search = '') AND Valider=1";
+        if ($sort=="Last added") {
+            $query.= " ORDER BY DateTimeInsert DESC";
+        }
+        else{
+            $query.= " ORDER BY DateTimeInsert ASC";
+        }
+        $requete=$this->dbb->prepare($query);
+        $requete->bindParam(':type', $type);
+        $requete->bindParam(':search', $searchKeyWord);
+        
+         $requete->execute();
+        return $requete->fetchAll();
+    }
+            function Autocomplete($keyword) {
         $keyword = $keyword . '%';
         $this->ps_autocomplete->bindParam(':keyword', $keyword);
         $this->ps_autocomplete->execute();
