@@ -60,6 +60,7 @@ function GetRecipesToValidate() {
         success: function (data) {
             $("body").html("");
             $("body").html(data);
+            $(".alldropdown").hide();
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
@@ -99,6 +100,7 @@ function GetMyRecipes() {
             $("body").html("");
             $("body").html(data);
             $(".YesNo").append("<button type=\"button\" class=\"close\" onclick=RemoveRecipe(this,3) data-dismiss=\"modal\">&times;</button>");
+            $(".alldropdown").hide();
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
@@ -120,8 +122,7 @@ function GetMyFav() {
         success: function (data) {
             $("body").html("");
             $("body").html(data);
-            $('#dropdownMenu2').text(Fav);
-            $("#dropdownMenu2").append("<span class=\"caret\"></span>");
+            $(".alldropdown").hide();
             onLoad();
         },
         error: function (error) {

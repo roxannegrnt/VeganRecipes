@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 require './CRUD/DbConnect.php';
 include_once './lib/formatFunctions.php';
@@ -9,7 +10,7 @@ $signup_error = "";
 $img_error = "";
 $add_error = "";
 $add_success = "";
-$none_error="";
+$none_error = "";
 //Initialisation de la classe DB
 $DB = new DbConnect();
 //Recherche des types
@@ -38,25 +39,25 @@ if (isset($_REQUEST["login"])) {
 }
 //Si l'utilisateur veut s'incrire
 if (isset($_REQUEST["signup"])) {
-    $parameters = array("user" => $_REQUEST["Newuser"], "pwd" => $_REQUEST["Newpwd"],"conf" => $_REQUEST["confirmation"]);
+    $parameters = array("user" => $_REQUEST["Newuser"], "pwd" => $_REQUEST["Newpwd"], "conf" => $_REQUEST["confirmation"]);
     $cpt = IsEmpty($parameters);
-    if ($_REQUEST["Newpwd"]==$_REQUEST["confirmation"]) {    
-    if ($cpt == 0) {
-        $param = VerficationAdd($parameters);
-        $registration = $DB->GetUser($_REQUEST["Newuser"]);
-        if (empty($registration)) {
-            $DB->Register($_REQUEST["Newuser"], sha1($_REQUEST["Newpwd"]));
-            $_SESSION["uid"] = $_REQUEST["Newuser"];
-            $_SESSION["IsAdmin"] = 0;
+    $error = VerifySignup($parameters);
+    if (empty($error)) {
+        if ($cpt == 0) {
+            $param = VerficationAdd($parameters);
+            $registration = $DB->GetUser($_REQUEST["Newuser"]);
+            if (empty($registration)) {
+                $DB->Register($_REQUEST["Newuser"], sha1($_REQUEST["Newpwd"]));
+                $_SESSION["uid"] = $_REQUEST["Newuser"];
+                $_SESSION["IsAdmin"] = 0;
+            } else {
+                $signup_error = "<div class=\"alert alert-danger\">This user is already used on the site</div>";
+            }
         } else {
-            $signup_error = "<div class=\"alert alert-danger\">This user is already used on the site</div>";
+            $signup_error = "<div class=\"alert alert-danger\">Please fill out the required fields</div>";
         }
     } else {
-        $signup_error = "<div class=\"alert alert-danger\">Please fill out the required fields</div>";
-    }
-    }
-    else{
-        $signup_error = "<div class=\"alert alert-danger\">The password and the confirmation need to be the same</div>";
+        $signup_error = $error;
     }
 }
 
@@ -75,7 +76,7 @@ if (isset($_REQUEST["Add"])) {
             $DB->InsertRecipe($param, $_SESSION["uid"], $unique);
             $parameters = array();
             $add_success = "<div class=\"alert alert-success\">Recipe added sucessfully</div>";
-            $recipes=$DB->GetRecipes(1);
+            $recipes = $DB->GetRecipes(1);
         }
     } else {
         $add_error = "<div class=\"alert alert-danger\">Please fill out all inputs</div>";
@@ -94,7 +95,7 @@ if (isset($_REQUEST["validate"])) {
 }
 
 if (isset($_REQUEST["myFav"])) {
-    $recipes= $DB->GetRecipesByFav($_SESSION["uid"]);
+    $recipes = $DB->GetRecipesByFav($_SESSION["uid"]);
     $IndexHome = 1;
 }
 
@@ -102,7 +103,7 @@ if (isset($_REQUEST["myFav"])) {
 if (isset($_REQUEST["myrecipes"])) {
     $recipes = $DB->GetRecipesById($_SESSION["uid"]);
     if (empty($recipes)) {
-        $none_error="<div class=\"alert alert-success\">You haven't created any recipes</div>";
+        $none_error = "<div class=\"alert alert-success\">You haven't created any recipes</div>";
     }
     $IndexHome = 3;
 }
@@ -118,8 +119,7 @@ if (isset($_REQUEST["Unfavorite"])) {
 }
 
 if (isset($_REQUEST["AjaxFilter"])) {
-        $recipes = $DB->filterSearchByCriterea($_REQUEST["searchKeyWord"], $_REQUEST["Filtertype"],$_REQUEST["FilterDate"]);
-
+    $recipes = $DB->filterSearchByCriterea($_REQUEST["searchKeyWord"], $_REQUEST["Filtertype"], $_REQUEST["FilterDate"]);
 }
 if (isset($_REQUEST["search"])) {
     $recipes = $DB->Autocomplete($_REQUEST["search"]);

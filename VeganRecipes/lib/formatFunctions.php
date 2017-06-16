@@ -28,14 +28,20 @@ function VerficationAdd($param) {
     }
     return $paramsanitize;
 }
-function VerifySignup($param){
-    $error="";
-    if($param["Newpwd"]<6)
-        $error="<div class=\"alert alert-danger\">The password must be at least 6 characters long</div>";
+
+function VerifySignup($param) {
+    $error = "";
+    if ($param["pwd"]!=$param["conf"]) {
+        $error="<div class=\"alert alert-danger\">The password and the confirmation need to be the same</div>";
+    }
+    if ($param["pwd"] < 6) {
+        $error = "<div class=\"alert alert-danger\">The password must be at least 6 characters long</div>";
+    }
+    if (preg_match("/[A-Za-z0-9]+/", $param["user"]) != true) {
+        $error = "<div class=\"alert alert-danger\">The Username must contain only letters and numbers</div>";
+    }
+    return $error;
 }
-//preg_match("/[^A-Za-z'-]/gi",$param["Newuser"]) {
-    
-//}
 
 /**
  * Vérfier l'image ajouté qu'elle a la bonne extension
@@ -45,25 +51,27 @@ function VerifyImg($files) {
     $valid = FALSE;
     $extensions = array("jpeg", "jpg", "gif", "png", "mp4", "mp3");
     $elementsChemin = pathinfo($files['upload']['name']);
-        $extensionFichier = $elementsChemin['extension'];
-        if ((in_array($extensionFichier, $extensions))) {
-            $valid = TRUE;
-        } 
+    $extensionFichier = $elementsChemin['extension'];
+    if ((in_array($extensionFichier, $extensions))) {
+        $valid = TRUE;
+    }
     return $valid;
 }
-function MoveImg($files){
-    $unique = ""; 
+
+function MoveImg($files) {
+    $unique = "";
     if (!empty($files['upload']['tmp_name'])) {
-            $IsVerified = VerifyImg($files);
-            if ($IsVerified) {
-                $unique = uniqid("FILE_");
-                if (!move_uploaded_file($files['upload']['tmp_name'], "upload/" . $unique))
-                    $unique = "";
-            } else
-                $unique = "extension";
-        }
-        return $unique;
+        $IsVerified = VerifyImg($files);
+        if ($IsVerified) {
+            $unique = uniqid("FILE_");
+            if (!move_uploaded_file($files['upload']['tmp_name'], "upload/" . $unique))
+                $unique = "";
+        } else
+            $unique = "extension";
+    }
+    return $unique;
 }
+
 /**
  * Vérifie si un des champs est vide
  * @param string $title le titre de la recette
@@ -140,17 +148,19 @@ function IsFav($value, $favorite) {
     }
     return $Isfav;
 }
+
 function ShowComment($value, $comment) {
     $comments = array();
     foreach ($comment as $k => $com) {
         if ($value["IdRecette"] == $com["IdRecette"]) {
-            $comments[]=$com;
+            $comments[] = $com;
         }
     }
     return $comments;
 }
-function IsConnected(){
-    if ((isset($_SESSION["uid"]))&&(!empty($_SESSION["uid"]))) {
+
+function IsConnected() {
+    if ((isset($_SESSION["uid"])) && (!empty($_SESSION["uid"]))) {
         return true;
     }
     return false;

@@ -17,6 +17,7 @@ affichage;
         echo<<<affichage
        <li><a href="index.php"><span class="glyphicon glyphicon-home"></span></a></li>
         <li><a data-toggle="modal" data-keyboard="false" data-target="#AddModal"><span class="glyphicon glyphicon-plus"></span></a></li>
+        <li><a onclick="GetMyFav()"><span class="glyphicon glyphicon-star"></span></a></li>
         <li><a onclick="GetRecipesToValidate();"><span class="glyphicon glyphicon-cog"></span></a></li>
         <li><a href="disconnect.php"><span class="glyphicon glyphicon-log-out"></span></a></li>
 affichage;

@@ -23,7 +23,7 @@ class DbConnect {
     private $ps_removeFav = null;
     private $ps_insertComment = null;
     private $ps_getComment = null;
-     private $ps_getCommentbyId = null;
+    private $ps_getCommentbyId = null;
     private $ps_removeComment = null;
     private $ps_filterbyTypeA = null;
     private $ps_filterbyTypeD = null;
@@ -138,7 +138,8 @@ class DbConnect {
         $this->ps_getByRecipesId->execute();
         return $this->ps_getByRecipesId->fetchAll();
     }
-    function GetRecipesByFav($uid){
+
+    function GetRecipesByFav($uid) {
         $this->ps_getRecetteByFav->bindParam(':uid', $uid);
         $this->ps_getRecetteByFav->execute();
         return $this->ps_getRecetteByFav->fetchAll();
@@ -199,6 +200,7 @@ class DbConnect {
         $this->ps_getComment->execute();
         return $this->ps_getComment->fetchAll();
     }
+
     function GetCommentById($idR) {
         $this->ps_getCommentbyId->bindParam(':idR', $idR);
         $this->ps_getCommentbyId->execute();
@@ -225,23 +227,24 @@ class DbConnect {
         $this->ps_filterbyDateD->execute();
         return $this->ps_filterbyDateD->fetchAll();
     }
-    function filterSearchByCriterea($searchKeyWord, $type, $sort){
+
+    function filterSearchByCriterea($searchKeyWord, $type, $sort) {
         $searchKeyWord.='%';
-        $query="SELECT * FROM `recettes` NATURAL JOIN types WHERE (NomType= :type OR :type = '')  AND (Titre like :search OR :search = '') AND Valider=1";
-        if ($sort=="Last added") {
+        $query = "SELECT * FROM `recettes` NATURAL JOIN types WHERE (NomType= :type OR :type = '')  AND (Titre like :search OR :search = '') AND Valider=1";
+        if ($sort == "Last added") {
             $query.= " ORDER BY DateTimeInsert DESC";
-        }
-        else{
+        } else {
             $query.= " ORDER BY DateTimeInsert ASC";
         }
-        $requete=$this->dbb->prepare($query);
+        $requete = $this->dbb->prepare($query);
         $requete->bindParam(':type', $type);
         $requete->bindParam(':search', $searchKeyWord);
-        
-         $requete->execute();
+
+        $requete->execute();
         return $requete->fetchAll();
     }
-            function Autocomplete($keyword) {
+
+    function Autocomplete($keyword) {
         $keyword = $keyword . '%';
         $this->ps_autocomplete->bindParam(':keyword', $keyword);
         $this->ps_autocomplete->execute();
