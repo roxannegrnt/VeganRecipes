@@ -228,9 +228,9 @@ class DbConnect {
         return $this->ps_filterbyDateD->fetchAll();
     }
 
-    function filterSearchByCriterea($searchKeyWord, $type, $sort) {
+    function filterSearchByCriterea($searchKeyWord, $type, $sort,$uid,$valid) {
         $searchKeyWord.='%';
-        $query = "SELECT * FROM `recettes` NATURAL JOIN types WHERE (NomType= :type OR :type = '')  AND (Titre like :search OR :search = '') AND Valider=1";
+        $query = "SELECT * FROM `recettes` NATURAL JOIN types WHERE (NomType= :type OR :type = '')  AND (Titre like :search OR :search = '') AND (IdUtilisateur = :uid OR :uid = '') AND (Valider= :valid OR :valid = '') ";
         if ($sort == "Last added") {
             $query.= " ORDER BY DateTimeInsert DESC";
         } else {
@@ -238,6 +238,8 @@ class DbConnect {
         }
         $requete = $this->dbb->prepare($query);
         $requete->bindParam(':type', $type);
+        $requete->bindParam(':uid', $uid);
+        $requete->bindParam(':valid', $valid);
         $requete->bindParam(':search', $searchKeyWord);
 
         $requete->execute();

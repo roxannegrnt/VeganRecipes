@@ -28,7 +28,7 @@ function prepareUpload(event) {
         reader.readAsDataURL(files[0]);
     }
 }
-function onLoad() {
+function onLoadDropdown() {
     $('#dropdownMenu1').dropdown();
     $('#dropdownMenu2').dropdown();
 
@@ -100,7 +100,9 @@ function GetMyRecipes() {
             $("body").html("");
             $("body").html(data);
             $(".YesNo").append("<button type=\"button\" class=\"close\" onclick=RemoveRecipe(this,3) data-dismiss=\"modal\">&times;</button>");
-            $(".alldropdown").hide();
+            //$(".alldropdown").hide();
+            $("input[name=SearchByUserRecipes]").val(true);
+            onLoadDropdown();
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
@@ -123,7 +125,7 @@ function GetMyFav() {
             $("body").html("");
             $("body").html(data);
             $(".alldropdown").hide();
-            onLoad();
+            onLoadDropdown();
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
@@ -161,7 +163,7 @@ function RemoveRecipe(cross, IsIndexhome) {
  * @param {<i>} tag
  */
 function OnHoverChangeIcon(tag) {
-    $(tag).removeClass();
+    $(tag).attr('class', '');
     $(tag).addClass("glyphicon glyphicon-star pull-left");
 }
 /**
@@ -169,17 +171,19 @@ function OnHoverChangeIcon(tag) {
  * @param {<i>} tag
  */
 function OnHoverOutChangeIcon(tag) {
+    $(tag).attr('class', '');
     $(tag).addClass("glyphicon glyphicon-star-empty pull-left");
-    $(tag).RemoveClass();
+    
 }
 function Favorite(tag) {
     var id = $(tag).attr("id");
+    $(tag).attr('disabled', true);
     $.ajax({
         type: "POST",
         url: "index.php",
         data: 'favorite=' + id,
         success: function () {
-            $(tag).removeClass();
+           $(tag).attr('class', '');
             $(tag).addClass("glyphicon glyphicon-star pull-left");
             $(tag).on('click', function () {
                 UnFavorite(tag);
@@ -200,7 +204,7 @@ function UnFavorite(tag) {
         url: "index.php",
         data: 'Unfavorite=' + id,
         success: function () {
-            $(tag).removeClass();
+           $(tag).attr('class', '');
             $(tag).addClass("glyphicon glyphicon-star-empty pull-left");
             $(tag).on('click', function () {
                 Favorite(tag);
@@ -262,10 +266,11 @@ function FilterByType(e) {
         type = $("input[name=filterType]").val();
     }
     var searchKeyWord = $("input[name=searchKeyWord]").val();
+    var isMyRecipes=$("input[name=SearchByUserRecipes]").val();
     $.ajax({
         type: "POST",
         url: "index.php",
-        data: {AjaxFilter: true, Filtertype: type, FilterDate: sort, searchKeyWord: searchKeyWord},
+        data: {AjaxFilter: true, Filtertype: type, FilterDate: sort, searchKeyWord: searchKeyWord, isMyRecipes:isMyRecipes},
         async: true,
         beforeSend: function () {
             $("section").html("");
@@ -281,7 +286,8 @@ function FilterByType(e) {
              $("input[name=filterType]").val(type);
               $("input[name=filterSort]").val(sort);
               $("input[name=searchKeyWord]").val(searchKeyWord);
-            onLoad();
+              $("input[name=SearchByUserRecipes]").val(isMyRecipes);
+            onLoadDropdown();
 
         },
         error: function (error) {
@@ -334,7 +340,7 @@ function SubmitSearch() {
             $("body").html("");
             $("body").html(data);
             $("input[name=searchKeyWord]").val(valeur);
-            onLoad();
+            onLoadDropdown();
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 

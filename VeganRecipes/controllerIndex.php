@@ -119,7 +119,15 @@ if (isset($_REQUEST["Unfavorite"])) {
 }
 
 if (isset($_REQUEST["AjaxFilter"])) {
-    $recipes = $DB->filterSearchByCriterea($_REQUEST["searchKeyWord"], $_REQUEST["Filtertype"], $_REQUEST["FilterDate"]);
+    if ($_REQUEST["isMyRecipes"]) {
+        $uid=$_SESSION["uid"];
+        $Valid="";
+    }
+    else{
+        $uid="";
+        $Valid=1;
+    }
+    $recipes = $DB->filterSearchByCriterea($_REQUEST["searchKeyWord"], $_REQUEST["Filtertype"], $_REQUEST["FilterDate"],$uid,$Valid);
 }
 if (isset($_REQUEST["search"])) {
     $recipes = $DB->Autocomplete($_REQUEST["search"]);
