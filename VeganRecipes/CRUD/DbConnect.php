@@ -37,7 +37,7 @@ class DbConnect {
     private $dbb = null;
     
     /**
-     * Constructor gets connection to databse and prepares all statments
+     * Constructor gets connection to database and prepares all statments
      */
     public function __construct() {
         if ($this->dbb === null) {
