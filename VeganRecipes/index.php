@@ -214,6 +214,7 @@ affichage;
         </div>
         <input type="hidden" name="searchKeyWord" value="">
         <input type="hidden" name="SearchByUserRecipes" value="">
+        <input type="hidden" name="searchbyNotValidated" value="">
         <input type="hidden" name="filterType" value="">
         <input type="hidden" name="filterSort" value="">
     </body>

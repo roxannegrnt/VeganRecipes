@@ -60,7 +60,8 @@ function GetRecipesToValidate() {
         success: function (data) {
             $("body").html("");
             $("body").html(data);
-            $(".alldropdown").hide();
+            $("input[name=searchbyNotValidated]").val(true);
+            onLoadDropdown();
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
@@ -79,6 +80,8 @@ function ValidateRecipe(tick) {
             $("body").html(data);
             $('#msg').append("<div class=\"alert alert-success\"role=\"alert\">recipe validated successfully</div>").fadeIn('slow'); //also show a success message 
             $('#msg').delay(1000).fadeOut('slow');
+            $("input[name=searchbyNotValidated]").val(true);
+            onLoadDropdown();
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
@@ -100,7 +103,6 @@ function GetMyRecipes() {
             $("body").html("");
             $("body").html(data);
             $(".YesNo").append("<button type=\"button\" class=\"close\" onclick=RemoveRecipe(this,3) data-dismiss=\"modal\">&times;</button>");
-            //$(".alldropdown").hide();
             $("input[name=SearchByUserRecipes]").val(true);
             onLoadDropdown();
         },
@@ -150,6 +152,7 @@ function RemoveRecipe(cross, IsIndexhome) {
             }
             $('#msg').append("<div class=\"alert alert-success col-md-12\"role=\"alert\">recipe deleted successfully</div>").fadeIn('slow'); //also show a success message 
             $('#msg').delay(1000).fadeOut('slow');
+            onLoadDropdown();
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
@@ -267,10 +270,11 @@ function FilterByType(e) {
     }
     var searchKeyWord = $("input[name=searchKeyWord]").val();
     var isMyRecipes=$("input[name=SearchByUserRecipes]").val();
+    var isNotValid=$("input[name=searchbyNotValidated]").val();
     $.ajax({
         type: "POST",
         url: "index.php",
-        data: {AjaxFilter: true, Filtertype: type, FilterDate: sort, searchKeyWord: searchKeyWord, isMyRecipes:isMyRecipes},
+        data: {AjaxFilter: true, Filtertype: type, FilterDate: sort, searchKeyWord: searchKeyWord, isMyRecipes:isMyRecipes,isNotValid:isNotValid},
         async: true,
         beforeSend: function () {
             $("section").html("");
@@ -287,8 +291,11 @@ function FilterByType(e) {
               $("input[name=filterSort]").val(sort);
               $("input[name=searchKeyWord]").val(searchKeyWord);
               $("input[name=SearchByUserRecipes]").val(isMyRecipes);
+              $("input[name=searchbyNotValidated]").val(isNotValid);
             onLoadDropdown();
-
+            if (isMyRecipes) {
+                $(".YesNo").append("<button type=\"button\" class=\"close\" onclick=RemoveRecipe(this,3) data-dismiss=\"modal\">&times;</button>");
+            }
         },
         error: function (error) {
             $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 

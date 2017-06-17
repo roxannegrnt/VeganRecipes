@@ -127,6 +127,10 @@ if (isset($_REQUEST["AjaxFilter"])) {
         $uid="";
         $Valid=1;
     }
+    if ($_REQUEST["isNotValid"]) {
+        $Valid=0;
+        $IndexHome = 0;
+    }
     $recipes = $DB->filterSearchByCriterea($_REQUEST["searchKeyWord"], $_REQUEST["Filtertype"], $_REQUEST["FilterDate"],$uid,$Valid);
 }
 if (isset($_REQUEST["search"])) {
