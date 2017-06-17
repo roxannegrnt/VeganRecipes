@@ -1,8 +1,15 @@
 <?php
+/**
+ * Project: VeganRecipes
+ * Author: Roxanne Grant
+ * Page: controllerIndex.php
+ * Date: Juin 2017
+ * Copyright: TPI 2017 - Roxanne Grant © 2017
+ */
 
 /**
- * Ajoute les bon icônes dépendant du statut de l'utilisateur lors de la connexion
- * @param enum $isadmin 0 si pas admin et 1 si admin
+ * Add icons in navbar depending on user status
+ * @param enum $isadmin 0 if not an admin and 1 if admin
  */
 function SignedIn($isadmin) {
     if ($isadmin == 0) {
@@ -25,9 +32,9 @@ affichage;
 }
 
 /**
- * Affichage quand on clique sur Home
- * @param array $value le tableau retourné par la base de donnée qui contient la recette
- * @param string $descripShort la version courte de la description de la recette
+ * View when home
+ * @param array $value array containing recipe from databse
+ * @param string $descripShort short version of recipe description
  */
 function IndexHome($value, $descripShort, $fav, $comments, $isadmin) {
     echo<<<affichage
@@ -68,9 +75,9 @@ reste;
 }
 
 /**
- * Affichage quand on clique sur l'écrou pour que l'admin valide les recettes
- * @param array $value le tableau retourné par la base de donnée qui contient la recette
- * @param string $descripShort la version courte de la description de la recette
+ * View when icon cog is clicked for admin recipe validation
+ * @param array $value array containing recipe from databse
+ * @param string $descripShort short version of recipe description
  */
 function IndexAdmin($value, $descripShort) {
     echo<<<affichage
@@ -89,7 +96,10 @@ function IndexAdmin($value, $descripShort) {
             </article>
 affichage;
 }
-
+/**
+ * Show cross to remove comment if user is an admin
+ * @param bool $IsAdmin true if user is an admin, false otherwise
+ */
 function AdminCross($IsAdmin) {
     if ($IsAdmin) {
         echo "<div class=\"pull-right\">";
@@ -97,7 +107,10 @@ function AdminCross($IsAdmin) {
         echo "</div>";
     }
 }
-
+/**
+ * Show cross to remove recipe if user is an admin
+ * @param bool $IsAdmin true if user is an admin, false otherwise
+ */
 function AdmincrossRecipe($IsAdmin) {
     if ($IsAdmin) {
         echo "<div class=\"pull-right\">";
@@ -105,7 +118,11 @@ function AdmincrossRecipe($IsAdmin) {
         echo "</div>";
     }
 }
-
+/**
+ * Shows all comments of a certain recipe
+ * @param array $comments array of all comments for a specific recipe
+ * @param bool $isadmin true if user is an admin, false otherwise
+ */
 function AfficherComment($comments, $isadmin) {
     foreach ($comments as $k => $v) {
         echo "<article class=\"well well-sm col-md-12\">";
@@ -115,7 +132,10 @@ function AfficherComment($comments, $isadmin) {
         echo "</article>";
     }
 }
-
+/**
+ * Shows all autocomplete results under search bar
+ * @param array $resultAuto array of all autocomplete results
+ */
 function AutocompleteResult($resultAuto) {
     echo "<ul id=\"recipeTitle-list\" class=\"col-lg-8\">";
     foreach ($resultAuto as $title) {

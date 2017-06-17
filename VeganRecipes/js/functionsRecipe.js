@@ -1,3 +1,10 @@
+/**
+ * Project: VeganRecipes
+ * Author: Roxanne Grant
+ * Page: DbConnect.php
+ * Date: Juin 2017
+ * Copyright: TPI 2017 - Roxanne Grant © 2017
+ */
 $().ready(function () {
     $(".filterRecipes li").on("click", function (e) {
         FilterByType(e);
@@ -16,37 +23,54 @@ $().ready(function () {
         EmptyModalSignup();
     });
 });
-
+/**
+ * Show preview of image in hit box
+ * @param {type} event click on hitbox add
+ */
 function prepareUpload(event) {
     var files = event.target.files;
     if (typeof window.FileReader !== 'undefined') {
         reader = new FileReader();
-        //event onload s'execute à la fin de la function chargeFiles
         reader.onload = function (event) {
             $("#AddPhoto").attr('src', event.target.result); // show image tumbnail
         };
         reader.readAsDataURL(files[0]);
     }
 }
+/**
+ * Activates dropdown filters
+ */
 function onLoadDropdown() {
     $('#dropdownMenu1').dropdown();
     $('#dropdownMenu2').dropdown();
 
 }
+/**
+ * Empty modal signin if closed
+ */
 function EmptyModalSignin() {
     $('#myModal').modal('hide').data('bs.modal', null);
     $("#signinE").html("");
 }
+/**
+ * Empty modal signup if closed
+ */
 function EmptyModalSignup() {
     $('#SignUp').modal('hide').data('bs.modal', null);
     $("#signupE").html("");
 }
+/**
+ * Empty insert modal on close
+ */
 function CloseModal() {
     $("#AddModal input").val("");
     $("#AddModal textarea").val("");
     $(".errorModal").html("");
     window.location = "index.php";
 }
+/**
+ * Ajax call to get recipes to validate
+ */
 function GetRecipesToValidate() {
     $.ajax({
         type: "POST",
@@ -69,7 +93,12 @@ function GetRecipesToValidate() {
         }
     });
 }
+/**
+ * Ajax call to validate recipe
+ * @param {button} tick clicked button
+ */
 function ValidateRecipe(tick) {
+    //Get id of recipe according to button clicked
     var id = $(tick).closest(".YesNo").attr("id");
     $.ajax({
         type: "POST",
@@ -89,6 +118,9 @@ function ValidateRecipe(tick) {
         }
     });
 }
+/**
+ * Ajax call to get users recipes
+ */
 function GetMyRecipes() {
     $.ajax({
         type: "POST",
@@ -112,6 +144,9 @@ function GetMyRecipes() {
         }
     });
 }
+/**
+ * Ajax call to get users favorite recipes
+ */
 function GetMyFav() {
     var Fav = "Favorites";
     $.ajax({
@@ -135,8 +170,13 @@ function GetMyFav() {
         }
     });
 }
+/**
+ * Remove selected recipe
+ * @param {button} cross clicked button
+ * @param {int} IsIndexhome current view on index
+ */
 function RemoveRecipe(cross, IsIndexhome) {
-    console.log($(cross).closest(".YesNo").closest("article").html());
+    //Get id of recipe by button clicked
     var id = $(cross).closest(".YesNo").attr("id");
     $.ajax({
         type: "POST",
@@ -163,7 +203,7 @@ function RemoveRecipe(cross, IsIndexhome) {
 
 /**
  * When star is hovered change icon to full star
- * @param {<i>} tag
+ * @param {<i>} tag clicked star
  */
 function OnHoverChangeIcon(tag) {
     $(tag).attr('class', '');
@@ -171,13 +211,17 @@ function OnHoverChangeIcon(tag) {
 }
 /**
  * When star is not hovered change icon to empty star
- * @param {<i>} tag
+ * @param {<i>} tag clicked star
  */
 function OnHoverOutChangeIcon(tag) {
     $(tag).attr('class', '');
     $(tag).addClass("glyphicon glyphicon-star-empty pull-left");
     
 }
+/**
+ * Add recipe to favorites
+ * @param {button} tag clicked star
+ */
 function Favorite(tag) {
     var id = $(tag).attr("id");
     $(tag).attr('disabled', true);
@@ -200,6 +244,10 @@ function Favorite(tag) {
         }
     });
 }
+/**
+ * remove recipe from favorites
+ * @param {button} tag clicked star
+ */
 function UnFavorite(tag) {
     var id = $(tag).attr("id");
     $.ajax({
@@ -221,9 +269,14 @@ function UnFavorite(tag) {
         }
     });
 }
-
+/**
+ * Adds a comment to recipe
+ * @param {button} button clicked button
+ */
 function AddComment(button) {
+    //gets id of recipe according to clicked button
     var idR = $(button).closest(".collapse").attr("id");
+    //Get value of comment
     var comment = $(button).closest(".collapse").find("input[name=comment]").val();
     $.ajax({
         type: "POST",
@@ -240,8 +293,14 @@ function AddComment(button) {
         }
     });
 }
+/**
+ * Remove comment from recipe
+ * @param {button} close clicked button
+ */
 function RemoveComment(close) {
+    //gets id of comment according to clicked button
     var id = $(close).closest("article").find(".Usercomment").attr("id");
+    //gets id of recipe according to clicked button
     var idR = $(close).closest(".Allcomments").parent().find(".YesNo").attr("id");
     $.ajax({
         type: "POST",
@@ -256,7 +315,13 @@ function RemoveComment(close) {
         }
     });
 }
+/**
+ * Filters reipces
+ * @param {<ul>} e clicked list
+ * @returns {undefined}
+ */
 function FilterByType(e) {
+    //Get filter
     var FilterRecipes = $(e.target).closest("ul").attr("id");
     var type = "";
     var sort = "";
@@ -268,6 +333,7 @@ function FilterByType(e) {
         sort = $(e.target).text();
         type = $("input[name=filterType]").val();
     }
+    //Gets criterea of current recipes
     var searchKeyWord = $("input[name=searchKeyWord]").val();
     var isMyRecipes=$("input[name=SearchByUserRecipes]").val();
     var isNotValid=$("input[name=searchbyNotValidated]").val();
@@ -303,8 +369,10 @@ function FilterByType(e) {
         }
     });
 }
+/**
+ * Call Ajax for search autocomplete
+ */
 function CallTitles() {
-    // call AJAX for autocomplete 
     $("#search-box").keyup(function () {
         $.ajax({
             type: "POST",
@@ -324,6 +392,8 @@ function CallTitles() {
 }
 /**
  * To select title of recipe
+ * @param {string} val value of search
+ * @returns {undefined}
  */
 function selectTitle(val) {
     $("#search-box").val(val);

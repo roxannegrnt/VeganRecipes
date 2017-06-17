@@ -1,4 +1,11 @@
 <?php
+/**
+ * Project: VeganRecipes
+ * Author: Roxanne Grant
+ * Page: index.php
+ * Date: Juin 2017
+ * Copyright: TPI 2017 - Roxanne Grant © 2017
+ */
 require_once './controllerIndex.php';
 ?>
 <!DOCTYPE html>
@@ -25,6 +32,8 @@ require_once './controllerIndex.php';
                 </div>
                 <ul class="nav navbar-nav navbar-right" id="action">
                     <?php
+                    //If admin is signed in show nav for admin
+                    //Otherwise show nav for user
                     if (isset($_SESSION["IsAdmin"])) {
                         SignedIn($_SESSION["IsAdmin"]);
                         $IsAdmin = $_SESSION["IsAdmin"];
@@ -121,6 +130,7 @@ affichage;
                             <textarea class=" frm form-control" rows="8" id="LIngredients" name="ingredients" placeholder="List of Ingredients" ><?php echo (empty($parameters["ingredients"])) ? "" : $parameters["ingredients"] ?></textarea>
                             <select name="type" class="form-control frm">
                                 <?php
+                                //Show types from DB
                                 foreach ($types as $key => $value) {
                                     echo "<option>" . $value["NomType"] . "</option>";
                                 }
@@ -142,7 +152,7 @@ affichage;
             </div>
         </div>
         <?php
-        //Pour garder la modal ouverte si erreure
+        //Keep modal open if error in modal
         KeepModalOpen($signin_error, "myModal");
         KeepModalOpen($signup_error, "SignUp");
         KeepModalOpen($img_error, "AddModal");
@@ -181,10 +191,14 @@ affichage;
                     //Shorter description for basic viewing
                     $descripShort = RestrictLengthDescrip($value["Description"]);
                     if ($IndexHome == 0) {
+                        //show page for validation
                         IndexAdmin($value, $descripShort);
                     } else {
+                        //Get favorites for this user
                         $Isfav = IsFav($value, $favorite);
+                        //Get all comments for this recipe
                         $comments = ShowComment($value, $comment);
+                        //Show index home
                         IndexHome($value, $descripShort, $Isfav, $comments, $IsAdmin);
                     }
                     echo<<<affichage

@@ -1,5 +1,13 @@
 <?php
+/**
+ * Project: VeganRecipes
+ * Author: Roxanne Grant
+ * Page: DbConnect.php
+ * Date: Juin 2017
+ * Copyright: TPI 2017 - Roxanne Grant © 2017
+ */
 
+//Constant for databse connection
 define("HOST", "127.0.0.1");
 define("DBNAME", "myrecipes");
 define("USER", "UserRecipes");
@@ -25,11 +33,12 @@ class DbConnect {
     private $ps_getComment = null;
     private $ps_getCommentbyId = null;
     private $ps_removeComment = null;
-    private $ps_filterbyTypeA = null;
-    private $ps_filterbyTypeD = null;
     private $ps_autocomplete = null;
     private $dbb = null;
-
+    
+    /**
+     * Constructor gets connection to databse and prepares all statments
+     */
     public function __construct() {
         if ($this->dbb === null) {
             try {
@@ -74,12 +83,6 @@ class DbConnect {
                 $this->ps_getCommentbyId->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_removeComment = $this->dbb->prepare("DELETE FROM commentaires WHERE IdCommentaire=:idC");
                 $this->ps_removeComment->setFetchMode(PDO::FETCH_ASSOC);
-                $this->ps_filterbyType = $this->dbb->prepare("SELECT * FROM `recettes` NATURAL JOIN types WHERE NomType= :type AND Valider=1");
-                $this->ps_filterbyType->setFetchMode(PDO::FETCH_ASSOC);
-                $this->ps_filterbyDateA = $this->dbb->prepare("SELECT * FROM `recettes` WHERE Valider=1 ORDER BY DateTimeInsert ASC");
-                $this->ps_filterbyDateA->setFetchMode(PDO::FETCH_ASSOC);
-                $this->ps_filterbyDateD = $this->dbb->prepare("SELECT * FROM `recettes`WHERE Valider=1 ORDER BY DateTimeInsert DESC");
-                $this->ps_filterbyDateD->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_autocomplete = $this->dbb->prepare("select * from recettes WHERE Valider=1 AND Titre like :keyword ORDER BY titre LIMIT 0,6");
                 $this->ps_autocomplete->setFetchMode(PDO::FETCH_ASSOC);
             } catch (PDOException $e) {
@@ -87,31 +90,52 @@ class DbConnect {
             }
         }
     }
-
+/**
+ * Gets registration from database
+ * @param string $user username to find in database
+ * @param string $pwd sha1 password to find in database
+ * @return array user-password combinations found
+ */
     function GetRegistration($user, $pwd) {
         $this->ps_getRegistration->bindParam(':user', $user);
         $this->ps_getRegistration->bindParam(':pwd', $pwd);
         $this->ps_getRegistration->execute();
         return $this->ps_getRegistration->fetch();
     }
-
+/**
+ * Gets username from database if exists
+ * @param string $user username to find in database
+ * @return array username if found
+ */
     function GetUser($user) {
         $this->ps_getUser->bindParam(':user', $user);
         $this->ps_getUser->execute();
         return $this->ps_getUser->fetch();
     }
-
+/**
+ * Register new user in database
+ * @param string $user username of new user
+ * @param string $pwd sha1 password of new user
+ */
     function Register($user, $pwd) {
         $this->ps_register->bindParam(':user', $user);
         $this->ps_register->bindParam(':pwd', $pwd);
         $this->ps_register->execute();
     }
-
+/**
+ * Gets all types of meals
+ * @return array returns all types of meals
+ */
     function GetTypes() {
         $this->ps_getTypes->execute();
         return $this->ps_getTypes->fetchAll();
     }
-
+/**
+ * Add a recipe to database
+ * @param array $param all new parameters to add to recipe
+ * @param int $id identifiaction of user
+ * @param string $img name of image file of new recipe
+ */
     function InsertRecipe($param, $id, $img) {
         $this->dbb->beginTransaction();
         $this->ps_insertRecipe->bindParam(':title', $param[0]);
@@ -126,41 +150,67 @@ class DbConnect {
             $this->dbb->rollBack();
         }
     }
-
+/**
+ * Gets all recipes
+ * @param int $valid if recipe are validated 1 if not 0
+ * @return array all recipes found
+ */
     function GetRecipes($valid) {
         $this->ps_getRecipes->bindParam(':Valid', $valid);
         $this->ps_getRecipes->execute();
         return $this->ps_getRecipes->fetchAll();
     }
-
+/**
+ * Gets recipe by id of user
+ * @param int $uid user id
+ * @return array all recipes of user
+ */
     function GetRecipesById($uid) {
         $this->ps_getByRecipesId->bindParam(':uid', $uid);
         $this->ps_getByRecipesId->execute();
         return $this->ps_getByRecipesId->fetchAll();
     }
-
+/**
+ * Gets recipe by favorites
+ * @param int $uid user id
+ * @return array all recipes that are user favorites
+ */
     function GetRecipesByFav($uid) {
         $this->ps_getRecetteByFav->bindParam(':uid', $uid);
         $this->ps_getRecetteByFav->execute();
         return $this->ps_getRecetteByFav->fetchAll();
     }
-
+/**
+ * Validate a recipe
+ * @param int $idR id of recipe
+ */
     function ValidateRecipe($idR) {
         $this->ps_validateRecipe->bindParam(':idRecette', $idR);
         $this->ps_validateRecipe->execute();
     }
-
+/**
+ * Remove a recipe
+ * @param int $idR id of recipe
+ */
     function RemoveRecipe($idR) {
         $this->ps_removeRecipe->bindParam(':idRecette', $idR);
         $this->ps_removeRecipe->execute();
     }
-
+/**
+ * Get name of image
+ * @param  int $idR id of recipe
+ * @return array returns name of image
+ */
     function GetNameFile($idR) {
         $this->ps_getNomFichier->bindParam(':idRecette', $idR);
         $this->ps_getNomFichier->execute();
         return $this->ps_getNomFichier->fetch();
     }
-
+/**
+ * Add a recipe as favorite
+ * @param int $uid user id
+ * @param int $idR id of recipe
+ */
     function AddFav($uid, $idR) {
         $this->dbb->beginTransaction();
         $this->ps_addFav->bindParam(':uid', $uid);
@@ -171,19 +221,32 @@ class DbConnect {
             $this->dbb->rollBack();
         }
     }
-
+/**
+ * Gets favorites of user
+ * @param tint $uid user id
+ * @return array returns all favorites of user
+ */
     function getFavByID($uid) {
         $this->ps_getFavByID->bindParam(':uid', $uid);
         $this->ps_getFavByID->execute();
         return $this->ps_getFavByID->fetchAll();
     }
-
+/**
+ * Remove recipe from favorites
+ * @param int $uid user id
+ * @param int $idR id of recipe
+ */
     function removeFav($uid, $idR) {
         $this->ps_removeFav->bindParam(':uid', $uid);
         $this->ps_removeFav->bindParam(':idR', $idR);
         $this->ps_removeFav->execute();
     }
-
+/**
+ * Insert comment on recipe
+ * @param string $comment text of comment
+ * @param int $uid user id
+ * @param int $idR id of recipe
+ */
     function insertComment($comment, $uid, $idR) {
         $this->dbb->beginTransaction();
         $this->ps_insertComment->bindParam(':comment', $comment);
@@ -195,39 +258,41 @@ class DbConnect {
             $this->dbb->rollBack();
         }
     }
-
+/**
+ * Gets all comments
+ * @return array returns all comments
+ */
     function GetComment() {
         $this->ps_getComment->execute();
         return $this->ps_getComment->fetchAll();
     }
-
+/**
+ * Gets comments by recipe id
+ * @param int $idR id of recipe
+ * @return array returns comments by recipe id
+ */
     function GetCommentById($idR) {
         $this->ps_getCommentbyId->bindParam(':idR', $idR);
         $this->ps_getCommentbyId->execute();
         return $this->ps_getCommentbyId->fetchAll();
     }
-
+/**
+ * Removes comment
+ * @param int $idC id of comment
+ */
     function removeComment($idC) {
         $this->ps_removeComment->bindParam(':idC', $idC);
         $this->ps_removeComment->execute();
     }
-
-    function filterByType($type) {
-        $this->ps_filterbyType->bindParam(':type', $type);
-        $this->ps_filterbyType->execute();
-        return $this->ps_filterbyType->fetchAll();
-    }
-
-    function filterByDateA() {
-        $this->ps_filterbyDateA->execute();
-        return $this->ps_filterbyDateA->fetchAll();
-    }
-
-    function filterByDateD() {
-        $this->ps_filterbyDateD->execute();
-        return $this->ps_filterbyDateD->fetchAll();
-    }
-
+    /**
+     * Filter by date and type according to recipes
+     * @param string $searchKeyWord input by user in search bar
+     * @param string $type type of meal
+     * @param string $sort sort of filter for order by
+     * @param int $uid id of user
+     * @param int $valid o if recipe is not validated , 1 otherwise
+     * @return array recipes fitting critera
+     */
     function filterSearchByCriterea($searchKeyWord, $type, $sort,$uid,$valid) {
         $searchKeyWord.='%';
         $query = "SELECT * FROM `recettes` NATURAL JOIN types WHERE (NomType= :type OR :type = '')  AND (Titre like :search OR :search = '') AND (IdUtilisateur = :uid OR :uid = '') AND (Valider= :valid OR :valid = '') ";
@@ -245,7 +310,11 @@ class DbConnect {
         $requete->execute();
         return $requete->fetchAll();
     }
-
+/**
+ * Gets recipes like keyword
+ * @param string $keyword input by user in search bar
+ * @return array recipes found like keyord
+ */
     function Autocomplete($keyword) {
         $keyword = $keyword . '%';
         $this->ps_autocomplete->bindParam(':keyword', $keyword);

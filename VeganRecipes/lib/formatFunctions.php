@@ -1,9 +1,15 @@
 <?php
-
 /**
- * Formate le textarea qui contient les ingrédients pour qu'il soit en string avec un - qui sépare les éléments
- * @param type $ingredients
- * @return type
+ * Project: VeganRecipes
+ * Author: Roxanne Grant
+ * Page: formatFunctions.php
+ * Date: Juin 2017
+ * Copyright: TPI 2017 - Roxanne Grant © 2017
+ */
+/**
+ * Format textarea with list of ingredients to get "- ingredient - " for upload to database
+ * @param string $ingredients all the ingredients of text area
+ * @return string new string of all ingredients in right format
  */
 function FormatIngredients($ingredients) {
     $ingredientsBR = nl2br($ingredients);
@@ -13,12 +19,9 @@ function FormatIngredients($ingredients) {
 }
 
 /**
- * Nettoient les champs pour qu'il n'y ait pas d'injection
- * @param string $title le titre de la recette
- * @param string $ingredients la liste des ingrédients
- * @param string $descrip la description de la recette
- * @param string $type le type de recette
- * @return array Retourne un tableau avec tous les paramètres
+ * Sanitize all fields against injections
+ * @param array $param all fields of modal
+ * @return array returns all the parameters sanitized
  */
 function VerficationAdd($param) {
     $paramsanitize = array();
@@ -28,7 +31,13 @@ function VerficationAdd($param) {
     }
     return $paramsanitize;
 }
-
+/**
+ * Verify for signup. Username shouldn't have special characters, 
+ * password must be longer than 6 charaters
+ * confirmation must be equal to password
+ * @param array $param all fields of signup modal
+ * @return string returns error if one is found
+ */
 function VerifySignup($param) {
     $error = "";
     if ($param["pwd"]!=$param["conf"]) {
@@ -44,8 +53,9 @@ function VerifySignup($param) {
 }
 
 /**
- * Vérfier l'image ajouté qu'elle a la bonne extension
- * @param array $files la superglobal $_FILES
+ * Verify that image has the right extension
+ * @param array $files the superglobal $_FILES
+ * @return boolean returns true if image is valid otherwise return false
  */
 function VerifyImg($files) {
     $valid = FALSE;
@@ -57,7 +67,11 @@ function VerifyImg($files) {
     }
     return $valid;
 }
-
+/**
+ * Upload image to upload folder
+ * @param array $files the superglobal $_FILES
+ * @return string returns nothing if image uploaded well otherwise returns extension
+ */
 function MoveImg($files) {
     $unique = "";
     if (!empty($files['upload']['tmp_name'])) {
@@ -73,12 +87,9 @@ function MoveImg($files) {
 }
 
 /**
- * Vérifie si un des champs est vide
- * @param string $title le titre de la recette
- * @param string $ingredients la liste des ingrédients
- * @param string $descrip la description de la recette
- * @param string $type le type de recette
- * @return int retourne la valeur du nombre de champs vide
+ * Verify if a field is empty
+ * @param array  $param all fields of signup modal
+ * @return int returns number of empty fields
  */
 function IsEmpty($param) {
     $cpt = 0;
@@ -91,8 +102,9 @@ function IsEmpty($param) {
 }
 
 /**
- * Garde la modal ouverte si il y a une erreure et que alerte n'est pas vide
- * @param string $alert message d'erreur
+ * Keeps modal open if an error occurs
+ * @param string $alert error
+ * @param string $modalname modal where the error occured
  */
 function KeepModalOpen($alert, $modalname) {
     $keepOpen = "";
@@ -102,8 +114,8 @@ function KeepModalOpen($alert, $modalname) {
 }
 
 /**
- * Format la liste d'ingreédient pour qu'elle soit affichée à l'utilisateur
- * @param string $listIngredients le string contenant tout les ingrédients
+ *Format ingredient list from DB to show on page
+ * @param string $listIngredients string containing list of ingredients from DB
  */
 function ListIngredients($listIngredients) {
     $Ingredients = explode(" - ", $listIngredients);
@@ -116,9 +128,9 @@ function ListIngredients($listIngredients) {
 }
 
 /**
- * Permet d'avoir qu'un certain nombre de caractère de la description afficher
- * @param string $descrip la description de la recette
- * @return string Retourne la description plus courte
+ *Restricts length of description for primary view
+ * @param string $descrip description of the recipe
+ * @return string returns shorter description
  */
 function RestrictLengthDescrip($descrip) {
     if (strlen($descrip) > 400) {
@@ -131,14 +143,23 @@ function RestrictLengthDescrip($descrip) {
         return $descrip;
     }
 }
-
-function DeleteImg($dossier, $value) {
-    $dossier_traite = $dossier;
+/**
+ * Deletes image from upload folder
+ * @param string $folder the name of the folder where image is stocked
+ * @param array $value name of file to remove
+ */
+function DeleteImg($folder, $value) {
+    $dossier_traite = $folder;
     $repertoire = opendir($dossier_traite);
     unlink($dossier_traite . $value["NomFichierImg"]);
     closedir($repertoire);
 }
-
+/**
+ * Verify if the user has this recipe as a favorite
+ * @param array $value current recipe
+ * @param array $favorite all favorites of user
+ * @return boolean returns true if recipe is a favorite of user, false otherwise
+ */
 function IsFav($value, $favorite) {
     $Isfav = false;
     foreach ($favorite as $k => $fav) {
@@ -148,7 +169,12 @@ function IsFav($value, $favorite) {
     }
     return $Isfav;
 }
-
+/**
+ * Verify if comment belongs to recipe
+ * @param array $value current recipe
+ * @param array $comment array of all comments from the DB
+ * @return array returns array of comments belonging to recipe
+ */
 function ShowComment($value, $comment) {
     $comments = array();
     foreach ($comment as $k => $com) {
@@ -157,11 +183,4 @@ function ShowComment($value, $comment) {
         }
     }
     return $comments;
-}
-
-function IsConnected() {
-    if ((isset($_SESSION["uid"])) && (!empty($_SESSION["uid"]))) {
-        return true;
-    }
-    return false;
 }
