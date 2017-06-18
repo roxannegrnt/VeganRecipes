@@ -184,3 +184,9 @@ function ShowComment($value, $comment) {
     }
     return $comments;
 }
+function IsConnected(){
+    if ((isset($_SESSION["uid"]))&&(!empty($_SESSION["uid"]))) {
+       return true; 
+    }
+    else return FALSE;
+}

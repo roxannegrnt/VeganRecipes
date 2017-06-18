@@ -383,8 +383,8 @@ function CallTitles() {
                 $("#search-box").addClass(".loading");
             },
             success: function (data) {
-                $("#suggesstion-box").show();
-                $("#suggesstion-box").html(data);
+                $("#suggestion-box").show();
+                $("#suggestion-box").html(data);
 
             }
         });
@@ -397,7 +397,7 @@ function CallTitles() {
  */
 function selectTitle(val) {
     $("#search-box").val(val);
-    $("#suggesstion-box").hide();
+    $("#suggestion-box").hide();
 }
 /**
  * Sends complete search and returns results

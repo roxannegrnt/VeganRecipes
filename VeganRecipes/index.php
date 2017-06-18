@@ -28,7 +28,7 @@ require_once './controllerIndex.php';
                 <div class="navbar-form navbar-left frmSearch" role="search">
                     <input type="text" name="search" id="search-box" class="form-control col-lg-8" placeholder="Search">
                     <button type="submit" class="btn btn-default" data-backdrop="static" name="SubmitSearch" onclick="SubmitSearch()">Submit</button>
-                    <div id="suggesstion-box"></div>
+                    <div id="suggestion-box"></div>
                 </div>
                 <ul class="nav navbar-nav navbar-right" id="action">
                     <?php
