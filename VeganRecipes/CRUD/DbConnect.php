@@ -305,7 +305,7 @@ class DbConnect {
         $requete->bindParam(':type', $type,PDO::PARAM_STR);
         $requete->bindParam(':uid', $uid,PDO::PARAM_INT);
         $requete->bindParam(':valid', $valid,PDO::PARAM_INT);
-        $requete->bindParam(':search', $searchKeyWord);
+        $requete->bindParam(':search', $searchKeyWord,PDO::PARAM_STR);
 
         $requete->execute();
         return $requete->fetchAll();
@@ -317,7 +317,7 @@ class DbConnect {
  */
     function Autocomplete($keyword) {
         $keyword = $keyword . '%';
-        $this->ps_autocomplete->bindParam(':keyword', $keyword);
+        $this->ps_autocomplete->bindParam(':keyword', $keyword,PDO::PARAM_STR);
         $this->ps_autocomplete->execute();
         return $this->ps_autocomplete->fetchAll();
     }
