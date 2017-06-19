@@ -88,7 +88,7 @@ function GetRecipesToValidate() {
             onLoadDropdown();
         },
         error: function (error) {
-            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">Can't get recipes to validate, please try again later</div>").fadeIn('slow');
             $('#msg').delay(1000).fadeOut('slow');
         }
     });
@@ -107,13 +107,13 @@ function ValidateRecipe(tick) {
         success: function (data) {
             $("body").html("");
             $("body").html(data);
-            $('#msg').append("<div class=\"alert alert-success\"role=\"alert\">recipe validated successfully</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').append("<div class=\"alert alert-success\"role=\"alert\">recipe validated successfully</div>").fadeIn('slow');
             $('#msg').delay(1000).fadeOut('slow');
             $("input[name=searchbyNotValidated]").val(true);
             onLoadDropdown();
         },
         error: function (error) {
-            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">Can't validate recipe, please try again later</div>").fadeIn('slow');
             $('#msg').delay(1000).fadeOut('slow');
         }
     });
@@ -139,7 +139,7 @@ function GetMyRecipes() {
             onLoadDropdown();
         },
         error: function (error) {
-            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">Can't get my recipes, please try again later</div>").fadeIn('slow');
             $('#msg').delay(1000).fadeOut('slow');
         }
     });
@@ -165,7 +165,7 @@ function GetMyFav() {
             onLoadDropdown();
         },
         error: function (error) {
-            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">Can't get my favorites, please try again later</div>").fadeIn('slow');
             $('#msg').delay(1000).fadeOut('slow');
         }
     });
@@ -190,12 +190,12 @@ function RemoveRecipe(cross, IsIndexhome) {
             else {
                 $(cross).closest(".YesNo").parent().closest("article").remove();
             }
-            $('#msg').append("<div class=\"alert alert-success col-md-12\"role=\"alert\">recipe deleted successfully</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').append("<div class=\"alert alert-success col-md-12\"role=\"alert\">recipe deleted successfully</div>").fadeIn('slow');
             $('#msg').delay(1000).fadeOut('slow');
             onLoadDropdown();
         },
         error: function (error) {
-            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">Can't get remove recipe, please try again later</div>").fadeIn('slow');
             $('#msg').delay(1000).fadeOut('slow');
         }
     });
@@ -239,7 +239,7 @@ function Favorite(tag) {
             $(tag).attr('onmouseout', '');
         },
         error: function (error) {
-            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">Can't set recipe as favorite, please try again later</div>").fadeIn('slow');
             $('#msg').delay(1000).fadeOut('slow');
         }
     });
@@ -264,7 +264,7 @@ function UnFavorite(tag) {
             $(tag).attr('onmouseout', 'OnHoverOutChangeIcon(this)');
         },
         error: function (error) {
-            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">Can't unfavorite recipe, please try again later</div>").fadeIn('slow');
             $('#msg').delay(1000).fadeOut('slow');
         }
     });
@@ -288,7 +288,7 @@ function AddComment(button) {
             $(button).closest(".collapse").find("input[name=comment]").val("");
         },
         error: function (error) {
-            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">Can't add comment to recipe, please try again later</div>").fadeIn('slow');
             $('#msg').delay(1000).fadeOut('slow');
         }
     });
@@ -310,7 +310,7 @@ function RemoveComment(close) {
             $(close).closest(".Allcomments").html(data);
         },
         error: function (error) {
-            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">Can't remove comment on recipe, please try again later</div>").fadeIn('slow');
             $('#msg').delay(1000).fadeOut('slow');
         }
     });
@@ -364,7 +364,7 @@ function FilterByType(e) {
             }
         },
         error: function (error) {
-            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">Can't filter, please try again later</div>").fadeIn('slow');
             $('#msg').delay(1000).fadeOut('slow');
         }
     });
@@ -420,7 +420,7 @@ function SubmitSearch() {
             onLoadDropdown();
         },
         error: function (error) {
-            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">" + error + "</div>").fadeIn('slow'); //also show a success message 
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">Can't get searched recipes, please try again later</div>").fadeIn('slow');
             $('#msg').delay(1000).fadeOut('slow');
         }
     });

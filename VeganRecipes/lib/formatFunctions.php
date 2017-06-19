@@ -43,10 +43,7 @@ function VerifySignup($param) {
     if ($param["pwd"]!=$param["conf"]) {
         $error="<div class=\"alert alert-danger\">The password and the confirmation need to be the same</div>";
     }
-    if ($param["pwd"] < 6) {
-        $error = "<div class=\"alert alert-danger\">The password must be at least 6 characters long</div>";
-    }
-    if (preg_match("/[A-Za-z0-9]+/", $param["user"]) != true) {
+    if (preg_match("/^[A-Za-z0-9]+$/", $param["user"]) != true) {
         $error = "<div class=\"alert alert-danger\">The Username must contain only letters and numbers</div>";
     }
     return $error;
