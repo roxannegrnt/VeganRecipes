@@ -97,8 +97,8 @@ class DbConnect {
  * @return array user-password combinations found
  */
     function GetRegistration($user, $pwd) {
-        $this->ps_getRegistration->bindParam(':user', $user);
-        $this->ps_getRegistration->bindParam(':pwd', $pwd);
+        $this->ps_getRegistration->bindParam(':user', $user,PDO::PARAM_STR);
+        $this->ps_getRegistration->bindParam(':pwd', $pwd,PDO::PARAM_STR);
         $this->ps_getRegistration->execute();
         return $this->ps_getRegistration->fetch();
     }
@@ -108,7 +108,7 @@ class DbConnect {
  * @return array username if found
  */
     function GetUser($user) {
-        $this->ps_getUser->bindParam(':user', $user);
+        $this->ps_getUser->bindParam(':user', $user,PDO::PARAM_STR);
         $this->ps_getUser->execute();
         return $this->ps_getUser->fetch();
     }
@@ -118,8 +118,8 @@ class DbConnect {
  * @param string $pwd sha1 password of new user
  */
     function Register($user, $pwd) {
-        $this->ps_register->bindParam(':user', $user);
-        $this->ps_register->bindParam(':pwd', $pwd);
+        $this->ps_register->bindParam(':user', $user,PDO::PARAM_STR);
+        $this->ps_register->bindParam(':pwd', $pwd,PDO::PARAM_STR);
         $this->ps_register->execute();
     }
 /**
@@ -138,12 +138,12 @@ class DbConnect {
  */
     function InsertRecipe($param, $id, $img) {
         $this->dbb->beginTransaction();
-        $this->ps_insertRecipe->bindParam(':title', $param[0]);
-        $this->ps_insertRecipe->bindParam(':ingredients', $param[1]);
-        $this->ps_insertRecipe->bindParam(':descrip', $param[2]);
-        $this->ps_insertRecipe->bindParam(':type', $param[3]);
-        $this->ps_insertRecipe->bindParam(':img', $img);
-        $this->ps_insertRecipe->bindParam(':id', $id);
+        $this->ps_insertRecipe->bindParam(':title', $param[0],PDO::PARAM_STR);
+        $this->ps_insertRecipe->bindParam(':ingredients', $param[1],PDO::PARAM_STR);
+        $this->ps_insertRecipe->bindParam(':descrip', $param[2],PDO::PARAM_STR);
+        $this->ps_insertRecipe->bindParam(':type', $param[3],PDO::PARAM_STR);
+        $this->ps_insertRecipe->bindParam(':img', $img,PDO::PARAM_STR);
+        $this->ps_insertRecipe->bindParam(':id', $id,PDO::PARAM_INT);
         if ($this->ps_insertRecipe->execute()) {
             $this->dbb->commit();
         } else {
@@ -156,7 +156,7 @@ class DbConnect {
  * @return array all recipes found
  */
     function GetRecipes($valid) {
-        $this->ps_getRecipes->bindParam(':Valid', $valid);
+        $this->ps_getRecipes->bindParam(':Valid', $valid,PDO::PARAM_INT);
         $this->ps_getRecipes->execute();
         return $this->ps_getRecipes->fetchAll();
     }
@@ -166,7 +166,7 @@ class DbConnect {
  * @return array all recipes of user
  */
     function GetRecipesById($uid) {
-        $this->ps_getByRecipesId->bindParam(':uid', $uid);
+        $this->ps_getByRecipesId->bindParam(':uid', $uid,PDO::PARAM_INT);
         $this->ps_getByRecipesId->execute();
         return $this->ps_getByRecipesId->fetchAll();
     }
@@ -176,7 +176,7 @@ class DbConnect {
  * @return array all recipes that are user favorites
  */
     function GetRecipesByFav($uid) {
-        $this->ps_getRecetteByFav->bindParam(':uid', $uid);
+        $this->ps_getRecetteByFav->bindParam(':uid', $uid,PDO::PARAM_INT);
         $this->ps_getRecetteByFav->execute();
         return $this->ps_getRecetteByFav->fetchAll();
     }
@@ -185,7 +185,7 @@ class DbConnect {
  * @param int $idR id of recipe
  */
     function ValidateRecipe($idR) {
-        $this->ps_validateRecipe->bindParam(':idRecette', $idR);
+        $this->ps_validateRecipe->bindParam(':idRecette', $idR,PDO::PARAM_INT);
         $this->ps_validateRecipe->execute();
     }
 /**
@@ -193,7 +193,7 @@ class DbConnect {
  * @param int $idR id of recipe
  */
     function RemoveRecipe($idR) {
-        $this->ps_removeRecipe->bindParam(':idRecette', $idR);
+        $this->ps_removeRecipe->bindParam(':idRecette', $idR,PDO::PARAM_INT);
         $this->ps_removeRecipe->execute();
     }
 /**
@@ -202,7 +202,7 @@ class DbConnect {
  * @return array returns name of image
  */
     function GetNameFile($idR) {
-        $this->ps_getNomFichier->bindParam(':idRecette', $idR);
+        $this->ps_getNomFichier->bindParam(':idRecette', $idR,PDO::PARAM_INT);
         $this->ps_getNomFichier->execute();
         return $this->ps_getNomFichier->fetch();
     }
@@ -213,8 +213,8 @@ class DbConnect {
  */
     function AddFav($uid, $idR) {
         $this->dbb->beginTransaction();
-        $this->ps_addFav->bindParam(':uid', $uid);
-        $this->ps_addFav->bindParam(':idR', $idR);
+        $this->ps_addFav->bindParam(':uid', $uid,PDO::PARAM_INT);
+        $this->ps_addFav->bindParam(':idR', $idR,PDO::PARAM_INT);
         if ($this->ps_addFav->execute()) {
             $this->dbb->commit();
         } else {
@@ -227,7 +227,7 @@ class DbConnect {
  * @return array returns all favorites of user
  */
     function getFavByID($uid) {
-        $this->ps_getFavByID->bindParam(':uid', $uid);
+        $this->ps_getFavByID->bindParam(':uid', $uid,PDO::PARAM_INT);
         $this->ps_getFavByID->execute();
         return $this->ps_getFavByID->fetchAll();
     }
@@ -237,8 +237,8 @@ class DbConnect {
  * @param int $idR id of recipe
  */
     function removeFav($uid, $idR) {
-        $this->ps_removeFav->bindParam(':uid', $uid);
-        $this->ps_removeFav->bindParam(':idR', $idR);
+        $this->ps_removeFav->bindParam(':uid', $uid,PDO::PARAM_INT);
+        $this->ps_removeFav->bindParam(':idR', $idR,PDO::PARAM_INT);
         $this->ps_removeFav->execute();
     }
 /**
@@ -249,9 +249,9 @@ class DbConnect {
  */
     function insertComment($comment, $uid, $idR) {
         $this->dbb->beginTransaction();
-        $this->ps_insertComment->bindParam(':comment', $comment);
-        $this->ps_insertComment->bindParam(':uid', $uid);
-        $this->ps_insertComment->bindParam(':idR', $idR);
+        $this->ps_insertComment->bindParam(':comment', $comment,PDO::PARAM_STR);
+        $this->ps_insertComment->bindParam(':uid', $uid,PDO::PARAM_INT);
+        $this->ps_insertComment->bindParam(':idR', $idR,PDO::PARAM_INT);
         if ($this->ps_insertComment->execute()) {
             $this->dbb->commit();
         } else {
@@ -272,7 +272,7 @@ class DbConnect {
  * @return array returns comments by recipe id
  */
     function GetCommentById($idR) {
-        $this->ps_getCommentbyId->bindParam(':idR', $idR);
+        $this->ps_getCommentbyId->bindParam(':idR', $idR,PDO::PARAM_INT);
         $this->ps_getCommentbyId->execute();
         return $this->ps_getCommentbyId->fetchAll();
     }
@@ -281,7 +281,7 @@ class DbConnect {
  * @param int $idC id of comment
  */
     function removeComment($idC) {
-        $this->ps_removeComment->bindParam(':idC', $idC);
+        $this->ps_removeComment->bindParam(':idC', $idC,PDO::PARAM_INT);
         $this->ps_removeComment->execute();
     }
     /**
@@ -302,9 +302,9 @@ class DbConnect {
             $query.= " ORDER BY DateTimeInsert ASC";
         }
         $requete = $this->dbb->prepare($query);
-        $requete->bindParam(':type', $type);
-        $requete->bindParam(':uid', $uid);
-        $requete->bindParam(':valid', $valid);
+        $requete->bindParam(':type', $type,PDO::PARAM_STR);
+        $requete->bindParam(':uid', $uid,PDO::PARAM_INT);
+        $requete->bindParam(':valid', $valid,PDO::PARAM_INT);
         $requete->bindParam(':search', $searchKeyWord);
 
         $requete->execute();
