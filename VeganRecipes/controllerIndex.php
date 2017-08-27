@@ -65,8 +65,8 @@ if (isset($_REQUEST["signup"])) {
             $registration = $DB->GetUser($_REQUEST["Newuser"]);
             if (empty($registration)) {
                 //register in database and log right away
-                $DB->Register($_REQUEST["Newuser"], sha1($_REQUEST["Newpwd"]));
-                $_SESSION["uid"] = $_REQUEST["Newuser"];
+                $id=$DB->Register($_REQUEST["Newuser"], sha1($_REQUEST["Newpwd"]));
+                $_SESSION["uid"] = $id;
                 $_SESSION["IsAdmin"] = 0;
             } else {
                 $signup_error = "<div class=\"alert alert-danger\">This user is already used on the site</div>";

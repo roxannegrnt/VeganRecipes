@@ -1,0 +1,12 @@
+
+Compte user:
+Pseudo: User
+Mot de passe: Super
+
+Compte admin:
+Pseudo: Admin
+Mot de passe: Super
+
+Utilisateur DB
+Pseudo: UserRecipes
+Mot de passe: Super

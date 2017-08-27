@@ -121,6 +121,7 @@ class DbConnect {
         $this->ps_register->bindParam(':user', $user,PDO::PARAM_STR);
         $this->ps_register->bindParam(':pwd', $pwd,PDO::PARAM_STR);
         $this->ps_register->execute();
+		return $this->dbb->lastInsertId();
     }
 /**
  * Gets all types of meals
