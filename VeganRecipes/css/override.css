@@ -158,6 +158,10 @@ textarea{
     border-color: red;
     color: red;
 }
+#edit{
+    border-color: blue;
+    color: blue;
+}
 #btnImg{
     color: green;
 }

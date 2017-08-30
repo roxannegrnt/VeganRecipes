@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Project: VeganRecipes
  * Author: Roxanne Grant
@@ -92,10 +93,12 @@ function IndexAdmin($value, $descripShort) {
         <div class="YesNo col-lg-3" id="$value[IdRecette]">
         <button onclick="ValidateRecipe(this)" class="btn btn-default btn-circle btn-xs accept"><i class="glyphicon glyphicon-ok"></i></button>
         <button onclick="RemoveRecipe(this,0)" class="btn btn-default btn-circle btn-xs" id="refuse"><i class="glyphicon glyphicon-remove"></i></button>
-        </div>
+        <button onclick="EditRecipe(this)" class="btn btn-default btn-circle btn-xs" id="edit"><i class="glyphicon glyphicon-pencil"></i></button>     
+   </div>
             </article>
 affichage;
 }
+
 /**
  * Show cross to remove comment if user is an admin
  * @param bool $IsAdmin true if user is an admin, false otherwise
@@ -107,6 +110,7 @@ function AdminCross($IsAdmin) {
         echo "</div>";
     }
 }
+
 /**
  * Show cross to remove recipe if user is an admin
  * @param bool $IsAdmin true if user is an admin, false otherwise
@@ -118,6 +122,7 @@ function AdmincrossRecipe($IsAdmin) {
         echo "</div>";
     }
 }
+
 /**
  * Shows all comments of a certain recipe
  * @param array $comments array of all comments for a specific recipe
@@ -132,6 +137,7 @@ function AfficherComment($comments, $isadmin) {
         echo "</article>";
     }
 }
+
 /**
  * Shows all autocomplete results under search bar
  * @param array $resultAuto array of all autocomplete results
@@ -145,4 +151,38 @@ function AutocompleteResult($resultAuto) {
         echo "</li>";
     }
     echo "</ul>";
+}
+
+function EditModal($param, $types) {
+    echo "<label for=\"FileInput\" id=\"labelImg\">";
+    if ($param["NomFichierImg"] != "") {
+        echo "<img class=\"col-lg-offset-5\" id=\"AddPhoto\" alt=\"Add a picture\" src=\"upload/" . $param["NomFichierImg"] . "\">";
+    } else {
+        echo "<img class=\"col-lg-offset-5\" id=\"AddPhoto\" alt=\"Add a picture\" src=\"upload/add.ico\">";
+    }
+    echo "</label>";
+    echo "<input type=\"file\" class=\"col-xs-3 form-control-file\" accept=\"image/*\" name=\"upload\" id=\"FileInput\">";
+    echo "<section class=\"form-group inputT\">";
+    echo "<input class=\"frm form-control\" type=\"text\" name=\"title\" id=\"title\" placeholder=\"Title\" value=\"";
+    echo (empty($param["Titre"])) ? "" : $param["Titre"] . "\">";
+    echo "</section>";
+    echo "<textarea class=\" frm form-control\" rows=\"8\" id=\"LIngredients\" name=\"ingredients\" placeholder=\"List of Ingredients\">";
+    echo (empty($param["Ingredient"])) ? "" : $param["Ingredient"] . "</textarea>";
+    echo "<select name=\"type\" class=\"form-control frm\">";
+
+    //Show types from DB
+    foreach ($types as $key => $value) {
+        if ($value["IdType"] == $param["IdType"]) {
+            echo "<option selected=\"selected\">" . $value["NomType"] . "</option>";
+        } else {
+            echo "<option>" . $value["NomType"] . "</option>";
+        }
+    }
+
+    echo "</select>";
+    echo "<section class=\"form-group textareaD\">";
+    echo "<textarea class=\"frm form-control\" rows=\"5\" name=\"recipe\" id=\"descrip\" placeholder=\"Description de la recette\">";
+    echo (empty($param["Description"])) ? "" : $param["Description"] . "</textarea>";
+    echo "</section>";
+    echo "<button type=\"submit\" class=\"btn btn-primary btn-block frm\" name=\"edit\">Edit Recipe</button>";
 }

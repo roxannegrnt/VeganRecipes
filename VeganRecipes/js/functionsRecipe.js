@@ -200,7 +200,24 @@ function RemoveRecipe(cross, IsIndexhome) {
         }
     });
 }
-
+function EditRecipe(edit){
+    var id=$(edit).closest(".YesNo").attr("id");
+    $.ajax({
+        type: "POST",
+        url: "CallAjax.php",
+        data: "edit="+id,
+        async: true,
+        success: function (data) {
+            //$('body').html(data);
+            $('#editModal .modal-body').html(data);
+            $('#editModal').modal('show');
+        },
+        error: function (error) {
+            $('#msg').append("<div class=\"alert alert-danger\"role=\"alert\">Can't get edit recipe, please try again later</div>").fadeIn('slow');
+            $('#msg').delay(1000).fadeOut('slow');
+        }
+    });
+}
 /**
  * When star is hovered change icon to full star
  * @param {<i>} tag clicked star

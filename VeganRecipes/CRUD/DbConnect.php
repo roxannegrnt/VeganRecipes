@@ -24,7 +24,7 @@ class DbConnect {
     private $ps_getByRecipesId = null;
     private $ps_validateRecipe = null;
     private $ps_removeRecipe = null;
-    private $ps_getNomFichier = null;
+    private $ps_getRecipesByID = null;
     private $ps_addFav = null;
     private $ps_getFavByID = null;
     private $ps_getRecetteByFav = null;
@@ -52,7 +52,7 @@ class DbConnect {
                 $this->ps_getUser->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_register = $this->dbb->prepare("INSERT INTO utilisateurs VALUES('',:user,:pwd,0)");
                 $this->ps_register->setFetchMode(PDO::FETCH_ASSOC);
-                $this->ps_getTypes = $this->dbb->prepare("SELECT NomType FROM types");
+                $this->ps_getTypes = $this->dbb->prepare("SELECT * FROM types");
                 $this->ps_getTypes->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_insertRecipe = $this->dbb->prepare("INSERT INTO recettes (`IdRecette`,`Titre`,`Ingredient`,`Description`,`Valider`,`NomFichierImg`,`IdUtilisateur`,`IdType`)"
                         . "SELECT '',:title,:ingredients,:descrip,0,:img,:id,IdType FROM types WHERE NomType= :type");
@@ -67,8 +67,8 @@ class DbConnect {
                 $this->ps_validateRecipe->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_removeRecipe = $this->dbb->prepare("DELETE FROM recettes WHERE IdRecette=:idRecette");
                 $this->ps_removeRecipe->setFetchMode(PDO::FETCH_ASSOC);
-                $this->ps_getNomFichier = $this->dbb->prepare("SELECT NomFichierImg FROM recettes WHERE IdRecette=:idRecette");
-                $this->ps_getNomFichier->setFetchMode(PDO::FETCH_ASSOC);
+                $this->ps_getRecipesByID = $this->dbb->prepare("SELECT * FROM recettes WHERE IdRecette=:idRecette");
+                $this->ps_getRecipesByID->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_addFav = $this->dbb->prepare("INSERT INTO `favoris`(`IdUtilisateur`, `IdRecette`) VALUES(:uid,:idR)");
                 $this->ps_addFav->setFetchMode(PDO::FETCH_ASSOC);
                 $this->ps_getFavByID = $this->dbb->prepare("SELECT IdRecette FROM favoris WHERE IdUtilisateur=:uid");
@@ -202,10 +202,10 @@ class DbConnect {
  * @param  int $idR id of recipe
  * @return array returns name of image
  */
-    function GetNameFile($idR) {
-        $this->ps_getNomFichier->bindParam(':idRecette', $idR,PDO::PARAM_INT);
-        $this->ps_getNomFichier->execute();
-        return $this->ps_getNomFichier->fetch();
+    function GetRecipesByIdR($idR) {
+        $this->ps_getRecipesByID->bindParam(':idRecette', $idR,PDO::PARAM_INT);
+        $this->ps_getRecipesByID->execute();
+        return $this->ps_getRecipesByID->fetch();
     }
 /**
  * Add a recipe as favorite

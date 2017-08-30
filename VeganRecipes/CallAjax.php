@@ -38,12 +38,17 @@ if (isset($_REQUEST["idComment"])) {
 }
 //If admin wants to remove a recipe
 if (isset($_REQUEST["remove"])) {
-    $file = $DB->GetNameFile($_REQUEST["remove"]);
+    $file = $DB->GetRecipesByIdR($_REQUEST["remove"]);
     $DB->RemoveRecipe($_REQUEST["remove"]);
     //If there was an image, delete image from upload folder
     if ($file["NomFichierImg"] != "") {
         DeleteImg('upload/', $file);
     }
+}
+if (isset($_REQUEST["edit"])) {
+  $parameters= $DB->GetRecipesByIdR($_REQUEST["edit"]);
+  $types=$DB->GetTypes();
+  EditModal($parameters,$types);
 }
 
     
