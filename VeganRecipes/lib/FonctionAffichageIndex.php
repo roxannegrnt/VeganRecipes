@@ -184,5 +184,6 @@ function EditModal($param, $types) {
     echo "<textarea class=\"frm form-control\" rows=\"5\" name=\"recipe\" id=\"descrip\" placeholder=\"Description de la recette\">";
     echo (empty($param["Description"])) ? "" : $param["Description"] . "</textarea>";
     echo "</section>";
-    echo "<button type=\"submit\" class=\"btn btn-primary btn-block frm\" name=\"edit\">Edit Recipe</button>";
+    echo "<input type=\"text\" hidden name=\"id\" value=\"".$param["IdRecette"]."\">";
+    echo "<button type=\"submit\" class=\"btn btn-primary btn-block frm\" name=\"Add\">Edit Recipe</button>";
 }

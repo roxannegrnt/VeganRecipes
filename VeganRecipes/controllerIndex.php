@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Project: VeganRecipes
  * Author: Roxanne Grant
@@ -65,7 +66,7 @@ if (isset($_REQUEST["signup"])) {
             $registration = $DB->GetUser($_REQUEST["Newuser"]);
             if (empty($registration)) {
                 //register in database and log right away
-                $id=$DB->Register($_REQUEST["Newuser"], sha1($_REQUEST["Newpwd"]));
+                $id = $DB->Register($_REQUEST["Newuser"], sha1($_REQUEST["Newpwd"]));
                 $_SESSION["uid"] = $id;
                 $_SESSION["IsAdmin"] = 0;
             } else {
@@ -98,10 +99,15 @@ if (isset($_REQUEST["Add"])) {
             //Sanitize all fields
             $param = VerficationAdd($parameters);
             //Insert new recipe in databse
-            $DB->InsertRecipe($param, $_SESSION["uid"], $unique);
+            if (isset($_REQUEST["id"])) {
+                $DB->ModifyRecipe($param, $_SESSION["uid"], $unique, $_REQUEST["id"]);
+                $add_success = "<div class=\"alert alert-success\">Recipe modified sucessfully</div>";
+            } else {
+                $DB->InsertRecipe($param, $_SESSION["uid"], $unique);
+                $add_success = "<div class=\"alert alert-success\">Recipe added sucessfully</div>";
+                
+            }
             $parameters = array();
-            //Show sucess message
-            $add_success = "<div class=\"alert alert-success\">Recipe added sucessfully</div>";
             $recipes = $DB->GetRecipes(1);
         }
     } else {
@@ -148,19 +154,18 @@ if (isset($_REQUEST["Unfavorite"])) {
 if (isset($_REQUEST["AjaxFilter"])) {
     //If user is on his recipe page, add id to query
     if ($_REQUEST["isMyRecipes"]) {
-        $uid=$_SESSION["uid"];
-        $Valid="";
-    }
-    else{
-        $uid="";
-        $Valid=1;
+        $uid = $_SESSION["uid"];
+        $Valid = "";
+    } else {
+        $uid = "";
+        $Valid = 1;
     }
     //If admin is on his validate page add valid is 0 to query
     if ($_REQUEST["isNotValid"]) {
-        $Valid=0;
+        $Valid = 0;
         $IndexHome = 0;
     }
-    $recipes = $DB->filterSearchByCriterea($_REQUEST["searchKeyWord"], $_REQUEST["Filtertype"], $_REQUEST["FilterDate"],$uid,$Valid);
+    $recipes = $DB->filterSearchByCriterea($_REQUEST["searchKeyWord"], $_REQUEST["Filtertype"], $_REQUEST["FilterDate"], $uid, $Valid);
 }
 //Get search results of search bar
 if (isset($_REQUEST["search"])) {
