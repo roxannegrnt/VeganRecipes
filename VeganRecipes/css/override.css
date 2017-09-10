@@ -78,7 +78,7 @@
 .signup:hover{
     text-decoration:none;
     outline: 0;
-    
+
 }
 a:hover{
     cursor: pointer;
@@ -136,8 +136,8 @@ a:hover{
     -webkit-text-fill-color: #0645AD;
 }
 #AddPhoto{
-    height:120px; 
-    width:120px;
+    height: 70px;
+    width: 70px;
     border-radius: 50px;
     margin-bottom: 20px;
 }
@@ -177,11 +177,13 @@ textarea{
 li .glyphicon-star{
     font-size: 18px;
 }
-#AddPhoto{
-    height: 70px;
-    width: 70px;
+.FileInput{
+    display: none;
 }
-#FileInput{
+#editImg{
+    display: none;
+}
+#addImg{
     display: none;
 }
 #labelImg{

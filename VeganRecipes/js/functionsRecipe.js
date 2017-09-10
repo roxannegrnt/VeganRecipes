@@ -10,7 +10,7 @@ $().ready(function () {
         FilterByType(e);
     });
     CallTitles();
-    $('#FileInput').on('change', function (e) {
+    $('#addImg, #editImg').on('change', function (e) {
         prepareUpload(e);
     });
     $('#AddModal').on('hidden.bs.modal', function () {
@@ -208,7 +208,6 @@ function EditRecipe(edit){
         data: "edit="+id,
         async: true,
         success: function (data) {
-            //$('body').html(data);
             $('#editModal .modal-body').html(data);
             $('#editModal').modal('show');
         },

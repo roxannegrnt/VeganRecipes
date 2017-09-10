@@ -43,6 +43,9 @@ function IndexHome($value, $descripShort, $fav, $comments, $isadmin) {
                     <div class="pull-right YesNo" id=$value[IdRecette]>
 affichage;
     AdmincrossRecipe($isadmin);
+    if ($value["Valider"] == 0) {
+        echo "<button onclick=\"EditRecipe(this)\" class=\"btn btn-default btn-circle btn-xs\" id=\"edit\"><i class=\"glyphicon glyphicon-pencil\"></i></button>";
+    }
     echo<<<reste
     </div>
     <img class = "col-md-3" src = "upload/$value[NomFichierImg]" id = "imgrecipe">
@@ -72,6 +75,7 @@ reste;
         }
     }
     echo "<div class=\"loader\"></div>";
+
     echo "</article>";
 }
 
@@ -154,14 +158,14 @@ function AutocompleteResult($resultAuto) {
 }
 
 function EditModal($param, $types) {
-    echo "<label for=\"FileInput\" id=\"labelImg\">";
+    echo "<label for=\"editImg\" id=\"labelImg\">";
     if ($param["NomFichierImg"] != "") {
-        echo "<img class=\"col-lg-offset-5\" id=\"AddPhoto\" alt=\"Add a picture\" src=\"upload/" . $param["NomFichierImg"] . "\">";
+        echo "<img class=\"col-lg-offset-5\" id=\"AddPhoto\"  alt=\"Add a picture\" src=\"upload/" . $param["NomFichierImg"] . "\">";
     } else {
         echo "<img class=\"col-lg-offset-5\" id=\"AddPhoto\" alt=\"Add a picture\" src=\"upload/add.ico\">";
     }
     echo "</label>";
-    echo "<input type=\"file\" class=\"col-xs-3 form-control-file\" accept=\"image/*\" name=\"upload\" id=\"FileInput\">";
+    echo "<input type=\"file\" class=\"col-xs-3 form-control-file\" accept=\"image/*\" name=\"upload\" id=\"editImg\" class=\"FileInput\">";
     echo "<section class=\"form-group inputT\">";
     echo "<input class=\"frm form-control\" type=\"text\" name=\"title\" id=\"title\" placeholder=\"Title\" value=\"";
     echo (empty($param["Titre"])) ? "" : $param["Titre"] . "\">";
@@ -184,6 +188,6 @@ function EditModal($param, $types) {
     echo "<textarea class=\"frm form-control\" rows=\"5\" name=\"recipe\" id=\"descrip\" placeholder=\"Description de la recette\">";
     echo (empty($param["Description"])) ? "" : $param["Description"] . "</textarea>";
     echo "</section>";
-    echo "<input type=\"text\" hidden name=\"id\" value=\"".$param["IdRecette"]."\">";
+    echo "<input type=\"text\" hidden name=\"id\" value=\"" . $param["IdRecette"] . "\">";
     echo "<button type=\"submit\" class=\"btn btn-primary btn-block frm\" name=\"Add\">Edit Recipe</button>";
 }

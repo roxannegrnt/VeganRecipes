@@ -44,6 +44,7 @@ require_once './controllerIndex.php';
         <li><a data-toggle="modal" data-keyboard="false" data-target="#myModal"><span class="glyphicon glyphicon-user"></span></a></li>
 affichage;
                     }
+                    var_dump($_FILES);
                     ?>
                 </ul>
             </div>
@@ -118,12 +119,12 @@ affichage;
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h2 class="modal-title">Add Recipe</h2>
                     </div>
-                    <form action="index.php" method="POST" id="frmAjout" enctype="multipart/form-data">
+                    <form action="index.php" method="POST" enctype="multipart/form-data">
                         <div class="modal-body">
-                            <label for="FileInput" id="labelImg">
+                            <label for="addImg" id="labelImg">
                                 <img class="col-lg-offset-5" id="AddPhoto" alt="Add a picture" src="upload/add.ico">
                             </label>
-                            <input type="file" class="col-xs-3 form-control-file" accept="image/*" name="upload" id="FileInput">
+                            <input type="file" class="col-xs-3 form-control-file" accept="image/*" name="upload" id="addImg" class="FileInput">
                             <section class="form-group inputT">
                                 <input class="frm form-control" type="text" name="title" id="title" placeholder="Title" value="<?php echo (empty($parameters["title"])) ? "" : $parameters["title"] ?>">
                             </section>
@@ -158,7 +159,7 @@ affichage;
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h2 class="modal-title">Edit Recipe</h2>
                     </div>
-                    <form action="index.php" method="POST" id="frmAjout" enctype="multipart/form-data">
+                    <form action="index.php" method="POST" enctype="multipart/form-data">
                         <div class="modal-body">
                          <div class="errorModal">
                                 <?php
